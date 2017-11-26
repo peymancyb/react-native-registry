@@ -1,12 +1,7 @@
 import * as firebase from 'firebase';
 //initializing firebase
 const config = {
-  apiKey: "AIzaSyB6zCdAALy1I4efyNNua8irEJ6UTaeqR-M",
-  authDomain: "myapp-5c82d.firebaseapp.com",
-  databaseURL: "https://myapp-5c82d.firebaseio.com",
-  projectId: "myapp-5c82d",
-  storageBucket: "myapp-5c82d.appspot.com",
-  messagingSenderId: "814712128036"
+  <YOUR-FIREBASE-CONFIG>
 };
 const FB = firebase.initializeApp(config);
 // const storage = firebase.storage();
