@@ -32,29 +32,20 @@ export default class MainButtons extends PureComponent{
     this._absentButton = this._absentButton.bind(this);
     this._lateButton = this._lateButton.bind(this);
     this._submitData = this._submitData.bind(this);
-    this._Reset = this._Reset.bind(this);
   }
-
-_Reset(){
-  console.log("reset!");
-  this.setState({
-    presentStatus: true,
-    absentStatus: true,
-    lateStatus: true,
-
-    status: null,
-  });
-}
 
 _submitData(props){
-  if(props!=null && this.state.status != null)
-      FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list/'+ props.userID +"/"+ fullDate +"/").set({
-        Attendance: this.state.status,
-  });
-  else{
+  if(props!=null && this.state.status != null){
+    FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list/'+ props.userID +"/"+ fullDate +"/").set({
+      Attendance: this.state.status,
+});
+        this.setState({
+          status: null,
+        });
+
+  }else{
     this.refs.toast.show('Please choose an option!');
   }
-  // this.refs.toast.show('saved!');
 }
 
 _presentButton(){
@@ -62,7 +53,7 @@ _presentButton(){
     presentStatus: this.state.presentStatus ? false : true,
     absentStatus:true,
     lateStatus:true,
-    status:"Present",
+    status: (this.state.status == null || this.state.status == "Absent" || this.state.status == "Late" ) ? "Present" : null,
   });
 }
 
@@ -71,7 +62,7 @@ _absentButton(){
     absentStatus: this.state.absentStatus ? false : true,
     lateStatus:true,
     presentStatus:true,
-    status: "Absent",
+    status: (this.state.status == null || this.state.status == "Late" || this.state.status == "Present") ? "Absent" : null,
   });
 }
 
@@ -80,7 +71,7 @@ _lateButton(){
     lateStatus: this.state.lateStatus ? false : true,
     absentStatus:true,
     presentStatus:true,
-    status:"Late",
+    status: (this.state.status == null || this.state.status == "Absent" || this.state.status == "Present") ? "Late" : null,
   });
 }
 

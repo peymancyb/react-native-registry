@@ -49,7 +49,7 @@ componentDidMount() {
 }
 _navigateToStudent(item){
   const { navigate } = this.props.navigation;
-  fbDatabaseNodeName = item.name;
+  fbDatabaseNodeName = item.name +" "+ item.descreption;
   navigate("HomePage");
 }
 _renderClassItem({item}){
@@ -58,10 +58,14 @@ _renderClassItem({item}){
     <View style={styles.containerStudentRow}>
       <TouchableHighlight
         onPress={()=>this._navigateToStudent(item)}>
-      <View style={styles.dataBorder}>
-        <Text style={styles.flatListFont}>{item.name}</Text>
-        <Text style={styles.flatListFont}>{item.descreption}</Text>
-      </View>
+        <View>
+          <View style={styles.dataBorder}>
+            <Text style={styles.flatListFont}>{item.name}</Text>
+          </View>
+          <View style={{alignItems:"center", justifyContent:"center", paddingBottom:5}}>
+            <Text style={{fontSize:16 , color:"white"}}>{item.descreption}</Text>
+          </View>
+        </View>
     </TouchableHighlight>
   </View>
   <View style={styles.borderBottomStyle}></View>
@@ -74,7 +78,7 @@ listenForClassItems(_ClassitemsRef) {
     var items = [];
     snap.forEach((child) => {
       items.push({
-        name: child.key,
+        name: child.val().class_name,
         descreption: child.val().descreption
       });
     });
