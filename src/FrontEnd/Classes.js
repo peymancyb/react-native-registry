@@ -33,14 +33,13 @@ export default class ListClasses extends PureComponent {
    this.listenForClassItems = this.listenForClassItems.bind(this);
    this._saveClassData = this._saveClassData.bind(this);
    this._navigateToStudent = this._navigateToStudent.bind(this);
-   this._keyExtractor = this._keyExtractor.bind(this);
   }
 static navigationOptions = {
   title: "Class List",
   headerStyle:{
-    backgroundColor: "#535353",
+    backgroundColor: "white",
   },
-  headerTintColor: "#00a79d",
+  headerTintColor: "#01b4df",
   gesturesEnabled: false,
   headerLeft: null,
 };
@@ -50,7 +49,7 @@ componentDidMount() {
 _navigateToStudent(item){
   const { navigate } = this.props.navigation;
   fbDatabaseNodeName = item.name +" "+ item.descreption;
-  navigate("HomePage");
+  navigate("HomePage", { className: fbDatabaseNodeName });
 }
 _renderClassItem({item}){
   return(
@@ -96,8 +95,6 @@ _saveClassData(){
     this.refs.toast.show('data is missing');
   }
 }
-
-_keyExtractor = (item) => item.name;
 
   render() {
     const { navigate } = this.props.navigation;
@@ -148,7 +145,7 @@ _keyExtractor = (item) => item.name;
             style={styles.flatListStyle}
             data = {this.state.Class_array}
             renderItem = {this._renderClassItem}
-            keyExtractor={this._keyExtractor}
+            keyExtractor={item => item.name}
           />
 
 

@@ -30,18 +30,19 @@ _onSignup(){
 }
   static navigationOptions = {
     title:"Registeration",
-    headerTintColor: "white",
+    headerTintColor: "#01b4df",
     headerStyle:{
-      backgroundColor:"#535353",
+      backgroundColor:"white",
     },
-    headerTintColor: "#00a79d",
+    headerTintColor: "#01b4df",
+    gesturesEnabled: false,
 
   };
   render(){
     return(
       <View style={styles.container}>
         <View style={styles.inputRow}>
-          <Entypo  name="user" size={20} color={"#00a79d"} style={styles.iconStyle}/>
+          <Entypo  name="user" size={20} color={"#01b4df"} style={styles.iconStyle}/>
           <TextInput
             value = {this.state.UserEmail}
             onChangeText = {(Email) => this.setState({UserEmail: Email})}
@@ -52,12 +53,12 @@ _onSignup(){
             multiline={false}
             maxLength ={320}
             underlineColorAndroid={'transparent'}
-            placeholderTextColor={"white"}
+            placeholderTextColor={"#01b4df"}
 
           />
         </View>
         <View style={styles.inputRow}>
-          <Entypo  name="lock" size={20} color={"#00a79d"} style={styles.iconStyle}/>
+          <Entypo  name="lock" size={20} color={"#01b4df"} style={styles.iconStyle}/>
           <TextInput
             onChangeText = {(Password) => this.setState({UserPassword: Password})}
             value = {this.state.UserPassword}
@@ -67,7 +68,7 @@ _onSignup(){
             multiline={false}
             maxLength ={320}
             underlineColorAndroid={'transparent'}
-            placeholderTextColor={"white"}
+            placeholderTextColor={"#01b4df"}
             secureTextEntry={true}
           />
         </View>

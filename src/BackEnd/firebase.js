@@ -1,8 +1,6 @@
 import * as firebase from 'firebase';
 //initializing firebase
-const config = {
-  <YOUR-FIREBASE-CONFIG>
-};
+//you firebase config here
 const FB = firebase.initializeApp(config);
 // const storage = firebase.storage();
 // const storageRef = storage.ref();

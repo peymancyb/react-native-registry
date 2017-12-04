@@ -14,6 +14,7 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 var date = new Date();
 var fullDate = date.toDateString();
 
+
 export default class MainButtons extends PureComponent{
   constructor(props){
     super(props);
@@ -23,7 +24,6 @@ export default class MainButtons extends PureComponent{
       lateStatus: true,
 
       status: null,
-
     };
 
     this.currentUserUid = FB.auth().currentUser.uid;
@@ -48,7 +48,7 @@ _submitData(props){
   }
 }
 
-_presentButton(){
+_presentButton(props){
   this.setState({
     presentStatus: this.state.presentStatus ? false : true,
     absentStatus:true,
@@ -57,7 +57,7 @@ _presentButton(){
   });
 }
 
-_absentButton(){
+_absentButton(props){
   this.setState({
     absentStatus: this.state.absentStatus ? false : true,
     lateStatus:true,
@@ -66,7 +66,7 @@ _absentButton(){
   });
 }
 
-_lateButton(){
+_lateButton(props){
   this.setState({
     lateStatus: this.state.lateStatus ? false : true,
     absentStatus:true,
@@ -81,21 +81,21 @@ render(){
           <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}>
             <TouchableHighlight
               style={this.state.presentStatus ? styles.defaultButton : styles.presentIsChecked}
-              onPress={this._presentButton}
+              onPress={()=>this._presentButton(this.props)}
               >
               <Text style={this.state.presentStatus ? styles.colorOffStatus : styles.colorOnStatus}>Present</Text>
             </TouchableHighlight>
 
             <TouchableHighlight
               style={this.state.absentStatus ? styles.defaultButton : styles.absentIsChecked}
-              onPress={this._absentButton}
+              onPress={()=>this._absentButton(this.props)}
               >
               <Text style={this.state.absentStatus ? styles.colorOffStatus : styles.colorOnStatus}>Absent</Text>
             </TouchableHighlight>
 
             <TouchableHighlight
               style={this.state.lateStatus ? styles.defaultButton : styles.lateIsChecked}
-              onPress={this._lateButton}
+              onPress={()=>this._lateButton(this.props)}
               >
               <Text style={this.state.lateStatus ? styles.colorOffStatus : styles.colorOnStatus}>Late</Text>
             </TouchableHighlight>
@@ -106,7 +106,7 @@ render(){
               onPress={()=>this._submitData(this.props)}
               underlayColor={"#00a79d"}
               >
-              <Text style={{fontSize:18,color:"#535353",}}>Confirm</Text>
+              <Text style={{fontSize:18,color:"#535353"}}>Confirm</Text>
             </TouchableHighlight>
           </View>
           <Toast

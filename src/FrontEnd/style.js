@@ -8,7 +8,7 @@ const window = Dimensions.get('window');
 const styles = StyleSheet.create({
   containerMain:{
     flex: 1,
-    backgroundColor: '#535353',
+    backgroundColor: 'white',
     justifyContent: "center",
     alignItems:"center",
   },
@@ -16,28 +16,29 @@ const styles = StyleSheet.create({
   // 00a79d
   container: {
     flex: 1,
-    backgroundColor: '#535353',
+    backgroundColor: '#ffffff',
     justifyContent: "center",
   },
   HeadText: {
+    paddingTop:5,
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
-    fontSize: 30,
+    fontSize: 24,
     marginBottom: 60,
-    color:"white",
+    color:"#01b4df",
     fontWeight:"normal",
   },
   inputStyle:{
     height: 50 ,
-    borderColor: "#00a79d",
+    borderColor: "#01b4df",
     borderBottomWidth: 1,
     paddingLeft: 10,
     marginLeft:10,
     marginRight:10,
     marginTop:20,
     width:window.width-60,
-    color:"white",
+    color:"#01b4df",
   },
   inputRow:{
     flexDirection:"row",
@@ -52,11 +53,11 @@ const styles = StyleSheet.create({
   loginButton:{
     alignItems: "center",
     justifyContent: "center",
-    height: 110 ,
-    width:110,
-    borderRadius:55,
-    backgroundColor:"#535353",
-    borderWidth:4,
+    height: 60 ,
+    width:120,
+    borderRadius:5,
+    backgroundColor:"#01b4df",
+    borderWidth:2,
     borderColor:"#00a79d",
     margin:30,
 
@@ -64,11 +65,11 @@ const styles = StyleSheet.create({
   SignUpButton:{
     alignItems: "center",
     justifyContent: "center",
-    height: 110 ,
-    width:110,
-    borderRadius:55,
-    backgroundColor:"#535353",
-    borderWidth:4,
+    height: 60 ,
+    width:120,
+    borderRadius:5,
+    backgroundColor:"#01b4df",
+    borderWidth:2,
     borderColor:"#00a79d",
     margin:30,
 
@@ -328,7 +329,7 @@ const styles = StyleSheet.create({
       },
       borderBottomStyle:{
         borderWidth:1,
-        borderColor:"#00a79d",
+        borderColor:"#01b4df",
         marginTop:10,
         width:window.width-20,
         height:1,

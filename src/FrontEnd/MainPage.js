@@ -31,9 +31,7 @@ export default class MainPage extends PureComponent {
       last_name: '',
       students_array: [],
       modalVisible: false,
-
     };
-
 
    this.currentUserUid = FB.auth().currentUser.uid;
    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
@@ -42,14 +40,16 @@ export default class MainPage extends PureComponent {
    this._renderItem = this._renderItem.bind(this);
    this.listenForItems = this.listenForItems.bind(this);
    this._saveData = this._saveData.bind(this);
-   this._keyExtractor = this._keyExtractor.bind(this);
-
   }
 
 //navigation option
-static navigationOptions = {
-  title: "Student List",
-};
+  static navigationOptions =({navigation})=>({
+    title: navigation.state.params.className,
+    tabBarLabel: 'Student List',
+    gesturesEnabled:true,
+    headerMode: 'none',
+    headerTintColor: "#01b4df",
+  });
 
 //give students reference to the funtion
 componentDidMount() {
@@ -65,6 +65,8 @@ _renderItem({item}){
     </View>
     <MainButtons
       userID = {item.id}
+      userName = {item.name}
+      userSurName = {item.last_name}
     />
   </View>
   );
@@ -101,8 +103,6 @@ _saveData(){
     this.refs.toast.show('data is missing');
   }
 }
-
-_keyExtractor = (item)=> item.name;
 
   render() {
     return (
@@ -152,7 +152,7 @@ _keyExtractor = (item)=> item.name;
                 style={styles.flatListStyle}
                 data = {this.state.students_array}
                 renderItem = {this._renderItem}
-                keyExtractor={this._keyExtractor}
+                keyExtractor={item => item.name}
                 />
         <TouchableHighlight
             style={styles.addStudentButtonStyle}

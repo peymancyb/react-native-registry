@@ -107,9 +107,12 @@ static navigationOptions ={
   render() {
     return (
       <View style={styles.container}>
+        <View style={{justifyContent:"center" , alignItems:"center"}}>
+          <Image source={require("../pictures/logo_era.png")} style={{width:65, height:65}} />
+        </View>
         <Text style={styles.HeadText}>Registery</Text>
           <View style={styles.inputRow}>
-            <Entypo  name="users" size={20} color={"#00a79d"} style={styles.iconStyle} />
+            <Entypo  name="users" size={20} color={"#01b4df"} style={styles.iconStyle} />
             <TextInput
               autoFocus= {true}
               style = {styles.inputStyle}
@@ -120,11 +123,11 @@ static navigationOptions ={
               multiline={false}
               maxLength ={320}
               underlineColorAndroid={'transparent'}
-              placeholderTextColor={"white"}
+              placeholderTextColor={"#01b4df"}
             />
         </View>
         <View style={styles.inputRow}>
-          <Entypo  name="lock" size={20} color={"#00a79d"} style={styles.iconStyle}/>
+          <Entypo  name="lock" size={20} color={"#01b4df"} style={styles.iconStyle}/>
           <TextInput
             style = {styles.inputStyle}
             placeholder = {"Password"}
@@ -134,7 +137,7 @@ static navigationOptions ={
             multiline={false}
             secureTextEntry={true}
             underlineColorAndroid={'transparent'}
-            placeholderTextColor={"white"}
+            placeholderTextColor={"#01b4df"}
           />
         </View>
         <View style={styles.marginTopButtons}>
