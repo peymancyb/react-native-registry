@@ -1,4 +1,3 @@
-
 import {
   StyleSheet
 } from 'react-native';
@@ -229,12 +228,8 @@ const styles = StyleSheet.create({
     borderRadius:5,
   },
   studentContainer:{
-    backgroundColor:"white",
+    flexDirection:"row",
     marginTop: 10,
-    width:window.width-20,
-    borderWidth: 1,
-    borderColor: "#535353",
-    borderRadius:5,
   },
   dataBorder:{
       flex:1,
@@ -279,9 +274,6 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center",
         height:50,
-        borderTopWidth: 1,
-        borderColor: "grey",
-        borderBottomLeftRadius:4,
         backgroundColor:"#669801",
       },
       absentIsChecked:{
@@ -289,8 +281,6 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center",
         height:50,
-        borderTopWidth: 1,
-        borderColor: "grey",
         backgroundColor:"#cc0001",
       },
       lateIsChecked:{
@@ -298,9 +288,6 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center",
         height:50,
-        borderTopWidth: 1,
-        borderColor: "grey",
-        borderBottomRightRadius:4,
         backgroundColor:"#FF8C00",
       },
       // borderBottomRightRadius:4,
@@ -310,8 +297,6 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center",
         height:50,
-        borderTopWidth: 1,
-        borderColor: "grey",
         backgroundColor:"#ffffff",
       },
       colorOffStatus:{

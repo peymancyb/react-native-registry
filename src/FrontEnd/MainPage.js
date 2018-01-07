@@ -1,25 +1,49 @@
 import React ,{Component,PureComponent} from 'react';
-import {Text, View,TextInput, TouchableHighlight, FlatList, Modal,Button,Alert,CheckBox } from 'react-native';
+import {View,TextInput, TouchableHighlight, FlatList, Modal,Alert,CheckBox, TouchableOpacity } from 'react-native';
 import styles from './style';
 import {StackNavigator , TabNavigator} from 'react-navigation';
 import FB from '../BackEnd/firebase';
 import Register from './Register';
 import History from './History';
 import ListClasses from './Classes';
-
 import {fbDatabaseNodeName} from './Classes';
-import {Entypo} from '@expo/vector-icons';
+import {Entypo,Feather,MaterialIcons,EvilIcons} from '@expo/vector-icons';
+import {
+  Container,
+  Header,
+  Content,
+  List,
+  ListItem,
+  Text,
+  Left,
+  Body,
+  Right,
+  Icon,
+  Card,
+  CardItem,
+  Footer,
+  FooterTab,
+  Button,
+  Tab,
+  Tabs,
+  TabHeading,
+  Segment,
+  Fab,
+} from 'native-base';
+
+import {ModalStudent} from './commonComponents';
 // import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
-
 //import toast
-import Toast, {DURATION} from 'react-native-easy-toast';
+import { Toast } from 'native-base';
 import MainButtons from './mainButtons';
-
-
+import {student_pal_data} from './mainButtons';
 
 export var resetButtons= false;
 
-export default class MainPage extends PureComponent {
+export var buttonStyle , buttonState ;
+
+
+export default class MainPage extends Component {
     constructor(props){
     super(props);
     //solving timer error
@@ -30,26 +54,61 @@ export default class MainPage extends PureComponent {
       name: '',
       last_name: '',
       students_array: [],
-      modalVisible: false,
+      active: false,
+      modalView:false,
+      buttonStyleReset:true,
+      buttonResetActivity:false,
     };
 
-   this.currentUserUid = FB.auth().currentUser.uid;
-   this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
-
-
+   // this.currentUserUid = FB.auth().currentUser.uid;
+   // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
+   this.itemsRef = FB.database().ref('user_classes/'+"xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"First Class"+'/studet_list');
    this._renderItem = this._renderItem.bind(this);
    this.listenForItems = this.listenForItems.bind(this);
    this._saveData = this._saveData.bind(this);
+   this._sendData = this._sendData.bind(this);
+   this._resetButtons = this._resetButtons.bind(this);
+
   }
 
-//navigation option
-  static navigationOptions =({navigation})=>({
-    title: navigation.state.params.className,
-    tabBarLabel: 'Student List',
-    gesturesEnabled:true,
-    headerMode: 'none',
-    headerTintColor: "#01b4df",
+  _saveData(){
+    if(this.state.name != '' && this.state.last_name != ''){
+      this.itemsRef.push({ name: this.state.name, last_name: this.state.last_name});
+      let student_name = this.state.name +" "+this.state.last_name;
+      //have all application students in one place
+      FB.database().ref('all_students/'+student_name).set({
+        name: student_name
+      });
+      this.refs.toast.show('Student saved!');
+      this.setState({name: '',last_name:'', modalVisible: false});
+    }else{
+      Toast.show({
+              text: 'please insert student information!',
+              position: 'bottom',
+        });
+    }
+  }
+
+_sendData(){
+  console.log("send data");
+  FB.database().ref("test/").set({
+    data: student_pal_data
   });
+}
+
+
+_resetButtons(){
+  console.log("reset");
+  this.setState({
+    buttonStyleReset:true,
+    buttonResetActivity:false,
+  });
+  buttonStyle = this.state.buttonStyleReset;
+  buttonState = this.state.buttonResetActivity;
+  //array reset
+  // student_pal_data = [];
+}
+
 
 //give students reference to the funtion
 componentDidMount() {
@@ -58,19 +117,23 @@ componentDidMount() {
 
 _renderItem({item}){
   return(
-  <View style={styles.studentContainer}>
-    <View style={styles.dataBorder}>
-      <Text style={{fontSize:20,padding:10,color:"#00a79d"}}>{item.name}</Text>
-      <Text style={{fontSize:20,padding:10,color:"#00a79d"}}>{item.last_name}</Text>
-    </View>
-    <MainButtons
-      userID = {item.id}
-      userName = {item.name}
-      userSurName = {item.last_name}
-    />
-  </View>
+    <ListItem>
+      <Body>
+        <Body style={{justifyContent:"center",alignItems:"center"}}>
+          <Text>{item.name} {item.last_name}</Text>
+        </Body>
+          <MainButtons
+           userID = {item.id}
+           userName = {item.name}
+           userSurName = {item.last_name}
+           buttonStyleReset = {this.state.buttonStyleReset}
+           buttonResetActivity = {this.state.buttonResetActivity}
+         />
+      </Body>
+    </ListItem>
   );
 }
+
 
 // Fetch Students referance
 listenForItems(itemsRef) {
@@ -87,33 +150,27 @@ listenForItems(itemsRef) {
   });
 }
 
-
-
-_saveData(){
-  if(this.state.name != '' && this.state.last_name != ''){
-    this.itemsRef.push({ name: this.state.name, last_name: this.state.last_name});
-    let student_name = this.state.name +" "+this.state.last_name;
-    //have all application students in one place
-    FB.database().ref('all_students/'+student_name).set({
-      name: student_name
-    });
-    this.refs.toast.show('Student saved!');
-    this.setState({name: '',last_name:'', modalVisible: false});
-  }else{
-    this.refs.toast.show('data is missing');
-  }
-}
-
   render() {
     return (
+      <Container>
+        <Content>
+            <List>
+              <FlatList
+                  style={styles.flatListStyle}
+                  data = {this.state.students_array}
+                  renderItem = {this._renderItem}
+                  keyExtractor={item => item.name}
+                  />
+            </List>
+      </Content>
 
-      <View style={styles.containerMain}>
+      <View>
         <Modal
-            animationType="none"
-            transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={()=>this.setState({modalVisible: false})}
-          >
+          animationType="none"
+          transparent={true}
+          visible={this.state.modalView}
+          onRequestClose={()=>this.setState({modalVisible: false})}
+        >
         <View style={styles.inputcontainerModal}>
           <TextInput
             style = {styles.inputStyleModal}
@@ -133,36 +190,53 @@ _saveData(){
             />
 
             <View style={styles.marginTopButton}>
-            <TouchableHighlight
+            <TouchableOpacity
               style={styles.modalAddStudent}
               onPress={this._saveData}
               >
                   <Text style={styles.addStudentStyleModal}>Add Student</Text>
-             </TouchableHighlight>
-             <TouchableHighlight
+             </TouchableOpacity>
+             <TouchableOpacity
                style={styles.modalAddStudent}
-               onPress={()=>this.setState({modalVisible:false})}
+               onPress={()=>{this.setState({modalView: false})}}
                >
                    <Text style={styles.addStudentStyleModal}>Cancel</Text>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
            </View>
-        </Modal>
-            <FlatList
-                style={styles.flatListStyle}
-                data = {this.state.students_array}
-                renderItem = {this._renderItem}
-                keyExtractor={item => item.name}
-                />
-        <TouchableHighlight
-            style={styles.addStudentButtonStyle}
-            onPress={() => this.setState({modalVisible: true})}
+         </Modal>
+      </View>
+      <View style={{ flex: 1 }}>
+        <Fab
+          active={this.state.active}
+          direction="up"
+          containerStyle={{ }}
+          style={{ backgroundColor: '#5067FF' }}
+          position="bottomRight"
+          onPress={() => this.setState({ active: !this.state.active })}
           >
-            <Entypo name="add-to-list" color="white" size={35}/>
-        </TouchableHighlight>
-
-      <Toast ref="toast" position="center" defaultCloseDelay={1000}/>
-  </View>
+          <Entypo name="plus" color="white" size={22}/>
+          <Button
+            onPress={() => this.setState({ modalView: !this.state.modalView})}
+            style={{ backgroundColor: '#5067FF' }}
+            >
+            <Entypo name="add-to-list" color="white" size={22}/>
+          </Button>
+          <Button
+            style={{ backgroundColor: '#5067FF' }}
+            onPress={()=>this._sendData()}
+            >
+            <MaterialIcons name="check" color="white" size={22}/>
+          </Button>
+          <Button
+            style={{ backgroundColor: '#5067FF' }}
+            onPress={()=>this._resetButtons()}
+            >
+            <MaterialIcons name="refresh" color="white" size={22}/>
+          </Button>
+        </Fab>
+      </View>
+    </Container>
     );
   }
 }

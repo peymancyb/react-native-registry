@@ -14,9 +14,6 @@ import Register from './Register';
 import ListClasses from './Classes';
 import HomePage from './Main';
 
-
-import {MODAL_COMPONENT} from './common-components';
-
 import {Entypo} from '@expo/vector-icons';
 
 export default class Login extends Component {
