@@ -93,9 +93,13 @@ export default class MainPage extends Component {
 
 _sendData(){
   console.log("send data");
-  FB.database().ref("test/").set({
-    data: student_pal_data
-  });
+  for(let i=0 ; i< student_pal_data.length;i++){
+    console.log("student: "+student_pal_data[i].user_id);
+    FB.database().ref("test/"+student_pal_data[i].user_id).set({
+      status: student_pal_data[i]
+    });
+  }
+
   Toast.show({
           text: 'Data successfully added!',
           position: 'bottom',
@@ -210,7 +214,6 @@ listenForItems(itemsRef) {
                  </View>
                </Modal>
             </View>
-
       </Content>
         <Fab
           active={this.state.active}
