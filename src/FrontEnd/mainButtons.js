@@ -108,7 +108,7 @@ _lateButton(props){
 render(){
     return(
       <View style={{flex:1}}>
-          <View style={{flexDirection:"row",}}>
+          <View style={{flexDirection:"row"}}>
             <TouchableHighlight
               disabled={this.state.buttonStatus}
               style={this.state.presentStatus ? styles.defaultButton : styles.presentIsChecked}

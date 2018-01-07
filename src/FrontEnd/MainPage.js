@@ -29,12 +29,11 @@ import {
   TabHeading,
   Segment,
   Fab,
+  Toast,
 } from 'native-base';
 
 import {ModalStudent} from './commonComponents';
 // import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
-//import toast
-import { Toast } from 'native-base';
 import MainButtons from './mainButtons';
 import {student_pal_data} from './mainButtons';
 
@@ -79,7 +78,10 @@ export default class MainPage extends Component {
       FB.database().ref('all_students/'+student_name).set({
         name: student_name
       });
-      this.refs.toast.show('Student saved!');
+      Toast.show({
+              text: 'Student saved successfully!',
+              position: 'bottom',
+        });
       this.setState({name: '',last_name:'', modalVisible: false});
     }else{
       Toast.show({
@@ -94,6 +96,10 @@ _sendData(){
   FB.database().ref("test/").set({
     data: student_pal_data
   });
+  Toast.show({
+          text: 'Data successfully added!',
+          position: 'bottom',
+    });
 }
 
 
@@ -114,10 +120,10 @@ _resetButtons(){
 componentDidMount() {
   this.listenForItems(this.itemsRef);
 }
-
 _renderItem({item}){
   return(
-    <ListItem>
+    <ListItem
+      style={{borderBottomWidth:1,borderColor:"#5067FF"}}>
       <Body>
         <Body style={{justifyContent:"center",alignItems:"center"}}>
           <Text>{item.name} {item.last_name}</Text>
@@ -133,8 +139,6 @@ _renderItem({item}){
     </ListItem>
   );
 }
-
-
 // Fetch Students referance
 listenForItems(itemsRef) {
   itemsRef.on('value', (snap) => {
@@ -153,8 +157,9 @@ listenForItems(itemsRef) {
   render() {
     return (
       <Container>
-        <Content>
-            <List>
+        <Content style={{marginBottom:40}}>
+            <List
+              >
               <FlatList
                   style={styles.flatListStyle}
                   data = {this.state.students_array}
@@ -162,51 +167,51 @@ listenForItems(itemsRef) {
                   keyExtractor={item => item.name}
                   />
             </List>
-      </Content>
 
-      <View>
-        <Modal
-          animationType="none"
-          transparent={true}
-          visible={this.state.modalView}
-          onRequestClose={()=>this.setState({modalVisible: false})}
-        >
-        <View style={styles.inputcontainerModal}>
-          <TextInput
-            style = {styles.inputStyleModal}
-            onChangeText={(Name) => this.setState({name: Name})}
-            value={this.state.name}
-            placeholder="Name"
-            placeholderTextColor={"white"}
-            underlineColorAndroid={'transparent'}
-            />
-          <TextInput
-            style = {styles.inputStyleModal}
-            onChangeText={(lastName) => this.setState({last_name: lastName})}
-            value={this.state.last_name}
-            placeholder="Surname"
-            placeholderTextColor={"white"}
-            underlineColorAndroid={'transparent'}
-            />
-
-            <View style={styles.marginTopButton}>
-            <TouchableOpacity
-              style={styles.modalAddStudent}
-              onPress={this._saveData}
+            <View>
+              <Modal
+                animationType="none"
+                transparent={true}
+                visible={this.state.modalView}
+                onRequestClose={()=>this.setState({modalVisible: false})}
               >
-                  <Text style={styles.addStudentStyleModal}>Add Student</Text>
-             </TouchableOpacity>
-             <TouchableOpacity
-               style={styles.modalAddStudent}
-               onPress={()=>{this.setState({modalView: false})}}
-               >
-                   <Text style={styles.addStudentStyleModal}>Cancel</Text>
-              </TouchableOpacity>
+              <View style={styles.inputcontainerModal}>
+                <TextInput
+                  style = {styles.inputStyleModal}
+                  onChangeText={(Name) => this.setState({name: Name})}
+                  value={this.state.name}
+                  placeholder="Name"
+                  placeholderTextColor={"white"}
+                  underlineColorAndroid={'transparent'}
+                  />
+                <TextInput
+                  style = {styles.inputStyleModal}
+                  onChangeText={(lastName) => this.setState({last_name: lastName})}
+                  value={this.state.last_name}
+                  placeholder="Surname"
+                  placeholderTextColor={"white"}
+                  underlineColorAndroid={'transparent'}
+                  />
+
+                  <View style={styles.marginTopButton}>
+                  <TouchableOpacity
+                    style={styles.modalAddStudent}
+                    onPress={this._saveData}
+                    >
+                        <Text style={styles.addStudentStyleModal}>Add Student</Text>
+                   </TouchableOpacity>
+                   <TouchableOpacity
+                     style={styles.modalAddStudent}
+                     onPress={()=>{this.setState({modalView: false})}}
+                     >
+                         <Text style={styles.addStudentStyleModal}>Cancel</Text>
+                    </TouchableOpacity>
+                  </View>
+                 </View>
+               </Modal>
             </View>
-           </View>
-         </Modal>
-      </View>
-      <View style={{ flex: 1 }}>
+
+      </Content>
         <Fab
           active={this.state.active}
           direction="up"
@@ -235,7 +240,6 @@ listenForItems(itemsRef) {
             <MaterialIcons name="refresh" color="white" size={22}/>
           </Button>
         </Fab>
-      </View>
     </Container>
     );
   }
