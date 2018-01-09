@@ -5,8 +5,9 @@ import {StackNavigator , TabNavigator , DrawerNavigator} from 'react-navigation'
 import FB from '../BackEnd/firebase';
 import Register from './Register';
 import HomePage from './Main';
-
-import Toast, {DURATION} from 'react-native-easy-toast'
+import {
+  Toast
+} from 'native-base';
 import {Entypo} from '@expo/vector-icons';
 
 
@@ -89,10 +90,16 @@ _saveClassData(){
   if(this.state.name != ''&& this.state.descreption != ''){
     let className = this.state.name +" "+this.state.descreption;
     this._ClassitemsRef.child(className).set({class_name:this.state.name , descreption: this.state.descreption});
-    this.refs.toast.show('Class saved!');
+    Toast.show({
+      text:"Class saved!",
+      position:"bottom",
+    });
     this.setState({name: '',descreption:'', modalVisible: false});
   }else{
-    this.refs.toast.show('data is missing');
+    Toast.show({
+      text:"Data is missing!",
+      position:"bottom",
+    });
   }
 }
 
@@ -147,8 +154,6 @@ _saveClassData(){
             renderItem = {this._renderClassItem}
             keyExtractor={item => item.name}
           />
-
-
           <View style={{backgroundColor:"transparent",marginBottom:50}}>
             <TouchableHighlight
               style={styles.addStudentButtonStyle}
@@ -157,9 +162,6 @@ _saveClassData(){
                   <Entypo name="add-to-list" color="white" size={35} />
             </TouchableHighlight>
           </View>
-
-
-      <Toast ref="toast" position="bottom"  defaultClosedelay={1000}/>
       </View>
     );
   }
