@@ -85,7 +85,3 @@ export class ModalStudent extends Component{
     );
   }
 }
-
-// onPress={()=>this.setState({modalVisible:false})}
-
-// onPress={this.props.modalView = false ()=>this.setState({modalVisible:false})}
