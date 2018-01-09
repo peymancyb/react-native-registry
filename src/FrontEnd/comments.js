@@ -1,11 +1,12 @@
 import React ,{Component} from 'react';
-import {Text,View,TextInput, TouchableHighligh,FlatList } from 'react-native';
+import {Text,View,TextInput, TouchableOpacity,FlatList } from 'react-native';
 import styles from './style';
 import FB from '../BackEnd/firebase';
 import {StackNavigator , TabNavigator} from 'react-navigation';
 import Register from './Register';
 import {fbDatabaseNodeName} from './Classes';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {MaterialCommunityIcons,EvilIcons} from '@expo/vector-icons';
+import { Hoshi } from 'react-native-textinput-effects';
 import {
   Container,
   Header,
@@ -21,6 +22,7 @@ import {
   Footer,
   FooterTab,
   Button,
+  SwipeRow,
 } from 'native-base';
 
 
@@ -29,6 +31,7 @@ export default class Comments extends Component {
     super(props);
     this.state = {
       students_array: [],
+      text:''
     };
 
     // this.currentUserUid = FB.auth().currentUser.uid;
@@ -41,6 +44,7 @@ export default class Comments extends Component {
   componentDidMount() {
     this.listenForItems(this.itemsRef);
   }
+
   // Fetch Students referance
   listenForItems(itemsRef) {
     itemsRef.on('value', (snap) => {
@@ -58,16 +62,26 @@ export default class Comments extends Component {
 
   _renderItem({item}){
       return(
-        <CardItem>
-           <Body>
-             <Text
-               onPress={()=>console.log(`you have clicked on ${item.name}`)}
-               style={{justifyContent:"center",alignItems:"center"}}>{item.name} {item.last_name}</Text>
-           </Body>
-           <Right>
-             <Icon name="arrow-forward" />
-           </Right>
-         </CardItem>
+          <CardItem
+            style={{borderColor:"transparent",borderWidth:0}}>
+              <Body
+                style={{flexDirection:"row",alignItems:"center",justifyContent:"center",paddingLeft:10}}>
+                   <Hoshi
+                      style={{width:"80%",backgroundColor:"white"}}
+                      label={item.name+" "+item.last_name}
+                      labelStyle={{ color: '#5067FF' }}
+                      borderColor={'#5067FF'}
+                      inputStyle={{ color: '#5067FF' }}
+                      onChangeText={(txt)=>this.setState({text:txt})}
+                    />
+
+                   <TouchableOpacity
+                      style={{flex:1,alignItems:"center",justifyContent:"center",borderWidth:1,borderColor:"#5067FF",paddingBottom:0,marginTop:5}}
+                      onPress={() => console.log(item.name+" "+this.state.text)}>
+                     <EvilIcons name="comment" size={32} color={"#5067FF"} />
+                   </TouchableOpacity>
+                 </Body>
+           </CardItem>
       );
     }
   render() {
