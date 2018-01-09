@@ -27,6 +27,8 @@ import {
   TabHeading,
   Segment,
   Fab,
+  CardItem,
+  Card,
   Toast,
 } from 'native-base';
 import {StudentModal , BottomFab, PalButtons, ParentClass,ModalStudent} from './commonComponents';
@@ -59,10 +61,10 @@ componentDidMount() {
 }
 _renderItem({item}){
   return(
-    <ListItem
+    <CardItem
       style={{borderColor:"transparent"}}>
-      <Body>
-        <View style={{flexDirection:"row",alignItems:"center",borderLeftWidth:5,borderColor:"#5067FF"}}>
+      <Body style={{borderColor:"#5067FF",borderBottomWidth:0.6}}>
+        <View style={{flexDirection:"row",alignItems:"center",borderLeftWidth:5,paddingLeft:8,borderColor:"#5067FF"}}>
           <Text>{item.name} {item.last_name}</Text>
         </View>
        <Body>
@@ -73,7 +75,7 @@ _renderItem({item}){
            />
         </Body>
       </Body>
-    </ListItem>
+    </CardItem>
   );
 }
 // Fetch Students referance
@@ -94,16 +96,16 @@ listenForItems(itemsRef) {
     return (
       <Container>
         <Content >
-            <List>
+            <Card>
               <FlatList
                   style={styles.flatListStyle}
                   data = {this.state.students_array}
                   renderItem = {this._renderItem}
                   keyExtractor={item => item.name}
                   />
-            </List>
+            </Card>
       </Content>
-      <BottomFab />
+      <BottomFab  />
     </Container>
     );
   }

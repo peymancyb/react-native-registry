@@ -44,6 +44,9 @@ export class StudentModal extends Component{
         last_name: '',
         modalView: props.modalView,
     };
+    // this.currentUserUid = FB.auth().currentUser.uid;
+    // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
+    this.itemsRef = FB.database().ref('user_classes/'+"xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"First Class"+'/studet_list');
     this.state = this.defaultState;
     this._saveData = this._saveData.bind(this);
     this._passState = this._passState.bind(this);
@@ -280,7 +283,6 @@ export class BottomFab extends Component{
     this._sendData = this._sendData.bind(this);
     this._handleState = this._handleState.bind(this);
   }
-
 
   _handleState(childCall){
     if(childCall == "undefined"){

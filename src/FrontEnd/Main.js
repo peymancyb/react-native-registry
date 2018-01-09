@@ -5,6 +5,8 @@ import FB from '../BackEnd/firebase';
 import {StackNavigator , TabNavigator} from 'react-navigation';
 import MainPage from './MainPage';
 import History from './History';
+import Marks from './Marks';
+import Comments from './comments';
 import {fbDatabaseNodeName} from './Classes';
 import {MaterialCommunityIcons,Feather,FontAwesome} from '@expo/vector-icons';
 import {
@@ -52,12 +54,12 @@ export default class HomePage extends Component{
             <Tab
               heading={ <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><MaterialCommunityIcons name="numeric" size={22} color={"white"}/></TabHeading>}
               >
-              <History />
+              <Marks />
             </Tab>
             <Tab
               heading={ <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><FontAwesome name="commenting-o" size={22} color={"white"}/></TabHeading>}
               >
-              <History />
+              <Comments />
             </Tab>
             <Tab
               heading={ <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><MaterialCommunityIcons name="history" size={22} color={"white"}/></TabHeading>}
