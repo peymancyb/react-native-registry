@@ -28,27 +28,39 @@ import {
 console.disableYellowBox = true;
 
 export default class HomePage extends Component{
+  static navigationOptions = {
+     headerStyle: {
+        backgroundColor:"#5067FF",
+     },
+  }
+
   render(){
+
     return(
       <Container>
-        <Tabs initialPage={0}>
+        <Tabs
+          tabBarPosition={"bottom"}
+          tabBarUnderlineStyle={{backgroundColor:"white"}}
+          initialPage={0}
+          locked={true}
+          >
             <Tab
-              heading={ <TabHeading><Feather name="user-check" size={22}/></TabHeading>}
+              heading={ <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><Feather name="user-check" size={22} color={"white"}/></TabHeading>}
               >
               <MainPage />
             </Tab>
             <Tab
-              heading={ <TabHeading><MaterialCommunityIcons name="numeric" size={22}/></TabHeading>}
+              heading={ <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><MaterialCommunityIcons name="numeric" size={22} color={"white"}/></TabHeading>}
               >
               <History />
             </Tab>
             <Tab
-              heading={ <TabHeading><FontAwesome name="commenting-o" size={22}/></TabHeading>}
+              heading={ <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><FontAwesome name="commenting-o" size={22} color={"white"}/></TabHeading>}
               >
               <History />
             </Tab>
             <Tab
-              heading={ <TabHeading><MaterialCommunityIcons name="history" size={22}/></TabHeading>}
+              heading={ <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><MaterialCommunityIcons name="history" size={22} color={"white"}/></TabHeading>}
               >
               <History />
             </Tab>

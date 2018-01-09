@@ -16,7 +16,11 @@ const App = StackNavigator({
     // Login : { screen: Login },
     // Register : { screen: Register },
     // ListClasses : {screen: ListClasses},
-    HomePage : { screen: HomePage },
+    HomePage : {screen: HomePage},
+},
+{
+//empty
+
 });
 //this page is all fine
 export default ()=>

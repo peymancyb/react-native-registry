@@ -1,25 +1,60 @@
 import React ,{Component,PureComponent} from 'react';
-import {View,Text,TextInput, TouchableHighlight, FlatList, Modal,Alert,CheckBox } from 'react-native';
+import {View,TextInput, TouchableHighlight,TouchableOpacity, FlatList, Modal,Alert,CheckBox } from 'react-native';
 import styles from './style';
 import FB from '../BackEnd/firebase';
-// import Toast, {DURATION} from 'react-native-easy-toast';
-import { Toast } from 'native-base';
+import {Entypo,Feather,MaterialIcons,EvilIcons} from '@expo/vector-icons';
+import {fbDatabaseNodeName} from './Classes';
+import Register from './Register';
+import History from './History';
+import ListClasses from './Classes';
+import {
+  Container,
+  Header,
+  Content,
+  List,
+  ListItem,
+  Text,
+  Left,
+  Body,
+  Right,
+  Icon,
+  Card,
+  CardItem,
+  Footer,
+  FooterTab,
+  Button,
+  Tab,
+  Tabs,
+  TabHeading,
+  Segment,
+  Fab,
+  Toast,
+  SwipeRow,
+} from 'native-base';
+import {ModalStudent} from './commonComponents';
 
-//modal component
-export class ModalStudent extends Component{
+// All components
+//==============================================================================
+//this is the Modal view component
+export class StudentModal extends Component{
   constructor(props){
     super(props);
-    this.state={
-      name: '',
-      last_name: '',
-      modalVisible: false,
-    }
-    // this.currentUserUid = FB.auth().currentUser.uid;
-    // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
-    this.itemsRef = FB.database().ref('user_classes/'+"xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"First Class"+'/studet_list');
+    this.defaultState={
+        name: '',
+        last_name: '',
+        modalView: props.modalView,
+    };
+    this.state = this.defaultState;
     this._saveData = this._saveData.bind(this);
+    this._passState = this._passState.bind(this);
   }
 
+  _passState(){
+    this.props.handleState(false);
+    this.setState({
+      modalView: false,
+    });
+  }
   _saveData(){
     if(this.state.name != '' && this.state.last_name != ''){
       this.itemsRef.push({ name: this.state.name, last_name: this.state.last_name});
@@ -28,64 +63,283 @@ export class ModalStudent extends Component{
       FB.database().ref('all_students/'+student_name).set({
         name: student_name
       });
-      this.refs.toast.show('Student saved!');
+      Toast.show({
+              text: 'Student saved successfully!',
+              position: 'bottom',
+        });
       this.setState({name: '',last_name:'', modalVisible: false});
     }else{
       Toast.show({
               text: 'please insert student information!',
               position: 'bottom',
-            });
+        });
     }
   }
-
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      modalView: nextProps.modalView
+    });
+  }
   render(){
     return(
-      <View>
-        <Modal
-          animationType="none"
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={()=>this.setState({modalVisible: false})}
-        >
-        <View style={styles.inputcontainerModal}>
-          <TextInput
-            style = {styles.inputStyleModal}
-            onChangeText={(Name) => this.setState({name: Name})}
-            value={this.state.name}
-            placeholder="Name"
-            placeholderTextColor={"white"}
-            underlineColorAndroid={'transparent'}
-            />
-          <TextInput
-            style = {styles.inputStyleModal}
-            onChangeText={(lastName) => this.setState({last_name: lastName})}
-            value={this.state.last_name}
-            placeholder="Surname"
-            placeholderTextColor={"white"}
-            underlineColorAndroid={'transparent'}
-            />
+          <View>
+            <Modal
+              animationType="none"
+              transparent={true}
+              visible={this.state.modalView}
+              onRequestClose={()=>this.setState({modalVisible: false})}
+            >
+            <View style={styles.inputcontainerModal}>
+              <TextInput
+                style = {styles.inputStyleModal}
+                onChangeText={(Name) => this.setState({name: Name})}
+                value={this.state.name}
+                placeholder="Name"
+                placeholderTextColor={"white"}
+                underlineColorAndroid={'transparent'}
+                />
+              <TextInput
+                style = {styles.inputStyleModal}
+                onChangeText={(lastName) => this.setState({last_name: lastName})}
+                value={this.state.last_name}
+                placeholder="Surname"
+                placeholderTextColor={"white"}
+                underlineColorAndroid={'transparent'}
+                />
 
-            <View style={styles.marginTopButton}>
-            <TouchableHighlight
-              style={styles.modalAddStudent}
-              onPress={this._saveData}
-              >
-                  <Text style={styles.addStudentStyleModal}>Add Student</Text>
-             </TouchableHighlight>
-             <TouchableHighlight
-               style={styles.modalAddStudent}
-               onPress={()=>{this.setState({modalVisible: false})}}
-               >
-                   <Text style={styles.addStudentStyleModal}>Cancel</Text>
-              </TouchableHighlight>
-            </View>
-           </View>
-         </Modal>
-      </View>
+                <View style={styles.marginTopButton}>
+                <TouchableOpacity
+                  style={styles.modalAddStudent}
+                  onPress={this._saveData}
+                  >
+                      <Text style={styles.addStudentStyleModal}>Add Student</Text>
+                 </TouchableOpacity>
+                 <TouchableOpacity
+                   style={styles.modalAddStudent}
+                   onPress={()=>this._passState()}
+                   >
+                       <Text style={styles.addStudentStyleModal}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
+               </View>
+             </Modal>
+          </View>
     );
   }
 }
 
-// onPress={()=>this.setState({modalVisible:false})}
+//==============================================================================
+//present absent late buttons
+export var tempArr = [];
+export class PalButtons extends Component{
+  constructor(props){
+    super(props);
+    //setting default state
+    this.defaultState = {
+        presentStatus: true,
+        absentStatus: true,
+        lateStatus: true,
+        status: null,
+        buttonStatus:false,
+        student_palStatus:[],
+       };
+    this.state = this.defaultState;
+    // this.currentUserUid = FB.auth().currentUser.uid;
+    this._presentButton = this._presentButton.bind(this);
+    this._absentButton = this._absentButton.bind(this);
+    this._lateButton = this._lateButton.bind(this);
+    this._storeData = this._storeData.bind(this);
+    this._resetItem = this._resetItem.bind(this);
+  }
 
-// onPress={this.props.modalView = false ()=>this.setState({modalVisible:false})}
+_resetItem(){
+  this.setState(this.defaultState);
+}
+
+_storeData(currentData){
+  tempArr.push(currentData);
+}
+
+_presentButton(props){
+  this.setState({
+    presentStatus: this.state.presentStatus ? false : true,
+    absentStatus:true,
+    lateStatus:true,
+    buttonStatus:true,
+    status: (this.state.status == null || this.state.status == "Absent" || this.state.status == "Late" ) ? "Present" : null,
+  });
+  //data's object
+  let itemObj = {
+    user_id:props.userID,
+    user_name:props.userName,
+    user_lastName:props.userSurName,
+    user_status:"Present",
+  };
+  //calling _storeData function
+  if(this.state.presentStatus == true){
+    this._storeData(itemObj);
+  }
+}
+
+_absentButton(props){
+  this.setState({
+    absentStatus: this.state.absentStatus ? false : true,
+    lateStatus:true,
+    presentStatus:true,
+    buttonStatus:true,
+    status: (this.state.status == null || this.state.status == "Late" || this.state.status == "Present") ? "Absent" : null,
+  });
+  //data's object
+  let itemObj ={
+    user_id:props.userID,
+    user_name:props.userName,
+    user_lastName:props.userSurName,
+    user_status:"Absent",
+  };
+  //calling _storeData function
+  if(this.state.absentStatus == true){
+    this._storeData(itemObj);
+  }
+}
+_lateButton(props){
+  this.setState({
+    lateStatus: this.state.lateStatus ? false : true,
+    absentStatus:true,
+    presentStatus:true,
+    buttonStatus:true,
+    status: (this.state.status == null || this.state.status == "Absent" || this.state.status == "Present") ? "Late" : null,
+  });
+  //data's object
+  let itemObj ={
+    user_id:props.userID,
+    user_name:props.userName,
+    user_lastName:props.userSurName,
+    user_status:"Late",
+  };
+  //calling _storeData function
+  if(this.state.lateStatus == true){
+    this._storeData(itemObj);
+  }
+}
+render(){
+    return(
+        <SwipeRow
+        leftOpenValue={75}
+        disableLeftSwipe={true}
+        style={{borderColor:"#5067FF"}}
+        left={
+              <Button
+                style={{ backgroundColor: '#5067FF' }}
+                onPress={() => this._resetItem()}>
+                <MaterialIcons name="refresh" color="white" size={22}/>
+              </Button>
+            }
+        body={
+          <View style={{flexDirection:"row"}}>
+              <TouchableOpacity
+                disabled={this.state.buttonStatus}
+                style={this.state.presentStatus ? styles.defaultButton : styles.presentIsChecked}
+                onPress={()=>this._presentButton(this.props)}
+                >
+                <Text style={this.state.presentStatus ? styles.colorOffStatus : styles.colorOnStatus}>Present</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                disabled={this.state.buttonStatus}
+                style={this.state.absentStatus ? styles.defaultButton : styles.absentIsChecked}
+                onPress={()=>this._absentButton(this.props)}
+                >
+                <Text style={this.state.absentStatus ? styles.colorOffStatus : styles.colorOnStatus}>Absent</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                disabled={this.state.buttonStatus}
+                style={this.state.lateStatus ? styles.defaultButton : styles.lateIsChecked}
+                onPress={()=>this._lateButton(this.props)}
+                >
+                <Text style={this.state.lateStatus ? styles.colorOffStatus : styles.colorOnStatus}>Late</Text>
+              </TouchableOpacity>
+          </View>
+            }
+      />
+    );
+  }
+}
+
+//==============================================================================
+
+//==============================================================================
+//all the components inside of the FAB in bottom
+//this component need to access to the array
+export class BottomFab extends Component{
+  constructor(props){
+    super(props);
+    this.state={
+      active: false,
+      modalView:false,
+
+    };
+    this._sendData = this._sendData.bind(this);
+    this._handleState = this._handleState.bind(this);
+  }
+
+
+  _handleState(childCall){
+    if(childCall == "undefined"){
+      this.setState({
+        modalView: !this.state.modalView
+      });
+    }else{
+      this.setState({
+        modalView: childCall
+      });
+    }
+  }
+  _sendData(){
+    if(tempArr.length!=0){
+      for(let i=0 ; i< tempArr.length;i++){
+        FB.database().ref("test/"+tempArr[i].user_id).set({
+          status: tempArr[i]
+        });
+      }
+      Toast.show({
+              text: 'Data successfully added!',
+              position: 'bottom',
+        });
+    }else{
+      Toast.show({
+        text:"can not send empty data!",
+        position: "bottom",
+      });
+    }
+  }
+
+
+  render(){
+    return(
+      <View>
+        <StudentModal modalView={this.state.modalView} handleState={this._handleState}/>
+        <Fab
+          active={this.state.active}
+          direction="up"
+          containerStyle={{ }}
+          style={{ backgroundColor: '#5067FF' }}
+          position="bottomRight"
+          onPress={() => this.setState({ active: !this.state.active })}
+          >
+          <Entypo name="plus" color="white" size={22}/>
+          <Button
+            onPress={() => this._handleState()}
+            style={{ backgroundColor: '#5067FF' }}
+            >
+            <Entypo name="add-to-list" color="white" size={22}/>
+          </Button>
+          <Button
+            style={{ backgroundColor: '#5067FF' }}
+            onPress={()=>this._sendData()}
+            >
+            <MaterialIcons name="check" color="white" size={22}/>
+          </Button>
+        </Fab>
+      </View>
+    );
+  }
+}
