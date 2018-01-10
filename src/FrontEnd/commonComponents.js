@@ -135,7 +135,6 @@ export class StudentModal extends Component{
     );
   }
 }
-
 //==============================================================================
 //present absent late buttons
 export class PalButtons extends Component{

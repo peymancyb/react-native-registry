@@ -45,8 +45,8 @@ export default class HomePage extends Component{
         <Tabs
           tabBarPosition={"bottom"}
           tabBarUnderlineStyle={{backgroundColor:"white"}}
-          initialPage={0}
           locked={true}
+          initialPage={0}
           >
             <Tab
               heading={
@@ -69,6 +69,7 @@ export default class HomePage extends Component{
               >
               <History />
             </Tab>
+
         </Tabs>
       </Container>
     );

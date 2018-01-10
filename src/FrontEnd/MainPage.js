@@ -56,7 +56,7 @@ export default class MainPage extends Component {
       active: false,
       modalView:false,
       numberOfStudents:null,
-      loading: false,
+      loading: true,
     };
    // this.currentUserUid = FB.auth().currentUser.uid;
    // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
@@ -91,7 +91,6 @@ _renderItem({item}){
 };
 // Fetch Students referance
 listenForItems(itemsRef) {
-  this.setState({loading:true});
   itemsRef.on('value', (snap) => {
       var items = [];
       snap.forEach((child) => {
