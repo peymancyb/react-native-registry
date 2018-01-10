@@ -155,12 +155,9 @@ export class PalButtons extends Component{
     this._absentButton = this._absentButton.bind(this);
     this._lateButton = this._lateButton.bind(this);
     this._storeData = this._storeData.bind(this);
-    this._resetItem = this._resetItem.bind(this);
   }
 
-_resetItem(){
-  this.setState(this.defaultState);
-}
+
 
 _storeData(currentData){
   tempArr.push(currentData);
@@ -229,19 +226,7 @@ _lateButton(props){
 }
 render(){
     return(
-        <SwipeRow
-        leftOpenValue={75}
-        disableLeftSwipe={true}
-        style={{borderColor:"#5067FF"}}
-        left={
-              <Button
-                style={{ backgroundColor: '#5067FF' }}
-                onPress={() => this._resetItem()}>
-                <MaterialIcons name="refresh" color="white" size={22}/>
-              </Button>
-            }
-        body={
-          <View style={{flexDirection:"row"}}>
+          <View style={{flexDirection:"row",borderColor:"#5067FF",borderBottomWidth:0.6}}>
               <TouchableHighlight
                 disabled={this.state.buttonStatus}
                 style={this.state.presentStatus ? styles.defaultButton : styles.presentIsChecked}
@@ -264,8 +249,6 @@ render(){
                 <Text style={this.state.lateStatus ? styles.colorOffStatus : styles.colorOnStatus}>Late</Text>
               </TouchableHighlight>
           </View>
-            }
-      />
     );
   }
 }

@@ -97,20 +97,20 @@ _sendMark(item){
         <CardItem
           style={{borderColor:"transparent",borderWidth:0}}>
           <Body
-            style={{borderColor:"transparent",borderWidth:0}}>
+            style={{justifyContent:"center",borderColor:"transparent",borderWidth:0}}>
             <SwipeRow
-              style={{borderColor:"#5067FF",borderBottomWidth:0.5}}
+              style={{justifyContent:"center",borderColor:"#5067FF",borderBottomWidth:0.5}}
                disableLeftSwipe={true}
                leftOpenValue={75}
                left={
                  <Button
-                    backgroundColor={"#5067FF"}
+                    success
                     onPress={() => this._sendMark(item)}>
                    <SimpleLineIcons name="check" size={22} color={"white"} />
                  </Button>
                }
                body={
-                 <View style={{flexDirection:"row"}}>
+                 <View style={{justifyContent:"center",flexDirection:"row"}}>
                    <Body>
                      <View style={{flexDirection:"row",borderLeftWidth:5,borderColor:"#5067FF",padding:10}}>
                        <Text>{item.name} {item.last_name}</Text>
@@ -124,7 +124,7 @@ _sendMark(item){
                          onChangeText = {(mark)=>this._chandeText(mark)}
                          underlineColorAndroid={"transparent"}
                          placeholder={"Mark"}
-                         style={{textAlign:'center',height:35,width:150,borderWidth:1,borderColor:"#5067FF",borderRadius:20}}/>
+                         style={{textAlign:'center',height:45,width:120,borderWidth:1,borderColor:"#5067FF",borderRadius:4}}/>
                    </Right>
                  </View>
                }

@@ -98,8 +98,8 @@ export default class Comments extends Component {
                 style={{flexDirection:"row",alignItems:"center",justifyContent:"center",paddingLeft:10}}>
                    <Hoshi
                       clearTextOnFocus={true}
-                      style={{width:"80%",backgroundColor:"white"}}
-                      label={item.name+" "+item.last_name}
+                      style={{flex:3,width:"80%",backgroundColor:"white"}}
+                      label={`${item.name+" "+item.last_name+" :"}`}
                       labelStyle={{ color: '#5067FF' }}
                       borderColor={'#5067FF'}
                       inputStyle={{ color: '#5067FF' }}
@@ -107,7 +107,7 @@ export default class Comments extends Component {
                     />
 
                    <TouchableOpacity
-                      style={{flex:1,alignItems:"center",backgroundColor:"#5067FF",justifyContent:"center",borderWidth:1,borderColor:"#5067FF",paddingBottom:0,marginTop:5}}
+                      style={{flex:1,height:50,alignItems:"center",backgroundColor:"#5067FF",justifyContent:"center",borderWidth:1,borderColor:"#5067FF",paddingBottom:0,marginTop:5,borderRadius:4}}
                       onPress={() => this._sendComment(item)}>
                      <EvilIcons name="comment" size={32} color={"white"} />
                    </TouchableOpacity>

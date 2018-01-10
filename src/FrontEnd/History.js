@@ -1,11 +1,11 @@
 import React ,{Component} from 'react';
-import {Text,View,TextInput, TouchableHighligh,FlatList } from 'react-native';
+import {Text,View,TextInput, TouchableHighligh,FlatList ,TouchableOpacity} from 'react-native';
 import styles from './style';
 import FB from '../BackEnd/firebase';
 import {StackNavigator , TabNavigator} from 'react-navigation';
 import Register from './Register';
 import {fbDatabaseNodeName} from './Classes';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {MaterialCommunityIcons,Ionicons} from '@expo/vector-icons';
 import {
   Container,
   Header,
@@ -22,7 +22,7 @@ import {
   FooterTab,
   Button,
 } from 'native-base';
-
+import ProfileHistory from './profileHistory';
 
 
 export default class History extends Component {
@@ -42,10 +42,16 @@ export default class History extends Component {
     this.itemsRef = FB.database().ref('user_classes/'+"xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"First Class"+'/studet_list');
     this._renderItem = this._renderItem.bind(this);
     this.listenForItems = this.listenForItems.bind(this);
+    this._navigateToProfile = this._navigateToProfile.bind(this);
   }
 
   componentDidMount() {
     this.listenForItems(this.itemsRef);
+  }
+  _navigateToProfile(item){
+    const { navigate } = this.props.navigation;
+    console.log("navigate me");
+    navigate("profile");
   }
   // Fetch Students referance
   listenForItems(itemsRef) {
@@ -64,18 +70,24 @@ export default class History extends Component {
 
   _renderItem({item}){
       return(
-        <CardItem>
-           <Body>
-             <Text
-               onPress={()=>console.log(`you have clicked on ${item.name}`)}
-               style={{justifyContent:"center",alignItems:"center"}}>{item.name} {item.last_name}</Text>
-           </Body>
-           <Right>
-             <Icon name="arrow-forward" />
-           </Right>
+        <TouchableOpacity
+          onPress={()=> this._navigateToProfile({item})}>
+        <CardItem style={{height:50}}>
+            <Body
+              style={{justifyContent:"center"}}>
+              <Text
+                style={{justifyContent:"center",alignItems:"center"}}>{item.name} {item.last_name}</Text>
+            </Body>
+
+          <Right>
+            <Ionicons name="md-arrow-round-forward" size={22} color={"#5067FF"} />
+          </Right>
          </CardItem>
+       </TouchableOpacity>
+
       );
     }
+
   render() {
     return (
       <Container>

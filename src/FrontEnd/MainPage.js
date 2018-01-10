@@ -78,18 +78,20 @@ _renderItem({item}){
   return(
     <CardItem
       style={{borderColor:"transparent"}}>
-      <Body style={{borderColor:"#5067FF",borderBottomWidth:0.6}}>
-        <View style={{flexDirection:"row",alignItems:"center",borderLeftWidth:5,paddingLeft:8,borderColor:"#5067FF"}}>
-          <Text>{item.name} {item.last_name}</Text>
-        </View>
-       <Body>
-            <PalButtons
-             userID = {item.id}
-             userName = {item.name}
-             userSurName = {item.last_name}
-           />
+
+        <Body
+          style={{borderColor:"#5067FF",borderBottomWidth:0.6}}>
+          <View style={{flexDirection:"row",alignItems:"center",borderLeftWidth:5,paddingLeft:8,borderColor:"#5067FF"}}>
+            <Text>{item.name} {item.last_name}</Text>
+          </View>
+         <Body>
+              <PalButtons
+               userID = {item.id}
+               userName = {item.name}
+               userSurName = {item.last_name}
+             />
+          </Body>
         </Body>
-      </Body>
     </CardItem>
   );
 };
