@@ -9,6 +9,7 @@ import Marks from './Marks';
 import Comments from './comments';
 import {fbDatabaseNodeName} from './Classes';
 import {MaterialCommunityIcons,Feather,FontAwesome} from '@expo/vector-icons';
+import {TabNavigator} from 'react-navigation';
 import {
   Container,
   Header,
