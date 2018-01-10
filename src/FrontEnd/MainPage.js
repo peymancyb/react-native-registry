@@ -1,5 +1,15 @@
 import React ,{Component,PureComponent} from 'react';
-import {View,TextInput, TouchableHighlight, FlatList, Modal,Alert,CheckBox, TouchableOpacity } from 'react-native';
+import {
+  View,
+  TextInput,
+  TouchableHighlight,
+  ActivityIndicator,
+  FlatList,
+  Modal,
+  Alert,
+  CheckBox,
+  TouchableOpacity,
+} from 'react-native';
 import styles from './style';
 import {StackNavigator , TabNavigator} from 'react-navigation';
 import FB from '../BackEnd/firebase';
@@ -42,17 +52,18 @@ export default class MainPage extends Component {
     'Setting a timer'
     ];
     this.state = {
-      tempArr:[],
-      tempState:'',
       students_array: [],
       active: false,
       modalView:false,
+      numberOfStudents:null,
+      loading: false,
     };
    // this.currentUserUid = FB.auth().currentUser.uid;
    // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
    this.itemsRef = FB.database().ref('user_classes/'+"xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"First Class"+'/studet_list');
    this._renderItem = this._renderItem.bind(this);
    this.listenForItems = this.listenForItems.bind(this);
+   this._resetFlatlist = this._resetFlatlist.bind(this);
   }
 
 //give students reference to the funtion
@@ -77,21 +88,45 @@ _renderItem({item}){
       </Body>
     </CardItem>
   );
-}
+};
 // Fetch Students referance
 listenForItems(itemsRef) {
+  this.setState({loading:true});
   itemsRef.on('value', (snap) => {
-    var items = [];
-    snap.forEach((child) => {
-      items.push({
-        id: child.key,
-        name: child.val().name,
-        last_name: child.val().last_name,
+      var items = [];
+      snap.forEach((child) => {
+        items.push({
+          id: child.key,
+          name: child.val().name,
+          last_name: child.val().last_name,
+        });
+      });
+      this.setState({
+        students_array: items ,
+        numberOfStudents: items.length,
+        loading:false,
       });
     });
-    this.setState({students_array: items });
+};
+
+_renderFooter = ()=>{
+  if(!this.state.loading) return null;
+  return(
+    <View>
+      <ActivityIndicator animating color={"#5067FF"} size={"small"}/>
+    </View>
+  );
+};
+
+_resetFlatlist(){
+  this.setState({
+    students_array: [] ,
+    numberOfStudents: null,
+    loading:true,
   });
-}
+  setTimeout(()=>this.listenForItems(this.itemsRef),100);
+};
+
   render() {
     return (
       <Container>
@@ -102,10 +137,11 @@ listenForItems(itemsRef) {
                   data = {this.state.students_array}
                   renderItem = {this._renderItem}
                   keyExtractor={item => item.name}
+                  ListFooterComponent={this._renderFooter}
                   />
             </Card>
       </Content>
-      <BottomFab  />
+      <BottomFab numberOfStudents={this.state.numberOfStudents} resetFlatlist={this._resetFlatlist} />
     </Container>
     );
   }

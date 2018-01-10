@@ -31,6 +31,8 @@ console.disableYellowBox = true;
 
 export default class HomePage extends Component{
   static navigationOptions = {
+    title:"Registery",
+    headerTintColor:"white",
      headerStyle: {
         backgroundColor:"#5067FF",
      },
@@ -47,7 +49,8 @@ export default class HomePage extends Component{
           locked={true}
           >
             <Tab
-              heading={ <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><Feather name="user-check" size={22} color={"white"}/></TabHeading>}
+              heading={
+              <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><Feather name="user-check" size={22} color={"white"}/></TabHeading>}
               >
               <MainPage />
             </Tab>

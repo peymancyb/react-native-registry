@@ -33,6 +33,11 @@ import {
 } from 'native-base';
 import {ModalStudent} from './commonComponents';
 
+
+export var tempArr = [];
+let date = new Date();
+let currentDate = `${date.getFullYear() +"/"+(date.getMonth() + 1)+"/"+ date.getDate()}`;
+
 // All components
 //==============================================================================
 //this is the Modal view component
@@ -133,7 +138,6 @@ export class StudentModal extends Component{
 
 //==============================================================================
 //present absent late buttons
-export var tempArr = [];
 export class PalButtons extends Component{
   constructor(props){
     super(props);
@@ -272,19 +276,31 @@ render(){
 //==============================================================================
 //all the components inside of the FAB in bottom
 //this component need to access to the array
+
 export class BottomFab extends Component{
   constructor(props){
     super(props);
     this.state={
       active: false,
       modalView:false,
-
     };
     this._sendData = this._sendData.bind(this);
     this._handleState = this._handleState.bind(this);
+    this._resetItems = this._resetItems.bind(this);
   }
 
-  _handleState(childCall){
+
+componentDidMount(){
+  // this._sendData(this.props);
+}
+
+
+_resetItems(props){
+  tempArr=[];
+  props.resetFlatlist();
+}
+
+_handleState(childCall){
     if(childCall == "undefined"){
       this.setState({
         modalView: !this.state.modalView
@@ -292,13 +308,13 @@ export class BottomFab extends Component{
     }else{
       this.setState({
         modalView: childCall
-      });
-    }
+    });
   }
-  _sendData(){
-    if(tempArr.length!=0){
+}
+  _sendData(props){
+    if(tempArr.length!=0 && tempArr.length == props.numberOfStudents){
       for(let i=0 ; i< tempArr.length;i++){
-        FB.database().ref("test/"+tempArr[i].user_id).set({
+        FB.database().ref("test/"+currentDate+"/"+tempArr[i].user_id).set({
           status: tempArr[i]
         });
       }
@@ -307,13 +323,20 @@ export class BottomFab extends Component{
               position: 'bottom',
         });
     }else{
-      Toast.show({
-        text:"can not send empty data!",
-        position: "bottom",
-      });
+      if(tempArr.length == 0){
+        Toast.show({
+          text:"you did not select yet!",
+          position: "bottom",
+        });
+      }else{
+        Toast.show({
+          text:`${props.numberOfStudents-tempArr.length} students left!`,
+          position: "bottom",
+        });
+      }
+
     }
   }
-
 
   render(){
     return(
@@ -336,9 +359,15 @@ export class BottomFab extends Component{
           </Button>
           <Button
             style={{ backgroundColor: '#5067FF' }}
-            onPress={()=>this._sendData()}
+            onPress={()=>this._sendData(this.props)}
             >
             <MaterialIcons name="check" color="white" size={22}/>
+          </Button>
+          <Button
+            style={{ backgroundColor: '#5067FF' }}
+            onPress={()=>this._resetItems(this.props)}
+            >
+            <MaterialIcons name="refresh" color="white" size={22}/>
           </Button>
         </Fab>
       </View>
