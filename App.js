@@ -23,7 +23,10 @@ const App = StackNavigator({
 
 });
 //this page is all fine
-export default ()=>
+export default () => {
+  return(
   <Root>
    <App />
- </Root>;
+ </Root>
+);
+}

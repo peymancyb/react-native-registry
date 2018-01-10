@@ -45,6 +45,10 @@ import {StudentModal , BottomFab, PalButtons, ParentClass,ModalStudent} from './
 
 //present absent component
 export default class MainPage extends Component {
+  static navigationOptions = {
+    tabBarIcon: () => (
+      <Feather name="user-check" size={22} color={"white"}/>    ),
+  };
     constructor(props){
     super(props);
     //solving timer error

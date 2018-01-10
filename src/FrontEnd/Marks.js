@@ -31,6 +31,11 @@ let currentDate = `${date.getFullYear() +"/"+(date.getMonth() + 1)+"/"+ date.get
 
 
 export default class Marks extends Component {
+  static navigationOptions = {
+    tabBarIcon: () => (
+      <MaterialCommunityIcons name="numeric" size={22} color={"white"}/>
+    )
+  };
     constructor(props){
     super(props);
     this.state = {
@@ -113,14 +118,13 @@ _sendMark(item){
                    </Body>
                    <Right>
                        <TextInput
-                         keyboardType={"numeric"}
                          clearTextOnFocus={true}
                          autoCorrect={false}
                          editable = {true}
                          onChangeText = {(mark)=>this._chandeText(mark)}
                          underlineColorAndroid={"transparent"}
                          placeholder={"Mark"}
-                         style={{textAlign:'center',height:35,width:100,borderWidth:1,borderColor:"#5067FF",borderRadius:20}}/>
+                         style={{textAlign:'center',height:35,width:150,borderWidth:1,borderColor:"#5067FF",borderRadius:20}}/>
                    </Right>
                  </View>
                }

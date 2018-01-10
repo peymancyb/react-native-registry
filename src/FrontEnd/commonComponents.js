@@ -242,27 +242,27 @@ render(){
             }
         body={
           <View style={{flexDirection:"row"}}>
-              <TouchableOpacity
+              <TouchableHighlight
                 disabled={this.state.buttonStatus}
                 style={this.state.presentStatus ? styles.defaultButton : styles.presentIsChecked}
                 onPress={()=>this._presentButton(this.props)}
                 >
                 <Text style={this.state.presentStatus ? styles.colorOffStatus : styles.colorOnStatus}>Present</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+              </TouchableHighlight>
+              <TouchableHighlight
                 disabled={this.state.buttonStatus}
                 style={this.state.absentStatus ? styles.defaultButton : styles.absentIsChecked}
                 onPress={()=>this._absentButton(this.props)}
                 >
                 <Text style={this.state.absentStatus ? styles.colorOffStatus : styles.colorOnStatus}>Absent</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+              </TouchableHighlight>
+              <TouchableHighlight
                 disabled={this.state.buttonStatus}
                 style={this.state.lateStatus ? styles.defaultButton : styles.lateIsChecked}
                 onPress={()=>this._lateButton(this.props)}
                 >
                 <Text style={this.state.lateStatus ? styles.colorOffStatus : styles.colorOnStatus}>Late</Text>
-              </TouchableOpacity>
+              </TouchableHighlight>
           </View>
             }
       />

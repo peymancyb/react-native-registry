@@ -5,7 +5,7 @@ import FB from '../BackEnd/firebase';
 import {StackNavigator , TabNavigator} from 'react-navigation';
 import Register from './Register';
 import {fbDatabaseNodeName} from './Classes';
-import {MaterialCommunityIcons,EvilIcons} from '@expo/vector-icons';
+import {MaterialCommunityIcons,EvilIcons,FontAwesome} from '@expo/vector-icons';
 import { Hoshi } from 'react-native-textinput-effects';
 import {
   Container,
@@ -32,6 +32,11 @@ let currentDate = `${date.getFullYear() +"/"+(date.getMonth() + 1)+"/"+ date.get
 
 
 export default class Comments extends Component {
+  static navigationOptions = {
+    tabBarIcon: () => (
+      <FontAwesome name="commenting-o" size={22} color={"white"}/>
+    ),
+  };
     constructor(props){
     super(props);
     this.state = {
@@ -66,8 +71,6 @@ export default class Comments extends Component {
       this.setState({students_array: items });
     });
   }
-
-
   _sendComment(item){
     if(this.state.Comment === null || this.state.Comment === ''){
       Toast.show({
@@ -87,8 +90,6 @@ export default class Comments extends Component {
      });
    }
   };
-
-
   _renderItem({item}){
       return(
           <CardItem

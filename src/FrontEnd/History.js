@@ -26,6 +26,11 @@ import {
 
 
 export default class History extends Component {
+  static navigationOptions = {
+    tabBarIcon: () => (
+      <MaterialCommunityIcons name="history" size={22} color={"white"}/>
+    )
+  };
     constructor(props){
     super(props);
     this.state = {
