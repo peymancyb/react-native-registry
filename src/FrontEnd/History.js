@@ -25,6 +25,9 @@ import {
 import ProfileHistory from './profileHistory';
 
 
+
+export var CurrentUser = '';
+
 export default class History extends Component {
   static navigationOptions = {
     tabBarIcon: () => (
@@ -50,7 +53,8 @@ export default class History extends Component {
   }
   _navigateToProfile(item){
     const { navigate } = this.props.navigation;
-    console.log("navigate me");
+    CurrentUser = item.user_id;
+    console.log("CurrentUser: "+CurrentUser);
     navigate("profile");
   }
   // Fetch Students referance
@@ -59,7 +63,7 @@ export default class History extends Component {
       var items = [];
       snap.forEach((child) => {
         items.push({
-          id: child.key,
+          user_id: child.key,
           name: child.val().name,
           last_name: child.val().last_name,
         });
@@ -71,7 +75,7 @@ export default class History extends Component {
   _renderItem({item}){
       return(
         <TouchableOpacity
-          onPress={()=> this._navigateToProfile({item})}>
+          onPress={()=> this._navigateToProfile(item)}>
         <CardItem style={{height:50}}>
             <Body
               style={{justifyContent:"center"}}>

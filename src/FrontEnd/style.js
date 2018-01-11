@@ -184,13 +184,13 @@ const styles = StyleSheet.create({
     fontSize:18,
   },
   inputcontainerModal:{
-    backgroundColor:"#5fa0b6",
+    backgroundColor:"#5067FF",
     alignItems:"center",
     justifyContent:"center",
     marginTop:window.height-(window.height/1.5),
   },
   inputStyleModal:{
-    color:"black",
+    color:"white",
     height: 50 ,
     borderColor: "white",
     borderWidth:1,
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     color:"white",
   },
   modalAddStudent:{
-    backgroundColor:"#64cdc8",
+    backgroundColor:"#00BFFF",
     alignItems:"center",
     justifyContent:"center",
     width:window.width-100,
@@ -319,6 +319,73 @@ const styles = StyleSheet.create({
         width:window.width-20,
         height:1,
       },
+
+//==========================================
+
+      //standard style
+
+      //standard colors
+      whiteColor:{
+        color:"white",
+      },
+      presentColor:{
+        color:"#669801",
+      },
+      absentColor:{
+        color:"#cc0001",
+      },
+      lateColor:{
+        color:"#FF8C00",
+      },
+      //================
+      box:{
+        height:40,
+        width:60,
+        justifyContent:"center",
+        alignItems:"center",
+      },
+      presentBox:{
+        height:40,
+        width:60,
+        backgroundColor:"#669801",
+        justifyContent:"center",
+        alignItems:"center",
+      },
+      absentBox:{
+        height:40,
+        width:60,
+        backgroundColor:"#cc0001",
+        justifyContent:"center",
+        alignItems:"center",
+      },
+      lateBox:{
+        height:40,
+        width:60,
+        backgroundColor:"#FF8C00",
+        justifyContent:"center",
+        alignItems:"center",
+      },
+      MarkBox:{
+        height:40,
+        width:60,
+        backgroundColor:"#088da5",
+        justifyContent:"center",
+        alignItems:"center",
+      },
+      rowOne:{
+        flexDirection:"row",
+        marginLeft:"5%",
+        marginRight:"5%",
+        marginTop:20,
+      },
+      rowTwo:{
+        flexDirection:"row",
+        marginLeft:"5%",
+        marginRight:"5%",
+        marginTop:10,
+      },
+//==========================================
+
 });
 
 

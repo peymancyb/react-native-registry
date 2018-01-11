@@ -71,47 +71,66 @@ console.disableYellowBox = true;
 });
 
 
-const TabNavigatorScreens = StackNavigator({
+const HomePage = StackNavigator({
   main:{
     screen:MainTabs,
     navigationOptions:{
-      header:null,
+      title:"Registery",
+      headerTintColor:"white",
+      headerTitleStyle: {
+         textAlign: 'center',
+         alignSelf: 'center',
+       },
+      headerStyle: {
+         backgroundColor:"#5067FF",
+      },
     },
   },
   profile:{
     screen:ProfileHistory,
     navigationOptions:{
-      header:null,
+      title:"history",
+      headerTintColor:"white",
+      headerTitleStyle: {
+         textAlign: 'center',
+         alignSelf: 'center',
+       },
+      headerStyle: {
+         backgroundColor:"#5067FF",
+      },
     },
-
   },
 },{
-  header:null,
+
+
+
 });
 
+
+export default HomePage;
 
 
 // export default HomePage;
 //
-export default class HomePage extends Component{
-  static navigationOptions = {
-    title:"Registery",
-    headerTintColor:"white",
-     headerTitleStyle: {
-        textAlign: 'center',
-        alignSelf: 'center',
-      },
-     headerStyle: {
-        backgroundColor:"#5067FF",
-     },
-  };
-
-  render(){
-    return(
-      <TabNavigatorScreens/>
-    );
-  }
-} ;
+// export default class HomePage extends Component{
+//   static navigationOptions = {
+//     title:"Registery",
+//     headerTintColor:"white",
+//      headerTitleStyle: {
+//         textAlign: 'center',
+//         alignSelf: 'center',
+//       },
+//      headerStyle: {
+//         backgroundColor:"#5067FF",
+//      },
+//   };
+//
+//   render(){
+//     return(
+//       <TabNavigatorScreens/>
+//     );
+//   }
+// } ;
 
 //
 // <Container>

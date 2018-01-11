@@ -31,16 +31,20 @@ import {
   Toast,
   SwipeRow,
 } from 'native-base';
-import {ModalStudent} from './commonComponents';
 
 
+
+
+
+//==============================================================================
 export var tempArr = [];
 let date = new Date();
-let currentDate = `${date.getFullYear() +"/"+(date.getMonth() + 1)+"/"+ date.getDate()}`;
-
-// All components
+let dateString = `${date.getFullYear() +"-"+(date.getMonth() + 1)+"-"+ date.getDate()}`;
+let currentDate = dateString.toString();
+// console.log(typeof currentDate);
 //==============================================================================
-//this is the Modal view component
+
+//==============================================================================
 export class StudentModal extends Component{
   constructor(props){
     super(props);
@@ -56,7 +60,6 @@ export class StudentModal extends Component{
     this._saveData = this._saveData.bind(this);
     this._passState = this._passState.bind(this);
   }
-
   _passState(){
     this.props.handleState(false);
     this.setState({
@@ -90,8 +93,8 @@ export class StudentModal extends Component{
   }
   render(){
     return(
-          <View>
             <Modal
+              style={{flex:1}}
               animationType="none"
               transparent={true}
               visible={this.state.modalView}
@@ -130,13 +133,12 @@ export class StudentModal extends Component{
                   </TouchableOpacity>
                 </View>
                </View>
-             </Modal>
-          </View>
+           </Modal>
     );
   }
 }
+
 //==============================================================================
-//present absent late buttons
 export class PalButtons extends Component{
   constructor(props){
     super(props);
@@ -296,7 +298,7 @@ _handleState(childCall){
   _sendData(props){
     if(tempArr.length!=0 && tempArr.length == props.numberOfStudents){
       for(let i=0 ; i< tempArr.length;i++){
-        FB.database().ref("test/"+currentDate+"/"+tempArr[i].user_id).set({
+        FB.database().ref("test/"+tempArr[i].user_id+"/"+currentDate).set({
           status: tempArr[i]
         });
       }

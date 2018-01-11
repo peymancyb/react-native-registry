@@ -26,9 +26,10 @@ import {
 } from 'native-base';
 
 
-let date = new Date();
-let currentDate = `${date.getFullYear() +"/"+(date.getMonth() + 1)+"/"+ date.getDate()}`;
 
+let date = new Date();
+let dateString = `${date.getFullYear() +"-"+(date.getMonth() + 1)+"-"+ date.getDate()}`;
+let currentDate = dateString.toString();
 
 export default class Marks extends Component {
   static navigationOptions = {
@@ -83,7 +84,7 @@ _sendMark(item){
      text:"Mark has been set!",
      position:"bottom",
    });
-   FB.database().ref("test/"+currentDate+"/"+item.user_id+"/status/Mark").set({
+   FB.database().ref("test/"+item.user_id+"/"+currentDate+"/status/").update({
        Mark: this.state.Mark
      });
    this.setState({

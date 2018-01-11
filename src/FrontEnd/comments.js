@@ -28,8 +28,8 @@ import {
 
 
 let date = new Date();
-let currentDate = `${date.getFullYear() +"/"+(date.getMonth() + 1)+"/"+ date.getDate()}`;
-
+let dateString = `${date.getFullYear() +"-"+(date.getMonth() + 1)+"-"+ date.getDate()}`;
+let currentDate = dateString.toString();
 
 export default class Comments extends Component {
   static navigationOptions = {
@@ -82,7 +82,7 @@ export default class Comments extends Component {
        text:"Comment has been set!",
        position:"bottom",
      });
-     FB.database().ref("test/"+currentDate+"/"+item.user_id+"/status/Comment").set({
+     FB.database().ref("test/"+item.user_id+"/"+currentDate+"/status/").update({
          Comment: this.state.Comment
        });
      this.setState({

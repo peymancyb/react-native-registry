@@ -86,7 +86,7 @@ _renderItem({item}){
           </View>
          <Body>
               <PalButtons
-               userID = {item.id}
+               userID = {item.user_id}
                userName = {item.name}
                userSurName = {item.last_name}
              />
@@ -101,7 +101,7 @@ listenForItems(itemsRef) {
       var items = [];
       snap.forEach((child) => {
         items.push({
-          id: child.key,
+          user_id: child.key,
           name: child.val().name,
           last_name: child.val().last_name,
         });
