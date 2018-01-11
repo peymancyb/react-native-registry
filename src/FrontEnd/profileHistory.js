@@ -27,6 +27,7 @@ import {EvilIcons} from '@expo/vector-icons';
 
 
 function DetailRow(props){
+  //remember to add mark
   return(
     <Body>
       <Body
@@ -37,11 +38,8 @@ function DetailRow(props){
         <Body style={styles.absentBox}>
           <Text style={styles.whiteColor}>Absent</Text>
         </Body>
-        <Body style={styles.lateBox}>
+        <Right style={styles.lateBox}>
           <Text style={styles.whiteColor}>Late</Text>
-        </Body>
-        <Right style={styles.MarkBox}>
-          <Text style={styles.whiteColor}>Mark</Text>
         </Right>
       </Body>
       <Body style={styles.rowTwo}>
@@ -55,14 +53,9 @@ function DetailRow(props){
               {props.absent}
           </Text>
         </Body>
-        <Body style={styles.box}>
+        <Right style={styles.box}>
           <Text style={styles.absentColor}>
               {props.absent}
-          </Text>
-        </Body>
-        <Right style={styles.box}>
-          <Text style={styles.lateColor}>
-              {props.late}
           </Text>
         </Right>
       </Body>
@@ -85,18 +78,50 @@ export default class ProfileHistory extends Component{
       historyArray:[],
     };
     this._showFullHistory = this._showFullHistory.bind(this);
-    // this.itemsRef = FB.database().ref('test/'+CurrentUser+"/");
-    this.itemsRef = FB.database().ref('test/'+"-KzuES-mZ7dYu6_F6yDi"+"/");
+    this.itemsRef = FB.database().ref('test/'+CurrentUser+"/");
+    // this.itemsRef = FB.database().ref('test/'+"-KzuES-mZ7dYu6_F6yDi"+"/");
     this._listenForItem = this._listenForItem.bind(this);
     this._renderHistory = this._renderHistory.bind(this);
-
+    this._checkForStatus = this._checkForStatus.bind(this);
   }
+
+
+
 
 componentDidMount(){
   this._listenForItem(this.itemsRef);
+  this._checkForStatus(this.itemsRef);
 }
+
+_checkForStatus(itemsRef){
+  console.log("love");
+  return itemsRef.limitToLast(1).on('value',(snap)=>{
+    snap.forEach((child)=>{
+      if (child.hasChild("total_present")) {
+        let newValue = child.val().total_present;
+        console.log(newValue);
+        this.setState({
+          presentNumber:newValue,
+        });
+      }
+      if (child.hasChild("total_absent")) {
+        let newValue = child.val().total_absent;
+        this.setState({
+          absentNumber:newValue,
+        });
+      }
+      if (child.hasChild("total_late")) {
+        let newValue = child.val().total_late;
+        this.setState({
+          lateNumber:newValue,
+        });
+      }
+    });
+  });
+}
+
 _listenForItem(itemsRef){
-  itemsRef.on('value', (snap)=>{
+  itemsRef.limitToFirst(1).on('value', (snap)=>{
     var items = [];
     snap.forEach((child)=>{
       items.push({
@@ -109,6 +134,7 @@ _listenForItem(itemsRef){
         Mark: child.val().status.Mark,
       });
     });
+
     console.log(items);
     this.setState({
       historyArray: items,
@@ -139,7 +165,6 @@ _renderHistory({item}){
 
 _showFullHistory(itemsRef){
   return(
-
         <Card>
           <FlatList
             style={styles.flatListStyle}

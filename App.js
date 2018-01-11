@@ -24,9 +24,9 @@ const App = StackNavigator({
         header:null,
       },
     },
-    History:{
-      screen:ProfileHistory,
-    },
+    // History:{
+    //   screen:ProfileHistory,
+    // },
 },
 {
 //empty

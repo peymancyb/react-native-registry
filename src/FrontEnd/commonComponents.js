@@ -301,6 +301,61 @@ _handleState(childCall){
         FB.database().ref("test/"+tempArr[i].user_id+"/"+currentDate).set({
           status: tempArr[i]
         });
+//==============================================================================
+        if(tempArr[i].user_status=="Present"){
+          FB.database().ref("test/"+tempArr[i].user_id+"/total/").once('value',(snap)=>{
+            if (!snap.hasChild("total_present")) {
+              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+                    total_present: 1
+                  });
+            }else{
+              snap = snap.val();
+              let prev_val = snap.total_present;
+              console.log(prev_val);
+              let update = prev_val+1;
+              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+                    total_present: update
+                  });
+                }
+          });
+        }
+//==============================================================================
+        if(tempArr[i].user_status=="Absent"){
+          FB.database().ref("test/"+tempArr[i].user_id+"/total/").once('value',(snap)=>{
+            if (!snap.hasChild("total_absent")) {
+              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+                    total_absent: 1
+                  });
+            }else{
+              snap = snap.val();
+              let prev_val = snap.total_absent;
+              console.log(prev_val);
+              let update = prev_val+1;
+              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+                    total_absent: update
+                  });
+                }
+          });
+        }
+//==============================================================================
+        if(tempArr[i].user_status=="Late"){
+          FB.database().ref("test/"+tempArr[i].user_id+"/total/").once('value',(snap)=>{
+            if (!snap.hasChild("total_late")) {
+              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+                    total_late: 1
+                  });
+            }else{
+              snap = snap.val();
+              let prev_val = snap.total_late;
+              console.log(prev_val);
+              let update = prev_val+1;
+              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+                    total_late: update
+                  });
+                }
+          });
+        }
+//==============================================================================
       }
       Toast.show({
               text: 'Data successfully added!',
@@ -318,7 +373,6 @@ _handleState(childCall){
           position: "bottom",
         });
       }
-
     }
   }
 
