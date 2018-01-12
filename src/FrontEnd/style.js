@@ -5,14 +5,126 @@ const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  containerMain:{
-    flex: 1,
-    backgroundColor: 'white',
-    justifyContent: "center",
+  BackgroundColor:{
+    backgroundColor:'#e7f0f9',
+  },
+  FabBackground:{
+    backgroundColor:"#0f6abc",
+  },
+  flexOne:{
+    flex:1,
+  },
+  center:{
+    justifyContent:"center",
     alignItems:"center",
   },
-  //535353
-  // 00a79d
+  justifyContentCenter:{
+    justifyContent:"center",
+  },
+  marginFromTop:{
+    marginTop:window.height/5,
+  },
+  flexDirectionRow:{
+    flexDirection:"row",
+  },
+  cardItemStyle:{
+    marginTop:5,
+    marginBottom:5,
+    width:"98%",
+    marginLeft:"2%",
+    borderBottomWidth:0.4,
+    borderColor:"#0f6abc",
+  },
+  ClassLeftItemStyle:{
+    flex:2,
+    flexDirection:"column",
+    justifyContent:"flex-start",
+    alignItems:"flex-start",
+  },
+  ClassLeftStyleText:{
+    marginTop:8,
+    fontSize:12,
+    fontWeight:"100",
+  },
+  MainPageViewStyle:{
+    flexDirection:"row",
+    alignItems:"center",
+    borderLeftWidth:5,
+    paddingLeft:8,
+    borderColor:"#0f6abc",
+  },
+  MainPageBodyStyle:{
+    borderColor:"#0f6abc",
+    borderBottomWidth:0.6,
+  },
+  transparentBorderColor:{
+    borderColor:"transparent",
+  },
+  MarkTextInputStyle:{
+    textAlign:'center',
+    height:45,
+    width:120,
+    borderWidth:1,
+    borderColor:"#0f6abc",
+    borderRadius:4,
+    color:"#0f6abc",
+  },
+  MarkViewStyle:{
+    flexDirection:"row",
+    borderLeftWidth:5,
+    borderColor:"#0f6abc",
+    padding:10,
+  },
+  MarkItemView:{
+    flexDirection:"row",
+    justifyContent:"center",
+  },
+  MarkCardItemStyle:{
+    borderColor:"transparent",
+    borderWidth:0,
+  },
+  MarkBodyItemStyle:{
+    justifyContent:"center",
+    borderColor:"transparent",
+    borderWidth:0,
+  },
+  MarkSwipeRow:{
+    justifyContent:"center",
+    borderColor:"#0f6abc",
+    borderBottomWidth:0.5,
+  },
+  CommentsBody:{
+    alignItems:"center",
+    justifyContent:"center",
+    paddingLeft:10,
+  },
+  HoshiStyle:{
+    flex:3,
+    width:"80%",
+    backgroundColor:"white",
+  },
+  commentStyleInput:{
+    flex:1,
+    height:50,
+    alignItems:"center",
+    backgroundColor:"#0f6abc",
+    justifyContent:"center",
+    borderWidth:1,
+    borderColor:"#0f6abc",
+    paddingBottom:0,
+    marginTop:5,
+    borderRadius:4,
+  },
+  HistoryHeight:{
+    height:50,
+  },
+  ProfileHistoryStyle:{
+    borderLeftWidth:5,
+    paddingLeft:8,
+    borderColor:"#0f6abc",
+    borderBottomWidth:0.6,
+  },
+  //====
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
@@ -23,21 +135,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
-    fontSize: 24,
+    fontSize: 18,
     marginBottom: 60,
-    color:"#01b4df",
+    color:"#0f6abc",
     fontWeight:"normal",
   },
   inputStyle:{
     height: 50 ,
-    borderColor: "#01b4df",
+    borderColor: "#0f6abc",
     borderBottomWidth: 1,
     paddingLeft: 10,
     marginLeft:10,
     marginRight:10,
-    marginTop:20,
+    marginTop:40,
     width:window.width-60,
-    color:"#01b4df",
+    color:"#0f6abc",
   },
   inputRow:{
     flexDirection:"row",
@@ -53,25 +165,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 60 ,
-    width:120,
+    width:window.width/1.5,
     borderRadius:5,
-    backgroundColor:"#01b4df",
-    borderWidth:2,
-    borderColor:"#00a79d",
-    margin:30,
-
+    backgroundColor:"#0f6abc",
+    margin:10,
   },
   SignUpButton:{
     alignItems: "center",
     justifyContent: "center",
     height: 60 ,
-    width:120,
+    width:window.width/1.5,
     borderRadius:5,
-    backgroundColor:"#01b4df",
-    borderWidth:2,
-    borderColor:"#00a79d",
-    margin:30,
-
+    backgroundColor:"#0f6abc",
+    margin:10,
   },
   signInCenterText:{
     color:"white",
@@ -87,7 +193,6 @@ const styles = StyleSheet.create({
     alignItems:"center",
     justifyContent:"center",
     marginTop: 60,
-    flexDirection:"row",
   },
   singUpButton:{
     justifyContent: "center",
@@ -184,7 +289,7 @@ const styles = StyleSheet.create({
     fontSize:18,
   },
   inputcontainerModal:{
-    backgroundColor:"#5067FF",
+    backgroundColor:"#0f6abc",
     alignItems:"center",
     justifyContent:"center",
     marginTop:window.height-(window.height/1.5),

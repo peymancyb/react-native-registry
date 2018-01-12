@@ -3,6 +3,12 @@ import {Text, View,TextInput, TouchableHighlight,Button } from 'react-native';
 import styles from './style';
 import FB from '../BackEnd/firebase';
 import HomePage from './Main';
+import {
+  Container,
+  Content,
+  Body,
+  Header,
+}from 'native-base';
 import {Entypo} from '@expo/vector-icons';
 
 
@@ -30,61 +36,65 @@ _onSignup(){
 }
   static navigationOptions = {
     title:"Registeration",
-    headerTintColor: "#01b4df",
+    headerTintColor: "#0f6abc",
     headerStyle:{
-      backgroundColor:"white",
+      backgroundColor:"#e7f0f9",
+      borderBottomWidth:0,
     },
-    headerTintColor: "#01b4df",
+    headerTintColor: "#0f6abc",
     gesturesEnabled: false,
 
   };
   render(){
     return(
-      <View style={styles.container}>
-        <View style={styles.inputRow}>
-          <Entypo  name="user" size={20} color={"#01b4df"} style={styles.iconStyle}/>
-          <TextInput
-            value = {this.state.UserEmail}
-            onChangeText = {(Email) => this.setState({UserEmail: Email})}
-            autoFocus = {true}
-            style = {styles.inputStyle}
-            placeholder = {'Email'}
-            autoCapitalize= {"none"}
-            multiline={false}
-            maxLength ={320}
-            underlineColorAndroid={'transparent'}
-            placeholderTextColor={"#01b4df"}
 
-          />
-        </View>
-        <View style={styles.inputRow}>
-          <Entypo  name="lock" size={20} color={"#01b4df"} style={styles.iconStyle}/>
-          <TextInput
-            onChangeText = {(Password) => this.setState({UserPassword: Password})}
-            value = {this.state.UserPassword}
-            style = {styles.inputStyle}
-            placeholder = {'Password'}
-            autoCapitalize= {"none"}
-            multiline={false}
-            maxLength ={320}
-            underlineColorAndroid={'transparent'}
-            placeholderTextColor={"#01b4df"}
-            secureTextEntry={true}
-          />
-        </View>
+      <Container style={styles.BackgroundColor}>
+        <Content>
+          <Body style={styles.marginFromTop}>
+              <View style={styles.inputRow}>
+                <Entypo  name="user" size={20} color={"#0f6abc"} style={styles.iconStyle}/>
+                <TextInput
+                  value = {this.state.UserEmail}
+                  onChangeText = {(Email) => this.setState({UserEmail: Email})}
+                  autoFocus = {true}
+                  style = {styles.inputStyle}
+                  placeholder = {'Email'}
+                  autoCapitalize= {"none"}
+                  multiline={false}
+                  maxLength ={320}
+                  underlineColorAndroid={'transparent'}
+                  placeholderTextColor={"#0f6abc"}
+                />
+              </View>
+              <View style={styles.inputRow}>
+                <Entypo  name="lock" size={20} color={"#0f6abc"} style={styles.iconStyle}/>
+                <TextInput
+                  onChangeText = {(Password) => this.setState({UserPassword: Password})}
+                  value = {this.state.UserPassword}
+                  style = {styles.inputStyle}
+                  placeholder = {'Password'}
+                  autoCapitalize= {"none"}
+                  multiline={false}
+                  maxLength ={320}
+                  underlineColorAndroid={'transparent'}
+                  placeholderTextColor={"#0f6abc"}
+                  secureTextEntry={true}
+                />
+              </View>
 
-        <View style={styles.marginTopButtons}>
-          <TouchableHighlight
-            style={styles.SignUpButton}
-            onPress={this._onSignup}
-            underlayColor={"#00a79d"}
-            activeOpacity={1}
-            >
-            <Text style={styles.signUpCenterText}>Sign up</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
-
+              <View style={styles.marginTopButtons}>
+                <TouchableHighlight
+                  style={styles.SignUpButton}
+                  onPress={this._onSignup}
+                  underlayColor={"#0f6abc"}
+                  activeOpacity={1}
+                  >
+                  <Text style={styles.signUpCenterText}>Sign up</Text>
+                </TouchableHighlight>
+              </View>
+          </Body>
+        </Content>
+      </Container>
     );
   }
 }

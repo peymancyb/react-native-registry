@@ -62,7 +62,7 @@ console.disableYellowBox = true;
       backgroundColor:"white",
     },
     style:{
-      backgroundColor:"#5067FF",
+      backgroundColor:"#0f6abc",
     },
     labelStyle:{
       color:"white",
@@ -84,7 +84,7 @@ const HomePage = StackNavigator({
          alignSelf: 'center',
        },
       headerStyle: {
-         backgroundColor:"#5067FF",
+         backgroundColor:"#0f6abc",
       },
     },
   },

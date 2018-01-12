@@ -89,12 +89,11 @@ _sendMark(item){
 
   _renderItem({item}){
       return(
-        <CardItem
-          style={{borderColor:"transparent",borderWidth:0}}>
+        <CardItem style={styles.MarkCardItemStyle}>
           <Body
-            style={{justifyContent:"center",borderColor:"transparent",borderWidth:0}}>
+            style={styles.MarkBodyItemStyle}>
             <SwipeRow
-              style={{justifyContent:"center",borderColor:"#5067FF",borderBottomWidth:0.5}}
+              style={styles.MarkSwipeRow}
                disableLeftSwipe={true}
                leftOpenValue={75}
                left={
@@ -105,9 +104,9 @@ _sendMark(item){
                  </Button>
                }
                body={
-                 <View style={{justifyContent:"center",flexDirection:"row"}}>
+                 <View style={[this.MarkItemView,{flexDirection:"row"}]}>
                    <Body>
-                     <View style={{flexDirection:"row",borderLeftWidth:5,borderColor:"#5067FF",padding:10}}>
+                     <View style={styles.MarkViewStyle}>
                        <Text>{item.name} {item.last_name}</Text>
                      </View>
                    </Body>
@@ -119,7 +118,7 @@ _sendMark(item){
                          onChangeText = {(mark)=>this._chandeText(mark)}
                          underlineColorAndroid={"transparent"}
                          placeholder={"Mark"}
-                         style={{textAlign:'center',height:45,width:120,borderWidth:1,borderColor:"#5067FF",borderRadius:4}}/>
+                         style={styles.MarkTextInputStyle}/>
                    </Right>
                  </View>
                }
@@ -130,8 +129,7 @@ _sendMark(item){
     }
   render() {
     return (
-      <Container
-        style={{backgroundColor:"#e7f0f9"}}>
+      <Container style={styles.BackgroundColor}>
        <Content>
          <Card>
              <FlatList

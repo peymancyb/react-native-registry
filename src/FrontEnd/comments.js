@@ -93,22 +93,21 @@ export default class Comments extends Component {
   };
   _renderItem({item}){
       return(
-          <CardItem
-            style={{borderColor:"transparent",borderWidth:0}}>
+          <CardItem style={styles.MarkCardItemStyle}>
               <Body
-                style={{flexDirection:"row",alignItems:"center",justifyContent:"center",paddingLeft:10}}>
+                style={[styles.CommentsBody,{flexDirection:"row"}]}>
                    <Hoshi
                       clearTextOnFocus={true}
-                      style={{flex:3,width:"80%",backgroundColor:"white"}}
+                      style={styles.HoshiStyle}
                       label={`${item.name+" "+item.last_name+" :"}`}
-                      labelStyle={{ color: '#5067FF' }}
+                      labelStyle={{ color: '#0f6abc' }}
                       borderColor={'#5067FF'}
-                      inputStyle={{ color: '#5067FF' }}
+                      inputStyle={{ color: '#0f6abc' }}
                       onChangeText = {(Comment)=>this.setState({Comment: Comment})}
                     />
 
                    <TouchableOpacity
-                      style={{flex:1,height:50,alignItems:"center",backgroundColor:"#5067FF",justifyContent:"center",borderWidth:1,borderColor:"#5067FF",paddingBottom:0,marginTop:5,borderRadius:4}}
+                      style={styles.commentStyleInput}
                       onPress={() => this._sendComment(item)}>
                      <EvilIcons name="comment" size={32} color={"white"} />
                    </TouchableOpacity>
@@ -118,8 +117,7 @@ export default class Comments extends Component {
     }
   render() {
     return (
-      <Container
-        style={{backgroundColor:"#e7f0f9"}}>
+      <Container style={styles.BackgroundColor}>
        <Content>
          <Card>
                <FlatList

@@ -231,7 +231,7 @@ _lateButton(props){
 }
 render(){
     return(
-          <View style={{flexDirection:"row",borderColor:"#5067FF",borderBottomWidth:0.6}}>
+          <View style={{flexDirection:"row",borderColor:"#0f6abc",borderBottomWidth:0.6}}>
               <TouchableHighlight
                 disabled={this.state.buttonStatus}
                 style={this.state.presentStatus ? styles.defaultButton : styles.presentIsChecked}
@@ -407,13 +407,6 @@ _sendToFirebase(props,state,item){
           });
         }
       }
-
-
-
-
-
-
-
   }
 
   render(){
@@ -424,25 +417,25 @@ _sendToFirebase(props,state,item){
           active={this.state.active}
           direction="up"
           containerStyle={{ }}
-          style={{ backgroundColor: '#5067FF' }}
+          style={{ backgroundColor: '#0f6abc' }}
           position="bottomRight"
           onPress={() => this.setState({ active: !this.state.active })}
           >
           <Entypo name="plus" color="white" size={22}/>
           <Button
             onPress={() => this._handleState()}
-            style={{ backgroundColor: '#5067FF' }}
+            style={{ backgroundColor: '#0f6abc' }}
             >
             <Entypo name="add-to-list" color="white" size={22}/>
           </Button>
           <Button
-            style={{ backgroundColor: '#5067FF' }}
+            style={{ backgroundColor: '#0f6abc' }}
             onPress={()=>this._sendData(this.props)}
             >
             <MaterialIcons name="check" color="white" size={22}/>
           </Button>
           <Button
-            style={{ backgroundColor: '#5067FF' }}
+            style={{ backgroundColor: '#0f6abc' }}
             onPress={()=>this._resetItems(this.props)}
             >
             <MaterialIcons name="refresh" color="white" size={22}/>

@@ -147,11 +147,11 @@ _listenForItem(itemsRef){
 _renderHistory({item}){
   return(
     <CardItem
-      style={{borderColor:"transparent"}}>
+      style={styles.transparentBorderColor}>
         <Body
-          style={{borderLeftWidth:5,paddingLeft:8,borderColor:"#5067FF",borderBottomWidth:0.6}}>
+          style={styles.ProfileHistoryStyle}>
           <Body
-            style={{justifyContent:'center',alignItems:"center"}}>
+            style={styles.center}>
               <Text>{item.date}</Text>
           </Body>
           <View style={{flex:1,flexDirection:"column",alignItems:"flex-start",justifyContent:"flex-start"}}>
@@ -179,11 +179,10 @@ _showFullHistory(itemsRef){
 
 render(){
     return(
-      <Container
-        style={{backgroundColor:"#e7f0f9"}}>
+      <Container style={styles.BackgroundColor}>
         <Content>
           <Body>
-            <EvilIcons name={"user"} size={120} color={"#5067FF"}/>
+            <EvilIcons name={"user"} size={120} color={"#0f6abc"}/>
             <Text>{userHistoryItem.name} {userHistoryItem.last_name}</Text>
           </Body>
           <DetailRow
@@ -193,7 +192,7 @@ render(){
           <Body
             style={{marginTop:20}}>
             <Text
-              style={{color:"#5067FF"}}
+              style={{color:"#0f6abc"}}
               onPress={()=>this.setState({showTab:!this.state.showTab})}>
                show history
              </Text>

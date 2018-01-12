@@ -71,15 +71,15 @@ export default class History extends Component {
       return(
         <TouchableOpacity
           onPress={()=> this._navigateToProfile(item)}>
-        <CardItem style={{height:50}}>
+        <CardItem style={styles.HistoryHeight}>
             <Body
-              style={{justifyContent:"center"}}>
+              style={styles.justifyContentCenter}>
               <Text
-                style={{justifyContent:"center",alignItems:"center"}}>{item.name} {item.last_name}</Text>
+                style={styles.center}>{item.name} {item.last_name}</Text>
             </Body>
 
           <Right>
-            <Ionicons name="md-arrow-round-forward" size={22} color={"#5067FF"} />
+            <Ionicons name="md-arrow-round-forward" size={22} color={"#0f6abc"} />
           </Right>
          </CardItem>
        </TouchableOpacity>
@@ -89,8 +89,7 @@ export default class History extends Component {
 
   render() {
     return (
-      <Container
-        style={{backgroundColor:"#e7f0f9"}}>
+      <Container style={styles.BackgroundColor}>
        <Content>
          <Card>
                <FlatList

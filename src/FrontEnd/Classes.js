@@ -63,7 +63,7 @@ export class ClassModal extends Component{
   render(){
     return(
           <Modal
-            style={{flex:1}}
+            style={styles.flexOne}
             animationType="none"
             transparent={true}
             visible={this.state.modalVisible}
@@ -108,10 +108,6 @@ export class ClassModal extends Component{
   }
 }
 
-
-
-
-
 export default class ListClasses extends PureComponent {
     constructor(props){
     super(props);
@@ -137,7 +133,7 @@ static navigationOptions = {
   title: "List of classes",
   headerBackTitle:"Classes",
   headerStyle:{
-    backgroundColor: "#5067FF",
+    backgroundColor: "#0f6abc",
   },
   headerTintColor: "white",
   gesturesEnabled: false,
@@ -170,16 +166,15 @@ _renderClassItem({item}){
       <TouchableOpacity
         onPress={()=>this._navigateToStudent(item)}>
       <CardItem
-        style={{marginTop:5,marginBottom:5,width:"98%",marginLeft:"2%",borderBottomWidth:0.4,borderColor:"#5067FF"}}>
+        style={styles.cardItemStyle}>
           <View
-            style={{flexDirection:"row",}}>
-            <Left style={{flex:2,flexDirection:"column",justifyContent:"flex-start",alignItems:"flex-start",}}>
+            style={styles.flexDirectionRow}>
+            <Left style={styles.ClassLeftItemStyle}>
               <Text>Class name: {item.name}</Text>
-              <Text style={{marginTop:8,fontSize:12, fontWeight:"100"}}>Descreption: {item.descreption}</Text>
+              <Text style={styles.ClassLeftStyleText}>Descreption: {item.descreption}</Text>
             </Left>
-
             <Right>
-              <MaterialIcons name={"arrow-forward"} size={22} color={"#5067FF"}/>
+              <MaterialIcons name={"arrow-forward"} size={22} color={"#0f6abc"}/>
             </Right>
           </View>
       </CardItem>
@@ -203,7 +198,7 @@ listenForClassItems(_ClassitemsRef) {
 
   render() {
     return (
-      <Container style={{backgroundColor:"#e7f0f9"}}>
+      <Container style={styles.BackgroundColor}>
         <Content>
             <ClassModal modalView={this.state.ClassModalView} handleState={this._handleModalState}/>
             <Card>
@@ -215,9 +210,9 @@ listenForClassItems(_ClassitemsRef) {
               />
             </Card>
         </Content>
-          <View style={{flex:1}}>
+          <View style={styles.flexOne}>
             <Fab
-              style={{backgroundColor:"#5067FF"}}
+              style={styles.FabBackground}
               onPress={() => this.setState({ClassModalView: true})}>
               <Entypo name="add-to-list" color="white" size={35} />
             </Fab>

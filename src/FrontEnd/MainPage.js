@@ -68,18 +68,16 @@ export default class MainPage extends Component {
    this.listenForItems = this.listenForItems.bind(this);
    this._resetFlatlist = this._resetFlatlist.bind(this);
   }
-
 //give students reference to the funtion
 componentDidMount() {
   this.listenForItems(this.itemsRef);
 }
 _renderItem({item}){
   return(
-    <CardItem
-      style={{borderColor:"transparent"}}>
+    <CardItem style={styles.transparentBorderColor}>
         <Body
-          style={{borderColor:"#5067FF",borderBottomWidth:0.6}}>
-          <View style={{flexDirection:"row",alignItems:"center",borderLeftWidth:5,paddingLeft:8,borderColor:"#5067FF"}}>
+          style={styles.MainPageBodyStyle}>
+          <View style={styles.MainPageViewStyle}>
             <Text>{item.name} {item.last_name}</Text>
           </View>
          <Body>
@@ -116,7 +114,7 @@ _renderFooter = () => {
   if(!this.state.loading) return null;
   return(
     <View>
-      <ActivityIndicator animating color={"#5067FF"} size={"small"}/>
+      <ActivityIndicator animating color={"#0f6abc"} size={"small"}/>
     </View>
   );
 };
@@ -132,8 +130,7 @@ _resetFlatlist(){
 
   render() {
     return (
-      <Container
-        style={{backgroundColor:"#e7f0f9"}}>
+      <Container style={styles.BackgroundColor}>
         <Content >
             <Card>
               <FlatList

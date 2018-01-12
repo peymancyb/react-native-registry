@@ -29,7 +29,7 @@ const App = StackNavigator({
            alignSelf: 'center',
          },
         headerStyle: {
-           backgroundColor:"#5067FF",
+           backgroundColor:"#0f6abc",
         },
       },
     },
