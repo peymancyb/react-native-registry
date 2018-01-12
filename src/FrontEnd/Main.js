@@ -70,21 +70,9 @@ console.disableYellowBox = true;
   },
 });
 
-
 const HomePage = StackNavigator({
   main:{
     screen:MainTabs,
-    navigationOptions:{
-      title:"Registery",
-      headerTintColor:"white",
-      headerTitleStyle: {
-         textAlign: 'center',
-         alignSelf: 'center',
-       },
-      headerStyle: {
-         backgroundColor:"#5067FF",
-      },
-    },
   },
   profile:{
     screen:ProfileHistory,
@@ -101,66 +89,7 @@ const HomePage = StackNavigator({
     },
   },
 },{
-
-
-
+  headerMode: "none",
 });
 
-
 export default HomePage;
-
-
-// export default HomePage;
-//
-// export default class HomePage extends Component{
-//   static navigationOptions = {
-//     title:"Registery",
-//     headerTintColor:"white",
-//      headerTitleStyle: {
-//         textAlign: 'center',
-//         alignSelf: 'center',
-//       },
-//      headerStyle: {
-//         backgroundColor:"#5067FF",
-//      },
-//   };
-//
-//   render(){
-//     return(
-//       <TabNavigatorScreens/>
-//     );
-//   }
-// } ;
-
-//
-// <Container>
-//   <Tabs
-//     tabBarPosition={"bottom"}
-//     tabBarUnderlineStyle={{backgroundColor:"white"}}
-//     locked={true}
-//     initialPage={0}
-//     >
-//       <Tab
-//         heading={
-//         <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><Feather name="user-check" size={22} color={"white"}/></TabHeading>}
-//         >
-//         <MainPage />
-//       </Tab>
-//       <Tab
-//         heading={ <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><MaterialCommunityIcons name="numeric" size={22} color={"white"}/></TabHeading>}
-//         >
-//         <Marks />
-//       </Tab>
-//       <Tab
-//         heading={ <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><FontAwesome name="commenting-o" size={22} color={"white"}/></TabHeading>}
-//         >
-//         <Comments />
-//       </Tab>
-//       <Tab
-//         heading={ <TabHeading style={{backgroundColor:"#5067FF",borderColor:"#5067FF",borderWidth:0}}><MaterialCommunityIcons name="history" size={22} color={"white"}/></TabHeading>}
-//         >
-//         <History />
-//       </Tab>
-//
-//   </Tabs>
-// </Container>

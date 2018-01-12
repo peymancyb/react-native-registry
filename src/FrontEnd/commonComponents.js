@@ -55,7 +55,7 @@ export class StudentModal extends Component{
     };
     // this.currentUserUid = FB.auth().currentUser.uid;
     // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
-    this.itemsRef = FB.database().ref('user_classes/'+"xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"First Class"+'/studet_list');
+    this.itemsRef = FB.database().ref('user_classes/'+"-xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"-L2dy0UfQ8LPCTOWWDSb"+'/studet_list');
     this.state = this.defaultState;
     this._saveData = this._saveData.bind(this);
     this._passState = this._passState.bind(this);
@@ -107,6 +107,7 @@ export class StudentModal extends Component{
                 value={this.state.name}
                 placeholder="Name"
                 placeholderTextColor={"white"}
+                clearTextOnFocus={true}
                 underlineColorAndroid={'transparent'}
                 />
               <TextInput
@@ -115,6 +116,7 @@ export class StudentModal extends Component{
                 value={this.state.last_name}
                 placeholder="Surname"
                 placeholderTextColor={"white"}
+                clearTextOnFocus={true}
                 underlineColorAndroid={'transparent'}
                 />
 

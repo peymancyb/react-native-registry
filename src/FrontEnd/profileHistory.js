@@ -54,7 +54,7 @@ function DetailRow(props){
           </Text>
         </Body>
         <Right style={styles.box}>
-          <Text style={styles.absentColor}>
+          <Text style={styles.lateColor}>
               {props.absent}
           </Text>
         </Right>

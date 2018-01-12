@@ -20,9 +20,23 @@ const App = StackNavigator({
     HomePage : {
       screen: HomePage,
       navigationOptions:{
-        header:null,
+        title:"Activity",
+        headerTintColor:"white",
+        headerBackTitle:"Activity",
+        gesturesEnabled: false,
+        headerTitleStyle: {
+           textAlign: 'center',
+           alignSelf: 'center',
+         },
+        headerStyle: {
+           backgroundColor:"#5067FF",
+        },
       },
     },
+
+},{
+  mode: 'card',
+  gesturesEnabled:false,
 
 });
 //this page is all fine

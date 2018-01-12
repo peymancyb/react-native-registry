@@ -341,6 +341,7 @@ const styles = StyleSheet.create({
       box:{
         height:40,
         width:60,
+        backgroundColor:"white",
         justifyContent:"center",
         alignItems:"center",
       },
