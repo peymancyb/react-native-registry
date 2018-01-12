@@ -3,7 +3,7 @@ import {View,TextInput, TouchableHighlight,TouchableOpacity, FlatList, Modal,Ale
 import styles from './style';
 import FB from '../BackEnd/firebase';
 import {Entypo,Feather,MaterialIcons,EvilIcons} from '@expo/vector-icons';
-import {fbDatabaseNodeName} from './Classes';
+import {fireBaseClassNode} from './Classes';
 import Register from './Register';
 import History from './History';
 import ListClasses from './Classes';
@@ -33,9 +33,7 @@ import {
 } from 'native-base';
 
 
-
-
-
+//user id , class name ,
 //==============================================================================
 export var tempArr = [];
 let date = new Date();
@@ -43,7 +41,7 @@ let dateString = `${date.getFullYear() +"-"+(date.getMonth() + 1)+"-"+ date.getD
 let currentDate = dateString.toString();
 // console.log(typeof currentDate);
 //==============================================================================
-
+console.log("firebase class node : "+fireBaseClassNode);
 //==============================================================================
 export class StudentModal extends Component{
   constructor(props){
@@ -53,9 +51,11 @@ export class StudentModal extends Component{
         last_name: '',
         modalView: props.modalView,
     };
+    this.currentUserUid = FB.auth().currentUser.uid;
+    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
     // this.currentUserUid = FB.auth().currentUser.uid;
     // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
-    this.itemsRef = FB.database().ref('user_classes/'+"-xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"-L2dy0UfQ8LPCTOWWDSb"+'/studet_list');
+    // this.itemsRef = FB.database().ref('user_classes/'+"-xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"-L2dy0UfQ8LPCTOWWDSb"+'/studet_list');
     this.state = this.defaultState;
     this._saveData = this._saveData.bind(this);
     this._passState = this._passState.bind(this);
@@ -70,9 +70,11 @@ export class StudentModal extends Component{
     if(this.state.name != '' && this.state.last_name != ''){
       this.itemsRef.push({ name: this.state.name, last_name: this.state.last_name});
       let student_name = this.state.name +" "+this.state.last_name;
+      let replaceSpecialCharactors = student_name.toString();
+      let new_student = replaceSpecialCharactors.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
       //have all application students in one place
-      FB.database().ref('all_students/'+student_name).set({
-        name: student_name
+      FB.database().ref('all_students/'+new_student).set({
+        name: new_student
       });
       Toast.show({
               text: 'Student saved successfully!',
@@ -123,7 +125,7 @@ export class StudentModal extends Component{
                 <View style={styles.marginTopButton}>
                 <TouchableOpacity
                   style={styles.modalAddStudent}
-                  onPress={this._saveData}
+                  onPress={()=>this._saveData()}
                   >
                       <Text style={styles.addStudentStyleModal}>Add Student</Text>
                  </TouchableOpacity>
@@ -154,14 +156,13 @@ export class PalButtons extends Component{
         student_palStatus:[],
        };
     this.state = this.defaultState;
-    // this.currentUserUid = FB.auth().currentUser.uid;
+    this.currentUserUid = FB.auth().currentUser.uid;
+    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
     this._presentButton = this._presentButton.bind(this);
     this._absentButton = this._absentButton.bind(this);
     this._lateButton = this._lateButton.bind(this);
     this._storeData = this._storeData.bind(this);
-  }
-
-
+}
 
 _storeData(currentData){
   tempArr.push(currentData);
@@ -270,6 +271,8 @@ export class BottomFab extends Component{
       active: false,
       modalView:false,
     };
+    this.currentUserUid = FB.auth().currentUser.uid;
+    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
     this._sendData = this._sendData.bind(this);
     this._sendToFirebase = this._sendToFirebase.bind(this);
     this._handleState = this._handleState.bind(this);
@@ -294,76 +297,73 @@ _handleState(childCall){
   }
 }
 
-
-_sendToFirebase(props,state){
-  if(tempArr.length!=0 && tempArr.length == props.numberOfStudents && state == false){
-    for(let i=0 ; i< tempArr.length ; i++){
+//make an array is the solution
+_sendToFirebase(props,state,item){
+      let RegisteryDateRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Date/"+currentDate);
+      let RegisteryTotalRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Total/");
 //============================================================================
-        FB.database().ref("test/"+tempArr[i].user_id+"/Date/"+currentDate).set({
-          status: tempArr[i]
+        RegisteryDateRef.set({
+          status: item
         });
 //==============================================================================
-        if(tempArr[i].user_status=="Present"){
-          FB.database().ref("test/"+tempArr[i].user_id+"/total/").once('value',(snap)=>{
+        if(item.user_status=="Present"){
+          RegisteryTotalRef.once('value',(snap)=>{
             if (!snap.hasChild("total_present")) {
-              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+              return RegisteryTotalRef.update({
                     total_present: 1
                   });
             }else{
               snap = snap.val();
               let prev_val = snap.total_present;
-              console.log(prev_val);
               let update = prev_val+1;
-              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+              return RegisteryTotalRef.update({
                     total_present: update
                   });
                 }
           });
         }
 //==============================================================================
-        if(tempArr[i].user_status=="Absent"){
-          FB.database().ref("test/"+tempArr[i].user_id+"/total/").once('value',(snap)=>{
+        if(item.user_status=="Absent"){
+          RegisteryTotalRef.once('value',(snap)=>{
             if (!snap.hasChild("total_absent")) {
-              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+              return RegisteryTotalRef.update({
                     total_absent: 1
                   });
             }else{
               snap = snap.val();
               let prev_val = snap.total_absent;
-              console.log(prev_val);
               let update = prev_val+1;
-              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+              return RegisteryTotalRef.update({
                     total_absent: update
                   });
-                }
+              }
           });
         }
-        if(tempArr[i].user_status=="Late"){
-          FB.database().ref("test/"+tempArr[i].user_id+"/total/").once('value',(snap)=>{
+        if(item.user_status=="Late"){
+          RegisteryTotalRef.once('value',(snap)=>{
             if (!snap.hasChild("total_late")) {
-              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+              return RegisteryTotalRef.update({
                     total_late: 1
                   });
             }else{
               snap = snap.val();
               let prev_val = snap.total_late;
-              console.log(prev_val);
               let update = prev_val+1;
-              return FB.database().ref("test/"+tempArr[i].user_id+"/total/").update({
+              return RegisteryTotalRef.update({
                     total_late: update
                   });
                 }
           });
         }
 //end for
-      }
+      // }
     Toast.show({
             text: 'Data successfully added!',
             position: 'bottom',
             // duration: 2000,
       });
 //end of if
-    }
+    // }
     // return this._resetItems(this.props);
   }
 
@@ -372,7 +372,8 @@ _sendToFirebase(props,state){
     //check if we have already this item in the database
     if(tempArr.length!=0 && tempArr.length == props.numberOfStudents){
       for(let i=0 ; i< tempArr.length ; i++){
-        FB.database().ref('test/'+tempArr[i].user_id+"/Date").on('value',(snap)=>{
+        let RegisteryDateRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+tempArr[i].user_id+"/Date/");
+        RegisteryDateRef.on('value',(snap)=>{
           let checkStatus = false;
           snap.forEach((child)=>{
             if(child.key == currentDate){
@@ -381,7 +382,6 @@ _sendToFirebase(props,state){
               checkStatus = false;
             }
           });
-          console.log("state: "+checkStatus);
           if(checkStatus){
             return Toast.show({
               text: 'You already have submitted!',
@@ -390,7 +390,7 @@ _sendToFirebase(props,state){
             });
             // return setTimeout(()=>this._resetItems(this.props),1800);
           }else{
-            return this._sendToFirebase(this.props,checkStatus);
+            return this._sendToFirebase(this.props,checkStatus,tempArr[i]);
           }
         });
       }
@@ -407,8 +407,14 @@ _sendToFirebase(props,state){
           });
         }
       }
-  }
 
+
+
+
+
+
+
+  }
 
   render(){
     return(

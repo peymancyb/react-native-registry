@@ -6,20 +6,22 @@ import {
    TouchableHighlight,
    Image
  } from 'react-native';
+ import {
+   Container,
+   Content,
+   Body,
+ }from 'native-base';
 import styles from './style';
 import FB from '../BackEnd/firebase';
 import {StackNavigator} from 'react-navigation';
-
+import {Entypo} from '@expo/vector-icons';
 import Register from './Register';
 import ListClasses from './Classes';
 import HomePage from './Main';
 
-import {Entypo} from '@expo/vector-icons';
-
 export default class Login extends Component {
     constructor(props){
     super(props);
-
     //solving timer error
     console.ignoredYellowBox = [
     'Setting a timer'
@@ -32,8 +34,6 @@ export default class Login extends Component {
     this._onLogin = this._onLogin.bind(this);
     this._onSignup = this._onSignup.bind(this);
   }
-
-
 //Login process
 _onLogin(){
   var currentUser = FB.auth().currentUser;
@@ -52,25 +52,18 @@ _onLogin(){
   FB.auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
-        let displayName = user.displayName;
-        let email = user.email;
-        let emailVerified = user.emailVerified;
-        let photoURL = user.photoURL;
-        let isAnonymous = user.isAnonymous;
-        let uid = user.uid;
-        let providerData = user.providerData;
         //get date
         let date = new Date();
         let fullDate= date.toDateString();
         FB.database().ref('/singed_in_users').child(fullDate).set(
           {
-            user_email: email,
-            user_uid: uid,
-            user_displayName: displayName,
+            user_email: user.email,
+            user_uid: user.uid,
+            user_displayName: user.displayName,
             user_emailVerified: emailVerified,
-            user_photo: photoURL,
-            user_anonymous: isAnonymous,
-            user_providerData: providerData,
+            user_photo: user.photoURL,
+            user_anonymous: user.isAnonymous,
+            user_providerData: user.providerData,
           }
         );
         // ...
@@ -78,13 +71,13 @@ _onLogin(){
         // User is signed out.
         FB.database().ref('/signed_out_users').child(fullDate).set(
           {
-            user_email: email,
-            user_uid: uid,
-            user_displayName: displayName,
+            user_email: user.email,
+            user_uid: user.uid,
+            user_displayName: user.displayName,
             user_emailVerified: emailVerified,
-            user_photo: photoURL,
-            user_anonymous: isAnonymous,
-            user_providerData: providerData,
+            user_photo: user.photoURL,
+            user_anonymous: user.isAnonymous,
+            user_providerData: user.providerData,
           }
         );
         // ...

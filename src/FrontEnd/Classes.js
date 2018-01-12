@@ -20,29 +20,20 @@ import {
 } from 'native-base';
 import {Entypo,MaterialIcons} from '@expo/vector-icons';
 
-
-export var fbDatabaseNodeName = '';
-
-
-
+export var fireBaseClassNode = '';
 
 export class ClassModal extends Component{
   constructor(props){
     super(props);
-    console.log(props.modalView);
-
     this.state={
       name: '',
       descreption: '',
       modalVisible: props.modalView,
     };
     this._saveClassData = this._saveClassData.bind(this);
-    // this.currentUserUid = FB.auth().currentUser.uid;
-    // this._ClassitemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
-    // this._ClassitemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
-    this._ClassitemsRef = FB.database().ref('user_classes/'+"xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/');
+    this.currentUserUid = FB.auth().currentUser.uid;
+    this._ClassitemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
   }
-
 
   _saveClassData(){
     if(this.state.name != ''&& this.state.descreption != ''){
@@ -133,10 +124,8 @@ export default class ListClasses extends PureComponent {
       Class_array: [],
       user_uid:'Anonymous',
     };
-   // this.currentUserUid = FB.auth().currentUser.uid;
-   // this._ClassitemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
-   // this._ClassitemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
-   this._ClassitemsRef = FB.database().ref('user_classes/'+"xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/');
+   this.currentUserUid = FB.auth().currentUser.uid;
+   this._ClassitemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
 
    this._renderClassItem = this._renderClassItem.bind(this);
    this.listenForClassItems = this.listenForClassItems.bind(this);
@@ -169,8 +158,9 @@ componentDidMount() {
 
 _navigateToStudent(item){
   const { navigate } = this.props.navigation;
-  fbDatabaseNodeName = item.name +" "+ item.descreption;
-  navigate("HomePage", { className: fbDatabaseNodeName });
+  fireBaseClassNode = item.class_id;
+  // navigate("HomePage", { className: fbDatabaseNodeName });
+  navigate("HomePage");
 }
 
 

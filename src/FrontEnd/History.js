@@ -4,7 +4,7 @@ import styles from './style';
 import FB from '../BackEnd/firebase';
 import {StackNavigator , TabNavigator} from 'react-navigation';
 import Register from './Register';
-import {fbDatabaseNodeName} from './Classes';
+import {fireBaseClassNode} from './Classes';
 import {MaterialCommunityIcons,Ionicons} from '@expo/vector-icons';
 import {
   Container,
@@ -24,9 +24,7 @@ import {
 } from 'native-base';
 import ProfileHistory from './profileHistory';
 
-
-
-export var CurrentUser = '';
+export var userHistoryItem = {};
 
 export default class History extends Component {
   static navigationOptions = {
@@ -39,12 +37,8 @@ export default class History extends Component {
     this.state = {
       students_array: [],
     };
-
-    // this.currentUserUid = FB.auth().currentUser.uid;
-    // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
-    // this.itemsRef = FB.database().ref('user_classes/'+"xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"First Class"+'/studet_list');
-    this.itemsRef = FB.database().ref('user_classes/'+"-xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"-L2dy0UfQ8LPCTOWWDSb"+'/studet_list');
-
+    this.currentUserUid = FB.auth().currentUser.uid;
+    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
     this._renderItem = this._renderItem.bind(this);
     this.listenForItems = this.listenForItems.bind(this);
     this._navigateToProfile = this._navigateToProfile.bind(this);
@@ -55,8 +49,7 @@ export default class History extends Component {
   }
   _navigateToProfile(item){
     const { navigate } = this.props.navigation;
-    CurrentUser = item.user_id;
-    console.log("CurrentUser: "+CurrentUser);
+    userHistoryItem = item;
     navigate("profile");
   }
   // Fetch Students referance

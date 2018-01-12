@@ -4,7 +4,7 @@ import styles from './style';
 import FB from '../BackEnd/firebase';
 import {StackNavigator , TabNavigator} from 'react-navigation';
 import Register from './Register';
-import {fbDatabaseNodeName} from './Classes';
+import {fireBaseClassNode} from './Classes';
 import {MaterialCommunityIcons,SimpleLineIcons} from '@expo/vector-icons';
 import {
   Container,
@@ -24,11 +24,9 @@ import {
   SwipeRow,
   Toast,
 } from 'native-base';
-
 let date = new Date();
 let dateString = `${date.getFullYear() +"-"+(date.getMonth() + 1)+"-"+ date.getDate()}`;
 let currentDate = dateString.toString();
-
 export default class Marks extends Component {
   static navigationOptions = {
     tabBarIcon: () => (
@@ -41,11 +39,8 @@ export default class Marks extends Component {
       students_array: [],
       Mark:null,
     };
-    // this.currentUserUid = FB.auth().currentUser.uid;
-    // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
-    // this.itemsRef = FB.database().ref('user_classes/'+"xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"First Class"+'/studet_list');
-    this.itemsRef = FB.database().ref('user_classes/'+"-xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"-L2dy0UfQ8LPCTOWWDSb"+'/studet_list');
-
+    this.currentUserUid = FB.auth().currentUser.uid;
+    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
     this._renderItem = this._renderItem.bind(this);
     this.listenForItems = this.listenForItems.bind(this);
     this._sendMark = this._sendMark.bind(this);
@@ -68,12 +63,11 @@ export default class Marks extends Component {
       this.setState({students_array: items });
     });
   }
-
-
 _chandeText(mark){
 this.setState({Mark: mark});
 }
 _sendMark(item){
+  let RegisteryMarkRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Date/"+currentDate+"/status/");
   if(this.state.Mark === null || this.state.Mark === ''){
     Toast.show({
      text:"Please enter mark!",
@@ -84,7 +78,7 @@ _sendMark(item){
      text:"Mark has been set!",
      position:"bottom",
    });
-   FB.database().ref("test/"+item.user_id+"/"+currentDate+"/status/").update({
+   RegisteryMarkRef.update({
        Mark: this.state.Mark
      });
    this.setState({

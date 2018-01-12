@@ -4,7 +4,6 @@ import {
   Button,
   FlatList,
 } from 'react-native';
-
 import {
   Text,
   Thumbnail,
@@ -19,48 +18,51 @@ import {
 } from 'native-base';
 import styles from './style';
 import FB from '../BackEnd/firebase';
-import {CurrentUser} from './History';
-
-
+import {userHistoryItem} from './History';
+import {fireBaseClassNode} from './Classes';
 import {EvilIcons} from '@expo/vector-icons';
 
 
+class DetailRow extends Component{
+  constructor(props){
+    super(props);
+  }
 
-function DetailRow(props){
-  //remember to add mark
-  return(
-    <Body>
-      <Body
-        style={styles.rowOne}>
-        <Left style={styles.presentBox}>
-          <Text style={styles.whiteColor}>Present</Text>
-        </Left>
-        <Body style={styles.absentBox}>
-          <Text style={styles.whiteColor}>Absent</Text>
+  render(){
+    return(
+      <Body>
+        <Body
+          style={styles.rowOne}>
+          <Left style={styles.presentBox}>
+            <Text style={styles.whiteColor}>Present</Text>
+          </Left>
+          <Body style={styles.absentBox}>
+            <Text style={styles.whiteColor}>Absent</Text>
+          </Body>
+          <Right style={styles.lateBox}>
+            <Text style={styles.whiteColor}>Late</Text>
+          </Right>
         </Body>
-        <Right style={styles.lateBox}>
-          <Text style={styles.whiteColor}>Late</Text>
-        </Right>
-      </Body>
-      <Body style={styles.rowTwo}>
-        <Left style={styles.box}>
-          <Text style={styles.presentColor}>
-              {props.present}
+        <Body style={styles.rowTwo}>
+          <Left style={styles.box}>
+            <Text style={styles.presentColor}>
+                {this.props.present}
+              </Text>
+          </Left>
+          <Body style={styles.box}>
+            <Text style={styles.absentColor}>
+                {this.props.absent}
             </Text>
-        </Left>
-        <Body style={styles.box}>
-          <Text style={styles.absentColor}>
-              {props.absent}
-          </Text>
+          </Body>
+          <Right style={styles.box}>
+            <Text style={styles.lateColor}>
+                {this.props.late}
+            </Text>
+          </Right>
         </Body>
-        <Right style={styles.box}>
-          <Text style={styles.lateColor}>
-              {props.absent}
-          </Text>
-        </Right>
       </Body>
-    </Body>
-  );
+    );
+  }
 };
 
 
@@ -77,17 +79,21 @@ export default class ProfileHistory extends Component{
       lateNumber:0,
       historyArray:[],
     };
+    this.currentUserUid = FB.auth().currentUser.uid;
+
+    this.itemsRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+userHistoryItem.user_id+"/Date/");
+    this.totalItemsRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+userHistoryItem.user_id+"/Total/");
+    // let RegisteryTotalRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Total/");
+
+    // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
+    // this.itemsRef = FB.database().ref('test/'+CurrentUser+"/Date");
+    // this.totalItemsRef = FB.database().ref('test/'+CurrentUser+"/");
+
     this._showFullHistory = this._showFullHistory.bind(this);
-    this.itemsRef = FB.database().ref('test/'+CurrentUser+"/Date");
-    this.totalItemsRef = FB.database().ref('test/'+CurrentUser+"/");
-    // this.itemsRef = FB.database().ref('test/'+"-KzuES-mZ7dYu6_F6yDi"+"/");
     this._listenForItem = this._listenForItem.bind(this);
     this._renderHistory = this._renderHistory.bind(this);
     this._checkForStatus = this._checkForStatus.bind(this);
   }
-
-
-
 
 componentDidMount(){
   this._listenForItem(this.itemsRef);
@@ -95,33 +101,30 @@ componentDidMount(){
 }
 
 _checkForStatus(totalItemsRef){
-  return totalItemsRef.limitToLast(1).on('value',(snap)=>{
-    snap.forEach((child)=>{
-      if (child.hasChild("total_present")) {
-        let newValue = child.val().total_present;
-        console.log(newValue);
-        this.setState({
+  return totalItemsRef.on('value',(snap)=>{
+    snap.forEach(()=>{
+      if (snap.val().total_present) {
+        let newValue = snap.val().total_present;
+        this.setState(()=>({
           presentNumber:newValue,
-        });
-      }
-      if (child.hasChild("total_absent")) {
-        let newValue = child.val().total_absent;
-        this.setState({
+        }));
+      }else if(snap.val().total_absent) {
+        let newValue = snap.val().total_absent;
+        this.setState(()=>({
           absentNumber:newValue,
-        });
-      }
-      if (child.hasChild("total_late")) {
-        let newValue = child.val().total_late;
-        this.setState({
+        }));
+      }else if(snap.val().total_late) {
+        let newValue = snap.val().total_late;
+        this.setState(()=>({
           lateNumber:newValue,
-        });
+        }));
       }
     });
   });
 }
 
 _listenForItem(itemsRef){
-  itemsRef.limitToFirst(1).on('value', (snap)=>{
+  itemsRef.on('value', (snap)=>{
     var items = [];
     snap.forEach((child)=>{
       items.push({
@@ -134,8 +137,6 @@ _listenForItem(itemsRef){
         Mark: child.val().status.Mark,
       });
     });
-
-    console.log(items);
     this.setState({
       historyArray: items,
     });
@@ -173,7 +174,6 @@ _showFullHistory(itemsRef){
             keyExtractor={item => item.user_id}
           />
         </Card>
-
   );
 }
 
@@ -184,7 +184,7 @@ render(){
         <Content>
           <Body>
             <EvilIcons name={"user"} size={120} color={"#5067FF"}/>
-            <Text>peyman ghazvini</Text>
+            <Text>{userHistoryItem.name} {userHistoryItem.last_name}</Text>
           </Body>
           <DetailRow
             present={this.state.presentNumber}

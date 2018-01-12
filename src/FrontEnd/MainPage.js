@@ -16,7 +16,7 @@ import FB from '../BackEnd/firebase';
 import Register from './Register';
 import History from './History';
 import ListClasses from './Classes';
-import {fbDatabaseNodeName} from './Classes';
+import {fireBaseClassNode} from './Classes';
 import {Entypo,Feather,MaterialIcons,EvilIcons} from '@expo/vector-icons';
 import {
   Container,
@@ -62,9 +62,8 @@ export default class MainPage extends Component {
       numberOfStudents:null,
       loading: true,
     };
-   // this.currentUserUid = FB.auth().currentUser.uid;
-   // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
-   this.itemsRef = FB.database().ref('user_classes/'+"-xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"-L2dy0UfQ8LPCTOWWDSb"+'/studet_list');
+   this.currentUserUid = FB.auth().currentUser.uid;
+   this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
    this._renderItem = this._renderItem.bind(this);
    this.listenForItems = this.listenForItems.bind(this);
    this._resetFlatlist = this._resetFlatlist.bind(this);
@@ -78,7 +77,6 @@ _renderItem({item}){
   return(
     <CardItem
       style={{borderColor:"transparent"}}>
-
         <Body
           style={{borderColor:"#5067FF",borderBottomWidth:0.6}}>
           <View style={{flexDirection:"row",alignItems:"center",borderLeftWidth:5,paddingLeft:8,borderColor:"#5067FF"}}>
@@ -114,7 +112,7 @@ listenForItems(itemsRef) {
     });
 };
 
-_renderFooter = ()=>{
+_renderFooter = () => {
   if(!this.state.loading) return null;
   return(
     <View>

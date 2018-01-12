@@ -25,7 +25,7 @@ import {
   SwipeRow,
   Toast,
 } from 'native-base';
-
+import {fireBaseClassNode} from './Classes';
 
 let date = new Date();
 let dateString = `${date.getFullYear() +"-"+(date.getMonth() + 1)+"-"+ date.getDate()}`;
@@ -43,11 +43,8 @@ export default class Comments extends Component {
       students_array: [],
       Comment:'',
     };
-
-    // this.currentUserUid = FB.auth().currentUser.uid;
-    // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
-    // this.itemsRef = FB.database().ref('user_classes/'+"xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"First Class"+'/studet_list');
-    this.itemsRef = FB.database().ref('user_classes/'+"-xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"-L2dy0UfQ8LPCTOWWDSb"+'/studet_list');
+    this.currentUserUid = FB.auth().currentUser.uid;
+    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
 
     this._renderItem = this._renderItem.bind(this);
     this.listenForItems = this.listenForItems.bind(this);
@@ -74,6 +71,8 @@ export default class Comments extends Component {
     });
   }
   _sendComment(item){
+    let RegisteryCommentRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Date/"+currentDate+"/status/");
+
     if(this.state.Comment === null || this.state.Comment === ''){
       Toast.show({
        text:"Please write Comment!",
@@ -84,7 +83,7 @@ export default class Comments extends Component {
        text:"Comment has been set!",
        position:"bottom",
      });
-     FB.database().ref("test/"+item.user_id+"/"+currentDate+"/status/").update({
+     RegisteryCommentRef.update({
          Comment: this.state.Comment
        });
      this.setState({

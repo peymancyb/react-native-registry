@@ -14,8 +14,8 @@ console.disableYellowBox = true;
 useStrict(true);
 
 const App = StackNavigator({
-    // Login : { screen: Login },
-    // Register : { screen: Register },
+    Login : { screen: Login },
+    Register : { screen: Register },
     ListClasses : {screen: ListClasses},
     HomePage : {
       screen: HomePage,
