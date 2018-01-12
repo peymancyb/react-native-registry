@@ -134,14 +134,15 @@ _resetFlatlist(){
 
   render() {
     return (
-      <Container>
+      <Container
+        style={{backgroundColor:"#e7f0f9"}}>
         <Content >
             <Card>
               <FlatList
                   style={styles.flatListStyle}
                   data = {this.state.students_array}
                   renderItem = {this._renderItem}
-                  keyExtractor={item => item.name}
+                  keyExtractor={item => item.user_id}
                   ListFooterComponent={this._renderFooter}
                   />
             </Card>

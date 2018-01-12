@@ -78,7 +78,8 @@ export default class ProfileHistory extends Component{
       historyArray:[],
     };
     this._showFullHistory = this._showFullHistory.bind(this);
-    this.itemsRef = FB.database().ref('test/'+CurrentUser+"/");
+    this.itemsRef = FB.database().ref('test/'+CurrentUser+"/Date");
+    this.totalItemsRef = FB.database().ref('test/'+CurrentUser+"/");
     // this.itemsRef = FB.database().ref('test/'+"-KzuES-mZ7dYu6_F6yDi"+"/");
     this._listenForItem = this._listenForItem.bind(this);
     this._renderHistory = this._renderHistory.bind(this);
@@ -90,12 +91,11 @@ export default class ProfileHistory extends Component{
 
 componentDidMount(){
   this._listenForItem(this.itemsRef);
-  this._checkForStatus(this.itemsRef);
+  this._checkForStatus(this.totalItemsRef);
 }
 
-_checkForStatus(itemsRef){
-  console.log("love");
-  return itemsRef.limitToLast(1).on('value',(snap)=>{
+_checkForStatus(totalItemsRef){
+  return totalItemsRef.limitToLast(1).on('value',(snap)=>{
     snap.forEach((child)=>{
       if (child.hasChild("total_present")) {
         let newValue = child.val().total_present;
@@ -180,7 +180,7 @@ _showFullHistory(itemsRef){
 render(){
     return(
       <Container
-        style={{backgroundColor:"white"}}>
+        style={{backgroundColor:"#e7f0f9"}}>
         <Content>
           <Body>
             <EvilIcons name={"user"} size={120} color={"#5067FF"}/>

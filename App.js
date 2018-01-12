@@ -7,7 +7,6 @@ import Login from './src/FrontEnd/Login';
 import Register from './src/FrontEnd/Register';
 import HomePage from './src/FrontEnd/Main';
 import ListClasses from './src/FrontEnd/Classes';
-import ProfileHistory from './src/FrontEnd/profileHistory';
 
 import { Root } from "native-base";
 
@@ -17,19 +16,14 @@ useStrict(true);
 const App = StackNavigator({
     // Login : { screen: Login },
     // Register : { screen: Register },
-    // ListClasses : {screen: ListClasses},
+    ListClasses : {screen: ListClasses},
     HomePage : {
       screen: HomePage,
       navigationOptions:{
         header:null,
       },
     },
-    // History:{
-    //   screen:ProfileHistory,
-    // },
-},
-{
-//empty
+
 });
 //this page is all fine
 export default () => {

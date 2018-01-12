@@ -269,15 +269,11 @@ export class BottomFab extends Component{
       modalView:false,
     };
     this._sendData = this._sendData.bind(this);
+    this._sendToFirebase = this._sendToFirebase.bind(this);
     this._handleState = this._handleState.bind(this);
     this._resetItems = this._resetItems.bind(this);
+    // this.DateItemRef = FB.database().ref('test/'+CurrentUser+"/Date");
   }
-
-
-componentDidMount(){
-  // this._sendData(this.props);
-}
-
 
 _resetItems(props){
   tempArr=[];
@@ -295,10 +291,13 @@ _handleState(childCall){
     });
   }
 }
-  _sendData(props){
-    if(tempArr.length!=0 && tempArr.length == props.numberOfStudents){
-      for(let i=0 ; i< tempArr.length;i++){
-        FB.database().ref("test/"+tempArr[i].user_id+"/"+currentDate).set({
+
+
+_sendToFirebase(props,state){
+  if(tempArr.length!=0 && tempArr.length == props.numberOfStudents && state == false){
+    for(let i=0 ; i< tempArr.length ; i++){
+//============================================================================
+        FB.database().ref("test/"+tempArr[i].user_id+"/Date/"+currentDate).set({
           status: tempArr[i]
         });
 //==============================================================================
@@ -337,7 +336,6 @@ _handleState(childCall){
                 }
           });
         }
-//==============================================================================
         if(tempArr[i].user_status=="Late"){
           FB.database().ref("test/"+tempArr[i].user_id+"/total/").once('value',(snap)=>{
             if (!snap.hasChild("total_late")) {
@@ -355,26 +353,60 @@ _handleState(childCall){
                 }
           });
         }
-//==============================================================================
+//end for
       }
-      Toast.show({
-              text: 'Data successfully added!',
-              position: 'bottom',
-        });
-    }else{
-      if(tempArr.length == 0){
-        Toast.show({
-          text:"you did not select yet!",
-          position: "bottom",
-        });
-      }else{
-        Toast.show({
-          text:`${props.numberOfStudents-tempArr.length} students left!`,
-          position: "bottom",
-        });
-      }
+    Toast.show({
+            text: 'Data successfully added!',
+            position: 'bottom',
+            // duration: 2000,
+      });
+//end of if
     }
+    // return this._resetItems(this.props);
   }
+
+
+  _sendData(props){
+    //check if we have already this item in the database
+    if(tempArr.length!=0 && tempArr.length == props.numberOfStudents){
+      for(let i=0 ; i< tempArr.length ; i++){
+        FB.database().ref('test/'+tempArr[i].user_id+"/Date").on('value',(snap)=>{
+          let checkStatus = false;
+          snap.forEach((child)=>{
+            if(child.key == currentDate){
+              checkStatus =  true;
+            }else{
+              checkStatus = false;
+            }
+          });
+          console.log("state: "+checkStatus);
+          if(checkStatus){
+            return Toast.show({
+              text: 'You already have submitted!',
+              position: "bottom",
+              // duration: 2000,
+            });
+            // return setTimeout(()=>this._resetItems(this.props),1800);
+          }else{
+            return this._sendToFirebase(this.props,checkStatus);
+          }
+        });
+      }
+    }else{
+        if(tempArr.length == 0){
+          Toast.show({
+            text:"you did not select yet!",
+            position: "bottom",
+          });
+        }else{
+          Toast.show({
+            text:`${props.numberOfStudents-tempArr.length} students left!`,
+            position: "bottom",
+          });
+        }
+      }
+  }
+
 
   render(){
     return(
