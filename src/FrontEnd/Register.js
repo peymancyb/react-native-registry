@@ -11,7 +11,6 @@ import {
 }from 'native-base';
 import {Entypo} from '@expo/vector-icons';
 
-
 export default class Register extends Component{
   constructor(props){
     super(props);
