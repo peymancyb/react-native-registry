@@ -108,12 +108,14 @@ _checkForStatus(totalItemsRef){
         this.setState(()=>({
           presentNumber:newValue,
         }));
-      }else if(snap.val().total_absent) {
+      }
+      if(snap.val().total_absent) {
         let newValue = snap.val().total_absent;
         this.setState(()=>({
           absentNumber:newValue,
         }));
-      }else if(snap.val().total_late) {
+      }
+      if(snap.val().total_late) {
         let newValue = snap.val().total_late;
         this.setState(()=>({
           lateNumber:newValue,

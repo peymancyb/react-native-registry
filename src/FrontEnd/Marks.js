@@ -1,5 +1,5 @@
 import React ,{Component} from 'react';
-import {Text,TouchableOpacity,View,TextInput, TouchableHighligh,FlatList } from 'react-native';
+import {Text,TouchableOpacity,View,TextInput, TouchableHighligh,FlatList,KeyboardAvoidingView} from 'react-native';
 import styles from './style';
 import FB from '../BackEnd/firebase';
 import {StackNavigator , TabNavigator} from 'react-navigation';
@@ -86,59 +86,61 @@ _sendMark(item){
    });
  }
 };
-
   _renderItem({item}){
       return(
-        <CardItem style={styles.MarkCardItemStyle}>
-          <Body
-            style={styles.MarkBodyItemStyle}>
-            <SwipeRow
-              style={styles.MarkSwipeRow}
-               disableLeftSwipe={true}
-               leftOpenValue={75}
-               left={
-                 <Button
-                    success
-                    onPress={() => this._sendMark(item)}>
-                   <SimpleLineIcons name="check" size={22} color={"white"} />
-                 </Button>
-               }
-               body={
-                 <View style={[this.MarkItemView,{flexDirection:"row"}]}>
-                   <Body>
-                     <View style={styles.MarkViewStyle}>
-                       <Text>{item.name} {item.last_name}</Text>
-                     </View>
-                   </Body>
-                   <Right>
-                       <TextInput
-                         clearTextOnFocus={true}
-                         autoCorrect={false}
-                         editable = {true}
-                         onChangeText = {(mark)=>this._chandeText(mark)}
-                         underlineColorAndroid={"transparent"}
-                         placeholder={"Mark"}
-                         style={styles.MarkTextInputStyle}/>
+        <KeyboardAvoidingView keyboardVerticalOffset={0} behavior={"padding"}>
+          <CardItem style={styles.MarkCardItemStyle}>
+            <Body style={styles.MarkBodyItemStyle}>
+              <SwipeRow
+                style={styles.MarkSwipeRow}
+                 disableLeftSwipe={true}
+                 leftOpenValue={75}
+                 left={
+                   <Button
+                      success
+                      onPress={() => this._sendMark(item)}>
+                     <SimpleLineIcons name="check" size={22} color={"white"} />
+                   </Button>
+                 }
+                 body={
+                   <View style={[this.MarkItemView,{flexDirection:"row"}]}>
+                     <Body>
+                       <View style={styles.MarkViewStyle}>
+                         <Text>{item.name} {item.last_name}</Text>
+                       </View>
+                     </Body>
+                     <Right>
+                         <TextInput
+                           clearTextOnFocus={true}
+                           autoCorrect={false}
+                           editable = {true}
+                           onChangeText = {(mark)=>this._chandeText(mark)}
+                           underlineColorAndroid={"transparent"}
+                           placeholder={"Mark"}
+                           style={styles.MarkTextInputStyle}/>
                    </Right>
                  </View>
                }
              />
           </Body>
         </CardItem>
+      </KeyboardAvoidingView>
       );
     }
   render() {
     return (
       <Container style={styles.BackgroundColor}>
        <Content>
-         <Card>
-             <FlatList
-               style={styles.flatListStyle}
-               data = {this.state.students_array}
-               renderItem = {this._renderItem}
-               keyExtractor={item => item.user_id}
-             />
-          </Card>
+         <KeyboardAvoidingView keyboardVerticalOffset={0} behavior={"padding"}>
+           <Card>
+               <FlatList
+                 style={styles.flatListStyle}
+                 data = {this.state.students_array}
+                 renderItem = {this._renderItem}
+                 keyExtractor={item => item.user_id}
+               />
+           </Card>
+         </KeyboardAvoidingView>
        </Content>
      </Container>
     );

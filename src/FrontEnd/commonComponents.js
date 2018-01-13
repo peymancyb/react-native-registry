@@ -41,7 +41,6 @@ let dateString = `${date.getFullYear() +"-"+(date.getMonth() + 1)+"-"+ date.getD
 let currentDate = dateString.toString();
 // console.log(typeof currentDate);
 //==============================================================================
-console.log("firebase class node : "+fireBaseClassNode);
 //==============================================================================
 export class StudentModal extends Component{
   constructor(props){

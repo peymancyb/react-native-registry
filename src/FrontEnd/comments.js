@@ -1,5 +1,5 @@
 import React ,{Component} from 'react';
-import {Text,View,TextInput, TouchableOpacity,FlatList } from 'react-native';
+import {Text,View,TextInput, TouchableOpacity,FlatList,KeyboardAvoidingView } from 'react-native';
 import styles from './style';
 import FB from '../BackEnd/firebase';
 import {StackNavigator , TabNavigator} from 'react-navigation';
@@ -93,6 +93,7 @@ export default class Comments extends Component {
   };
   _renderItem({item}){
       return(
+        <KeyboardAvoidingView keyboardVerticalOffset={0} behavior={"padding"}>
           <CardItem style={styles.MarkCardItemStyle}>
               <Body
                 style={[styles.CommentsBody,{flexDirection:"row"}]}>
@@ -113,20 +114,23 @@ export default class Comments extends Component {
                    </TouchableOpacity>
                  </Body>
            </CardItem>
+         </KeyboardAvoidingView>
       );
     }
   render() {
     return (
       <Container style={styles.BackgroundColor}>
        <Content>
-         <Card>
-               <FlatList
-                 style={styles.flatListStyle}
-                 data = {this.state.students_array}
-                 renderItem = {this._renderItem}
-                 keyExtractor={item => item.name}
-               />
-        </Card>
+         <KeyboardAvoidingView keyboardVerticalOffset={0} behavior={"padding"}>
+           <Card>
+                 <FlatList
+                   style={styles.flatListStyle}
+                   data = {this.state.students_array}
+                   renderItem = {this._renderItem}
+                   keyExtractor={item => item.name}
+                 />
+          </Card>
+        </KeyboardAvoidingView>
        </Content>
      </Container>
     );

@@ -1,8 +1,6 @@
 import React ,{Component,PureComponent} from 'react';
 import {StackNavigator} from 'react-navigation';
-
 import {useStrict} from 'mobx';
-
 import Login from './src/FrontEnd/Login';
 import Register from './src/FrontEnd/Register';
 import HomePage from './src/FrontEnd/Main';
@@ -20,14 +18,10 @@ const App = StackNavigator({
     HomePage : {
       screen: HomePage,
       navigationOptions:{
-        title:"Activity",
+        title:"Attendance",
         headerTintColor:"white",
-        headerBackTitle:"Activity",
+        headerBackTitle:"Attendance",
         gesturesEnabled: false,
-        headerTitleStyle: {
-           textAlign: 'center',
-           alignSelf: 'center',
-         },
         headerStyle: {
            backgroundColor:"#0f6abc",
         },

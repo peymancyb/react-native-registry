@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text, View,TextInput, TouchableHighlight,Button } from 'react-native';
+import {Text, View,TextInput, TouchableHighlight,Button,KeyboardAvoidingView} from 'react-native';
 import styles from './style';
 import FB from '../BackEnd/firebase';
 import HomePage from './Main';
@@ -49,6 +49,7 @@ _onSignup(){
 
       <Container style={styles.BackgroundColor}>
         <Content>
+          <KeyboardAvoidingView behavior="padding">
           <Body style={styles.marginFromTop}>
               <View style={styles.inputRow}>
                 <Entypo  name="user" size={20} color={"#0f6abc"} style={styles.iconStyle}/>
@@ -81,7 +82,7 @@ _onSignup(){
                 />
               </View>
 
-              <View style={styles.marginTopButtons}>
+              <View style={styles.marginPercentageFromTop}>
                 <TouchableHighlight
                   style={styles.SignUpButton}
                   onPress={this._onSignup}
@@ -92,6 +93,7 @@ _onSignup(){
                 </TouchableHighlight>
               </View>
           </Body>
+        </KeyboardAvoidingView>
         </Content>
       </Container>
     );

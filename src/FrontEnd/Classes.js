@@ -210,13 +210,13 @@ listenForClassItems(_ClassitemsRef) {
               />
             </Card>
         </Content>
-          <View style={styles.flexOne}>
-            <Fab
-              style={styles.FabBackground}
-              onPress={() => this.setState({ClassModalView: true})}>
-              <Entypo name="add-to-list" color="white" size={35} />
-            </Fab>
-          </View>
+        <View style={styles.flexOne}>
+          <Fab
+            style={styles.FabBackground}
+            onPress={() => this.setState({ClassModalView: true})}>
+            <Entypo name="add-to-list" color="white" size={35} />
+          </Fab>
+        </View>
       </Container>
     );
   }

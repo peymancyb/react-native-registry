@@ -6,7 +6,10 @@ const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   BackgroundColor:{
-    backgroundColor:'#e7f0f9',
+    backgroundColor:'white',
+  },
+  marginPercentageFromTop:{
+    marginTop:window.height/15,
   },
   FabBackground:{
     backgroundColor:"#0f6abc",
@@ -136,7 +139,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
     fontSize: 18,
-    marginBottom: 60,
     color:"#0f6abc",
     fontWeight:"normal",
   },
@@ -188,11 +190,6 @@ const styles = StyleSheet.create({
     color:"white",
     textAlign: "center",
     fontSize: 20,
-  },
-  marginTopButtons:{
-    alignItems:"center",
-    justifyContent:"center",
-    marginTop: 60,
   },
   singUpButton:{
     justifyContent: "center",
