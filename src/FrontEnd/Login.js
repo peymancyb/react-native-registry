@@ -53,11 +53,10 @@ _onLogin(){
     );
 
   FB.auth().onAuthStateChanged(function(user) {
+    let date = new Date();
+    let fullDate= date.toDateString();
       if (user) {
         // User is signed in.
-        //get date
-        let date = new Date();
-        let fullDate= date.toDateString();
         FB.database().ref('/singed_in_users').child(fullDate).set(
           {
             user_email: user.email,
@@ -70,21 +69,7 @@ _onLogin(){
           }
         );
         // ...
-      } else {
-        // User is signed out.
-        FB.database().ref('/signed_out_users').child(fullDate).set(
-          {
-            user_email: user.email,
-            user_uid: user.uid,
-            user_displayName: user.displayName,
-            user_emailVerified: user.emailVerified,
-            user_photo: user.photoURL,
-            user_anonymous: user.isAnonymous,
-            user_providerData: user.providerData,
-          }
-        );
-        // ...
-      }
+      } 
     });
 }
 
