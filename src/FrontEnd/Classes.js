@@ -164,7 +164,9 @@ _navigateToStudent(item){
 _renderClassItem({item}){
     return(
       <TouchableOpacity
-        onPress={()=>this._navigateToStudent(item)}>
+        onPress={()=>this._navigateToStudent(item)}
+        activeOpacity={1}
+        >
       <CardItem
         style={styles.cardItemStyle}>
           <View

@@ -42,11 +42,9 @@ _onSignup(){
     },
     headerTintColor: "#0f6abc",
     gesturesEnabled: false,
-
   };
   render(){
     return(
-
       <Container style={styles.BackgroundColor}>
         <Content>
           <KeyboardAvoidingView behavior="padding">

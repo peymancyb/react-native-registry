@@ -31,17 +31,11 @@ import {
   Toast,
   SwipeRow,
 } from 'native-base';
-
-
-//user id , class name ,
-//==============================================================================
 export var tempArr = [];
 let date = new Date();
 let dateString = `${date.getFullYear() +"-"+(date.getMonth() + 1)+"-"+ date.getDate()}`;
 let currentDate = dateString.toString();
-// console.log(typeof currentDate);
-//==============================================================================
-//==============================================================================
+
 export class StudentModal extends Component{
   constructor(props){
     super(props);
@@ -52,9 +46,6 @@ export class StudentModal extends Component{
     };
     this.currentUserUid = FB.auth().currentUser.uid;
     this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
-    // this.currentUserUid = FB.auth().currentUser.uid;
-    // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fbDatabaseNodeName+'/studet_list');
-    // this.itemsRef = FB.database().ref('user_classes/'+"-xuKDcv8itdPnUGhLHjvaWfVEptm2"+'/class_list/'+"-L2dy0UfQ8LPCTOWWDSb"+'/studet_list');
     this.state = this.defaultState;
     this._saveData = this._saveData.bind(this);
     this._passState = this._passState.bind(this);
@@ -123,12 +114,14 @@ export class StudentModal extends Component{
 
                 <View style={styles.marginTopButton}>
                 <TouchableOpacity
+                  activeOpacity={1}
                   style={styles.modalAddStudent}
                   onPress={()=>this._saveData()}
                   >
                       <Text style={styles.addStudentStyleModal}>Add Student</Text>
                  </TouchableOpacity>
                  <TouchableOpacity
+                   activeOpacity={1}
                    style={styles.modalAddStudent}
                    onPress={()=>this._passState()}
                    >
@@ -257,12 +250,6 @@ render(){
   }
 }
 
-//==============================================================================
-
-//==============================================================================
-//all the components inside of the FAB in bottom
-//this component need to access to the array
-
 export class BottomFab extends Component{
   constructor(props){
     super(props);
@@ -276,7 +263,6 @@ export class BottomFab extends Component{
     this._sendToFirebase = this._sendToFirebase.bind(this);
     this._handleState = this._handleState.bind(this);
     this._resetItems = this._resetItems.bind(this);
-    // this.DateItemRef = FB.database().ref('test/'+CurrentUser+"/Date");
   }
 
 _resetItems(props){
@@ -410,8 +396,12 @@ _sendToFirebase(props,state,item){
 
   render(){
     return(
-      <View>
-        <StudentModal modalView={this.state.modalView} handleState={this._handleState}/>
+      <Container>
+        <Content>
+          <Body>
+            <StudentModal modalView={this.state.modalView} handleState={this._handleState}/>
+          </Body>
+        </Content>
         <Fab
           active={this.state.active}
           direction="up"
@@ -440,7 +430,7 @@ _sendToFirebase(props,state,item){
             <MaterialIcons name="refresh" color="white" size={22}/>
           </Button>
         </Fab>
-      </View>
+      </Container>
     );
   }
 }
