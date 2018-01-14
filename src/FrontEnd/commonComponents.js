@@ -85,14 +85,14 @@ export class StudentModal extends Component{
   }
   render(){
     return(
-            <Modal
-              style={{flex:1}}
+          <Modal
               animationType="none"
               transparent={true}
               visible={this.state.modalView}
               onRequestClose={()=>this.setState({modalVisible: false})}
             >
-            <View style={styles.inputcontainerModal}>
+            <Body style={styles.inputcontainerModal}>
+              <View style={{backgroundColor:"#0f6abc",alignItems:"center",justifyContent:"center",width:"100%",}}>
               <TextInput
                 style = {styles.inputStyleModal}
                 onChangeText={(Name) => this.setState({name: Name})}
@@ -127,8 +127,9 @@ export class StudentModal extends Component{
                    >
                        <Text style={styles.addStudentStyleModal}>Cancel</Text>
                   </TouchableOpacity>
+                  </View>
                 </View>
-               </View>
+               </Body>
            </Modal>
     );
   }

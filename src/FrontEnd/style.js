@@ -286,12 +286,12 @@ const styles = StyleSheet.create({
     fontSize:18,
   },
   inputcontainerModal:{
-    backgroundColor:"#0f6abc",
     alignItems:"center",
     justifyContent:"center",
-    marginTop:window.height-(window.height/1.5),
+    width:"100%",
   },
   inputStyleModal:{
+    padding:10,
     color:"white",
     height: 50 ,
     borderColor: "white",

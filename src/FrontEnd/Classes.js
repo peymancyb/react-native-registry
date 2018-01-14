@@ -19,6 +19,7 @@ import {
   ListItem,
 } from 'native-base';
 import {Entypo,MaterialIcons} from '@expo/vector-icons';
+import { Sae } from 'react-native-textinput-effects';
 
 export var fireBaseClassNode = '';
 
@@ -63,15 +64,17 @@ export class ClassModal extends Component{
   render(){
     return(
           <Modal
-            style={styles.flexOne}
             animationType="none"
             transparent={true}
             visible={this.state.modalVisible}
             onRequestClose={()=>this.setState({modalVisible: false})}
             >
-          <View style={styles.inputcontainerModal}>
+          <Body style={styles.inputcontainerModal}>
+            <View style={{backgroundColor:"#0f6abc",alignItems:"center",justifyContent:"center",width:"100%",}}>
             <TextInput
-              style = {styles.inputStyleModal}
+              style={styles.inputStyleModal}
+              autoCapitalize={'none'}
+              autoCorrect={false}
               onChangeText={(Name) => this.setState({name: Name})}
               value={this.state.name}
               clearTextOnFocus={true}
@@ -80,7 +83,7 @@ export class ClassModal extends Component{
               underlineColorAndroid={'transparent'}
             />
             <TextInput
-              style = {styles.inputStyleModal}
+              style={styles.inputStyleModal}
               onChangeText={(Descreption) => this.setState({descreption: Descreption})}
               value={this.state.descreption}
               clearTextOnFocus={true}
@@ -102,7 +105,8 @@ export class ClassModal extends Component{
                    <Text style={styles.addStudentStyleModal}>Cancel</Text>
               </TouchableHighlight>
             </View>
-          </View>
+            </View>
+          </Body>
         </Modal>
     );
   }
@@ -202,7 +206,9 @@ listenForClassItems(_ClassitemsRef) {
     return (
       <Container style={styles.BackgroundColor}>
         <Content>
+          <Body>
             <ClassModal modalView={this.state.ClassModalView} handleState={this._handleModalState}/>
+          </Body>
             <Card>
               <FlatList
                 style={styles.flatListStyle}
