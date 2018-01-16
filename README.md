@@ -2,6 +2,10 @@ This project was bootstrapped with [Create React Native App](https://github.com/
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).
 
+*** Remember to change file => node_modules/react-native/Libraries/Core/Timers/JSTimers.js  and change following code :
+const MAX_TIMER_DURATION_MS = 6000 * 1000;
+
+
 ## Table of Contents
 
 * [Updating to New Releases](#updating-to-new-releases)
