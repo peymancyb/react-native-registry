@@ -28,9 +28,6 @@ import {
   TabHeading,
 } from 'native-base';
 
-console.disableYellowBox = true;
-
-
  const MainTabs = TabNavigator({
   Registery:{
     screen:MainPage,

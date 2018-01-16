@@ -51,16 +51,13 @@ export default class MainPage extends Component {
   };
     constructor(props){
     super(props);
-    //solving timer error
-    console.ignoredYellowBox = [
-    'Setting a timer'
-    ];
     this.state = {
       students_array: [],
       active: false,
       modalView:false,
       numberOfStudents:null,
       loading: true,
+      loadingIndicator:false,
     };
    this.currentUserUid = FB.auth().currentUser.uid;
    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
@@ -131,16 +128,26 @@ _resetFlatlist(){
   render() {
     return (
       <Container style={styles.BackgroundColor}>
-        <Content >
-            <Card>
-              <FlatList
-                  style={styles.flatListStyle}
-                  data = {this.state.students_array}
-                  renderItem = {this._renderItem}
-                  keyExtractor={item => item.user_id}
-                  ListFooterComponent={this._renderFooter}
-                  />
-            </Card>
+        <Content>
+          {this.state.Class_array.length <= 0  ?
+              <View style={styles.deviceHalf}>
+                <Text
+                  onPress={() => this.setState({ClassModalView: true})}
+                  style={{color:"#0f6abc",fontSize:18}}>
+                  Add student
+                </Text>
+              </View>
+              :
+              <Card>
+                <FlatList
+                    style={styles.flatListStyle}
+                    data = {this.state.students_array}
+                    renderItem = {this._renderItem}
+                    keyExtractor={item => item.user_id}
+                    ListFooterComponent={this._renderFooter}
+                    />
+              </Card>
+            }
       </Content>
       <BottomFab numberOfStudents={this.state.numberOfStudents} resetFlatlist={this._resetFlatlist} />
     </Container>

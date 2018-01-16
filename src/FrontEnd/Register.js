@@ -37,7 +37,7 @@ _onSignup(){
     title:"Registeration",
     headerTintColor: "#0f6abc",
     headerStyle:{
-      backgroundColor:"#e7f0f9",
+      backgroundColor:"white",
       borderBottomWidth:0,
     },
     headerTintColor: "#0f6abc",

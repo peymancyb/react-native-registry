@@ -5,7 +5,8 @@ import {
    TextInput,
    TouchableHighlight,
    Image,
-   KeyboardAvoidingView
+   KeyboardAvoidingView,
+   ActivityIndicator,
  } from 'react-native';
  import {
    Container,
@@ -28,14 +29,10 @@ import { Hideo } from 'react-native-textinput-effects';
 export default class Login extends Component {
     constructor(props){
     super(props);
-    //solving timer error
-    console.ignoredYellowBox = [
-    'Setting a timer'
-    ];
-
     this.state = {
       UserEmail:'',
       UserPassword:'',
+      loading:false,
     };
     this._onLogin = this._onLogin.bind(this);
     this._onSignup = this._onSignup.bind(this);
@@ -46,7 +43,7 @@ _onLogin(){
   const { navigate } = this.props.navigation;
   FB.auth().signInWithEmailAndPassword(this.state.UserEmail,this.state.UserPassword)
   .then(()=>{
-        navigate("ListClasses");
+    this.setState({loading:true},()=>navigate("ListClasses"));
       })
     .catch(function(error){
         if(error){
@@ -91,16 +88,21 @@ static navigationOptions ={
   },
 };
 
+
+componentWillUnmount(){
+  this.setState({
+    loading: false,
+  });
+}
+
   render() {
     return (
       <Container style={styles.BackgroundColor}>
         <Content>
           <KeyboardAvoidingView behavior="padding">
           <Body>
-
             <Image source={require("../pictures/logo_era.png")} style={{width:75, height:75}} />
             <Text style={styles.HeadText}>European Regional Educational Academy</Text>
-
             <Body style={styles.marginPercentageFromTop}>
               <Hideo
                 style={{margin:15}}
@@ -138,6 +140,7 @@ static navigationOptions ={
                 inputStyle={{ borderBottomWidth: 1,borderColor:"#0f6abc" }}
               />
             </Body>
+            <ActivityIndicator animating={this.state.loading} color={"#0f6abc"} size={"large"} hidesWhenStopped={!this.state.loading}/>
             <Body style={styles.marginPercentageFromTop}>
               <Button
                 style={styles.loginButton}
@@ -157,71 +160,3 @@ static navigationOptions ={
     );
   }
 }
-
-
-
-
-
-
-{/* <Container
-  style={styles.BackgroundColor}>
-  <Content>
-    <Body>
-      <Body>
-        <Image source={require("../pictures/logo_era.png")} style={{width:75, height:75}} />
-        <Text style={styles.HeadText}>European Regional Educational Academy</Text>
-      </Body>
-      <Body>
-        <KeyboardAvoidingView>
-        <View style={styles.inputRow}>
-          <Entypo  name="users" size={20} color={"#0f6abc"} style={styles.iconStyle} />
-          <TextInput
-            autoFocus= {true}
-            style = {styles.inputStyle}
-            placeholder = {'Email'}
-            value = {this.state.UserEmail}
-            onChangeText = {(Email)=>this.setState({UserEmail: Email})}
-            autoCapitalize= {"none"}
-            multiline={false}
-            maxLength ={320}
-            underlineColorAndroid={'transparent'}
-            placeholderTextColor={"#0f6abc"}
-          />
-      </View>
-      <View style={styles.inputRow}>
-        <Entypo  name="lock" size={20} color={"#0f6abc"} style={styles.iconStyle}/>
-        <TextInput
-          style = {styles.inputStyle}
-          placeholder = {"Password"}
-          value = {this.state.UserPassword}
-          onChangeText = {(Password)=>this.setState({UserPassword: Password})}
-          autoCapitalize= {"none"}
-          multiline={false}
-          secureTextEntry={true}
-          underlineColorAndroid={'transparent'}
-          placeholderTextColor={"#0f6abc"}
-        />
-      </View>
-      </KeyboardAvoidingView>
-    </Body>
-    <Body>
-      <View style={styles.marginTopButtons}>
-        <TouchableHighlight
-          underlayColor={"#00a79d"}
-          activeOpacity={1}
-          style={styles.loginButton}
-          onPress={this._onLogin}>
-          <Text style={styles.signInCenterText}>Log in</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor={"#00a79d"}
-          activeOpacity={1}
-          style={styles.SignUpButton}
-          onPress={this._onSignup}>
-          <Text style={styles.signUpCenterText}>Register</Text>
-        </TouchableHighlight>
-      </View>
-    </Body>
-    </Body>
-  </Content>
-</Container> */}

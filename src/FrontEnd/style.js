@@ -5,6 +5,14 @@ const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+  deviceHalf:{
+    marginTop:window.height/2.5,
+    justifyContent:"center",
+    alignItems:"center",
+  },
+  fixedBottom:{
+    bottom:0,
+  },
   BackgroundColor:{
     backgroundColor:'white',
   },

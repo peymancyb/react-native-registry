@@ -341,16 +341,10 @@ _sendToFirebase(props,state,item){
                 }
           });
         }
-//end for
-      // }
     Toast.show({
             text: 'Data successfully added!',
             position: 'bottom',
-            // duration: 2000,
       });
-//end of if
-    // }
-    // return this._resetItems(this.props);
   }
 
 

@@ -1,5 +1,5 @@
 import React ,{Component,PureComponent} from 'react';
-import {Text, View,TextInput, TouchableHighlight,TouchableOpacity, FlatList, Modal,Button } from 'react-native';
+import {Text, View,TextInput, TouchableHighlight,TouchableOpacity, FlatList, Modal,Button,ActivityIndicator} from 'react-native';
 import styles from './style';
 import {StackNavigator , TabNavigator , DrawerNavigator} from 'react-navigation';
 import FB from '../BackEnd/firebase';
@@ -17,9 +17,10 @@ import {
   Right,
   List,
   ListItem,
+  Footer,
+  FooterTab,
 } from 'native-base';
 import {Entypo,MaterialIcons} from '@expo/vector-icons';
-import { Sae } from 'react-native-textinput-effects';
 
 export var fireBaseClassNode = '';
 
@@ -38,8 +39,6 @@ export class ClassModal extends Component{
 
   _saveClassData(){
     if(this.state.name != ''&& this.state.descreption != ''){
-      // let className = this.state.name +" "+this.state.descreption;
-      // this._ClassitemsRef.child(className).push({class_name:this.state.name , descreption: this.state.descreption});
       this._ClassitemsRef.push({class_name:this.state.name , descreption: this.state.descreption});
       Toast.show({
         text:"Class saved!",
@@ -59,8 +58,6 @@ export class ClassModal extends Component{
       modalVisible: nextProps.modalView
     });
   }
-
-
   render(){
     return(
           <Modal
@@ -115,14 +112,11 @@ export class ClassModal extends Component{
 export default class ListClasses extends PureComponent {
     constructor(props){
     super(props);
-    //solving timer error
-    console.ignoredYellowBox = [
-    'Setting a timer'
-    ];
     this.state = {
       ClassModalView:false,
       Class_array: [],
       user_uid:'Anonymous',
+      loading:true,
     };
    this.currentUserUid = FB.auth().currentUser.uid;
    this._ClassitemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
@@ -159,20 +153,16 @@ componentDidMount() {
 _navigateToStudent(item){
   const { navigate } = this.props.navigation;
   fireBaseClassNode = item.class_id;
-  // navigate("HomePage", { className: fbDatabaseNodeName });
-  navigate("HomePage");
+  this.setState({
+    loading:false
+  },()=>navigate("HomePage"));
+
 }
-
-
 
 _renderClassItem({item}){
     return(
-      <TouchableOpacity
-        onPress={()=>this._navigateToStudent(item)}
-        activeOpacity={1}
-        >
-      <CardItem
-        style={styles.cardItemStyle}>
+      <TouchableOpacity onPress={()=>this._navigateToStudent(item)} activeOpacity={1}>
+      <CardItem style={styles.cardItemStyle}>
           <View
             style={styles.flexDirectionRow}>
             <Left style={styles.ClassLeftItemStyle}>
@@ -202,21 +192,42 @@ listenForClassItems(_ClassitemsRef) {
   });
 }
 
+componentWillUnmount(){
+  this.setState({
+    loading:false
+  });
+}
+
   render() {
     return (
       <Container style={styles.BackgroundColor}>
         <Content>
-          <Body>
-            <ClassModal modalView={this.state.ClassModalView} handleState={this._handleModalState}/>
-          </Body>
-            <Card>
-              <FlatList
-                style={styles.flatListStyle}
-                data = {this.state.Class_array}
-                renderItem = {this._renderClassItem}
-                keyExtractor={item => item.class_id}
-              />
-            </Card>
+            <Body>
+              <ClassModal modalView={this.state.ClassModalView} handleState={this._handleModalState}/>
+            </Body>
+            {this.state.loading?
+              <ActivityIndicator animating={this.state.loading} color={"#0f6abc"} size={"large"} hidesWhenStopped={!this.state.loading} />
+              :
+              null
+            }
+            {this.state.Class_array.length <= 0  ?
+                <View style={styles.deviceHalf}>
+                  <Text
+                    onPress={() => this.setState({ClassModalView: true})}
+                    style={{color:"#0f6abc",fontSize:18}}>
+                    Add Class
+                  </Text>
+                </View>
+                :
+                <Card>
+                  <FlatList
+                    style={styles.flatListStyle}
+                    data = {this.state.Class_array}
+                    renderItem = {this._renderClassItem}
+                    keyExtractor={item => item.class_id}
+                  />
+                </Card>
+              }
         </Content>
         <View style={styles.flexOne}>
           <Fab
