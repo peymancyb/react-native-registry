@@ -174,7 +174,12 @@ _navigateToStudent(item){
   fireBaseClassNode = item.class_id;
   this.setState({
     loadingIndicator:true
-  },()=>navigate("HomePage"));
+  },()=>{
+    navigate("HomePage");
+    this.setState({
+      loadingIndicator:false,
+    });
+  });
 }
 
 
