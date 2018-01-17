@@ -16,9 +16,6 @@ const styles = StyleSheet.create({
   BackgroundColor:{
     backgroundColor:'white',
   },
-  marginPercentageFromTop:{
-    marginTop:window.height/15,
-  },
   FabBackground:{
     backgroundColor:"#0f6abc",
   },
@@ -142,7 +139,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   HeadText: {
-    paddingTop:5,
+    marginTop:15,
+    marginBottom:15,
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center",

@@ -14,7 +14,19 @@ useStrict(true);
 const App = StackNavigator({
     Login : { screen: Login },
     Register : { screen: Register },
-    ListClasses : {screen: ListClasses},
+    ListClasses : {
+      screen: ListClasses,
+      navigationOptions:{
+        title: "List of classes",
+        headerBackTitle:"Classes",
+        headerStyle:{
+          backgroundColor: "#0f6abc",
+        },
+        headerTintColor: "white",
+        gesturesEnabled: false,
+        headerLeft: null,
+      },
+    },
     HomePage : {
       screen: HomePage,
       navigationOptions:{
@@ -30,8 +42,9 @@ const App = StackNavigator({
 
 },{
   mode: 'card',
-  gesturesEnabled:false,
-
+  navigationOptions: {
+    gesturesEnabled: false,
+  },
 });
 //this page is all fine
 export default () => {

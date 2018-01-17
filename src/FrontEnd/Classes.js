@@ -1,5 +1,5 @@
-import React ,{Component,PureComponent} from 'react';
-import {Text, View,TextInput, TouchableHighlight,TouchableOpacity, FlatList, Modal,Button,ActivityIndicator} from 'react-native';
+import React ,{Component} from 'react';
+import {Text, View,TextInput,TouchableOpacity, FlatList, Modal,Button,ActivityIndicator} from 'react-native';
 import styles from './style';
 import {StackNavigator , TabNavigator , DrawerNavigator} from 'react-navigation';
 import FB from '../BackEnd/firebase';
@@ -52,7 +52,6 @@ export class ClassModal extends Component{
       });
     }
   }
-
   componentWillReceiveProps(nextProps){
     this.setState({
       modalVisible: nextProps.modalView
@@ -89,18 +88,20 @@ export class ClassModal extends Component{
               underlineColorAndroid={'transparent'}
             />
             <View style={styles.marginTopButton}>
-            <TouchableHighlight
+            <TouchableOpacity
+              activeOpacity={0.8}
               style={styles.modalAddStudent}
               onPress={this._saveClassData}
               >
               <Text style={styles.addStudentStyleModal}>Add Class</Text>
-             </TouchableHighlight>
-             <TouchableHighlight
+             </TouchableOpacity>
+             <TouchableOpacity
+               activeOpacity={0.8}
                style={styles.modalAddStudent}
                onPress={()=>this.props.handleState(false)}
                >
                    <Text style={styles.addStudentStyleModal}>Cancel</Text>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
             </View>
           </Body>
@@ -109,73 +110,39 @@ export class ClassModal extends Component{
   }
 }
 
-export default class ListClasses extends PureComponent {
+
+
+
+
+
+
+
+
+export default class ListClasses extends Component {
     constructor(props){
     super(props);
     this.state = {
       ClassModalView:false,
       Class_array: [],
       user_uid:'Anonymous',
-      loading:true,
+      loading:false,
+      loadingIndicator:false,
+      refreshing: false,
     };
    this.currentUserUid = FB.auth().currentUser.uid;
    this._ClassitemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
-
    this._renderClassItem = this._renderClassItem.bind(this);
    this.listenForClassItems = this.listenForClassItems.bind(this);
    this._navigateToStudent = this._navigateToStudent.bind(this);
    this._handleModalState = this._handleModalState.bind(this);
-
+   this._renderFooter = this._renderFooter.bind(this);
   }
-static navigationOptions = {
-  title: "List of classes",
-  headerBackTitle:"Classes",
-  headerStyle:{
-    backgroundColor: "#0f6abc",
-  },
-  headerTintColor: "white",
-  gesturesEnabled: false,
-  headerLeft: null,
-};
-
-
-_handleModalState(modalState){
-  this.setState({
-    ClassModalView: modalState,
-  });
-}
 
 componentDidMount() {
-  this.listenForClassItems(this._ClassitemsRef);
-}
-
-
-_navigateToStudent(item){
-  const { navigate } = this.props.navigation;
-  fireBaseClassNode = item.class_id;
   this.setState({
-    loading:false
-  },()=>navigate("HomePage"));
-
-}
-
-_renderClassItem({item}){
-    return(
-      <TouchableOpacity onPress={()=>this._navigateToStudent(item)} activeOpacity={1}>
-      <CardItem style={styles.cardItemStyle}>
-          <View
-            style={styles.flexDirectionRow}>
-            <Left style={styles.ClassLeftItemStyle}>
-              <Text>Class name: {item.name}</Text>
-              <Text style={styles.ClassLeftStyleText}>Descreption: {item.descreption}</Text>
-            </Left>
-            <Right>
-              <MaterialIcons name={"arrow-forward"} size={22} color={"#0f6abc"}/>
-            </Right>
-          </View>
-      </CardItem>
-    </TouchableOpacity>
-  );
+    loading: true
+  },
+  ()=>this.listenForClassItems(this._ClassitemsRef));
 }
 
 listenForClassItems(_ClassitemsRef) {
@@ -188,13 +155,70 @@ listenForClassItems(_ClassitemsRef) {
         descreption: child.val().descreption
       });
     });
-    this.setState({Class_array: items });
+    this.setState({
+      Class_array: items,
+      loading:false,
+      refreshing:false,
+     });
   });
 }
 
+_handleModalState(modalState){
+  this.setState({
+    ClassModalView: modalState,
+  });
+}
+
+_navigateToStudent(item){
+  const { navigate } = this.props.navigation;
+  fireBaseClassNode = item.class_id;
+  this.setState({
+    loadingIndicator:true
+  },()=>navigate("HomePage"));
+}
+
+
+_renderClassItem({item}){
+    return(
+      <TouchableOpacity onPress={()=>this._navigateToStudent(item)} activeOpacity={0.8}>
+        <CardItem style={styles.cardItemStyle}>
+            <View
+              style={styles.flexDirectionRow}>
+              <Left style={styles.ClassLeftItemStyle}>
+                <Text>Class name: {item.name}</Text>
+                <Text style={styles.ClassLeftStyleText}>Descreption: {item.descreption}</Text>
+              </Left>
+              <Right>
+                <MaterialIcons name={"arrow-forward"} size={22} color={"#0f6abc"}/>
+                <ActivityIndicator animating={this.state.loadingIndicator} color={"#0f6abc"} size={"small"} hidesWhenStopped={!this.state.loadingIndicator} />
+              </Right>
+            </View>
+        </CardItem>
+      </TouchableOpacity>
+  );
+}
+
+_renderFooter(){
+  if(!this.state.loading) return null;
+  return(
+    <View>
+      <ActivityIndicator animating={this.state.loading} color={"#0f6abc"} size={"large"} hidesWhenStopped={!this.state.loading} />
+    </View>
+  );
+};
+
 componentWillUnmount(){
   this.setState({
-    loading:false
+    loadingIndicator:false,
+  });
+}
+
+_handleRefresh(){
+  this.setState({
+    refreshing:true,
+  },
+  ()=>{
+    this.listenForClassItems(this._ClassitemsRef);
   });
 }
 
@@ -205,12 +229,7 @@ componentWillUnmount(){
             <Body>
               <ClassModal modalView={this.state.ClassModalView} handleState={this._handleModalState}/>
             </Body>
-            {this.state.loading?
-              <ActivityIndicator animating={this.state.loading} color={"#0f6abc"} size={"large"} hidesWhenStopped={!this.state.loading} />
-              :
-              null
-            }
-            {this.state.Class_array.length <= 0  ?
+            {(this.state.Class_array.length <= 0)  ?
                 <View style={styles.deviceHalf}>
                   <Text
                     onPress={() => this.setState({ClassModalView: true})}
@@ -225,6 +244,9 @@ componentWillUnmount(){
                     data = {this.state.Class_array}
                     renderItem = {this._renderClassItem}
                     keyExtractor={item => item.class_id}
+                    ListFooterComponent={this._renderFooter}
+                    refreshing={this.state.refreshing}
+                    onRefresh={()=>this._handleRefresh()}
                   />
                 </Card>
               }

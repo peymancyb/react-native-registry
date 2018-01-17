@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text, View,TextInput, TouchableHighlight,Button,KeyboardAvoidingView} from 'react-native';
+import {Text, View,TextInput,TouchableHighlight,TouchableOpacity,Button,KeyboardAvoidingView} from 'react-native';
 import styles from './style';
 import FB from '../BackEnd/firebase';
 import HomePage from './Main';
@@ -49,46 +49,51 @@ _onSignup(){
         <Content>
           <KeyboardAvoidingView behavior="padding">
           <Body style={styles.marginFromTop}>
-              <View style={styles.inputRow}>
-                <Entypo  name="user" size={20} color={"#0f6abc"} style={styles.iconStyle}/>
-                <TextInput
-                  value = {this.state.UserEmail}
-                  onChangeText = {(Email) => this.setState({UserEmail: Email})}
-                  autoFocus = {true}
-                  style = {styles.inputStyle}
-                  placeholder = {'Email'}
-                  autoCapitalize= {"none"}
-                  multiline={false}
-                  maxLength ={320}
-                  underlineColorAndroid={'transparent'}
-                  placeholderTextColor={"#0f6abc"}
-                />
-              </View>
-              <View style={styles.inputRow}>
-                <Entypo  name="lock" size={20} color={"#0f6abc"} style={styles.iconStyle}/>
-                <TextInput
-                  onChangeText = {(Password) => this.setState({UserPassword: Password})}
-                  value = {this.state.UserPassword}
-                  style = {styles.inputStyle}
-                  placeholder = {'Password'}
-                  autoCapitalize= {"none"}
-                  multiline={false}
-                  maxLength ={320}
-                  underlineColorAndroid={'transparent'}
-                  placeholderTextColor={"#0f6abc"}
-                  secureTextEntry={true}
-                />
-              </View>
-
+              <Hideo
+                style={{margin:15}}
+                placeholder={'Email'}
+                iconClass={Entypo}
+                iconName={'users'}
+                iconColor={'white'}
+                iconSize={20}
+                autoCapitalize= {"none"}
+                autoFocus = {true}
+                multiline={false}
+                maxLength ={320}
+                underlineColorAndroid={'transparent'}
+                placeholderTextColor={"#0f6abc"}
+                value = {this.state.UserEmail}
+                iconBackgroundColor={'#0f6abc'}
+                onChangeText = {(Email) => this.setState({UserEmail: Email})}
+                inputStyle={{ borderBottomWidth: 1,borderColor:"#0f6abc" }}
+              />
+              <Hideo
+                style={{margin:15}}
+                placeholder={'Password'}
+                iconClass={Entypo}
+                iconName={'lock'}
+                iconColor={'white'}
+                iconSize={20}
+                autoCapitalize= {"none"}
+                multiline={false}
+                maxLength ={320}
+                underlineColorAndroid={'transparent'}
+                placeholderTextColor={"#0f6abc"}
+                iconBackgroundColor={'#0f6abc'}
+                secureTextEntry={true}
+                value = {this.state.UserPassword}
+                onChangeText = {(Password) => this.setState({UserPassword: Password})}
+                inputStyle={{ borderBottomWidth: 1,borderColor:"#0f6abc" }}
+              />
               <View style={styles.marginPercentageFromTop}>
-                <TouchableHighlight
+                <TouchableOpacity
                   style={styles.SignUpButton}
                   onPress={this._onSignup}
                   underlayColor={"#0f6abc"}
-                  activeOpacity={1}
+                  activeOpacity={0.8}
                   >
                   <Text style={styles.signUpCenterText}>Sign up</Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
           </Body>
         </KeyboardAvoidingView>

@@ -256,7 +256,7 @@ export class BottomFab extends Component{
     super(props);
     this.state={
       active: false,
-      modalView:false,
+      modalView:props.StudentModalView,
     };
     this.currentUserUid = FB.auth().currentUser.uid;
     this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
@@ -389,14 +389,18 @@ _sendToFirebase(props,state,item){
       }
   }
 
+
+componentWillReceiveProps(nextProps){
+  this.setState({
+    modalView: nextProps.StudentModalView
+  });
+}
   render(){
     return(
-      <Container>
-        <Content>
+      <View>
           <Body>
             <StudentModal modalView={this.state.modalView} handleState={this._handleState}/>
           </Body>
-        </Content>
         <Fab
           active={this.state.active}
           direction="up"
@@ -425,7 +429,7 @@ _sendToFirebase(props,state,item){
             <MaterialIcons name="refresh" color="white" size={22}/>
           </Button>
         </Fab>
-      </Container>
+      </View>
     );
   }
 }

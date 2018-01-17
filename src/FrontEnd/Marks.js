@@ -127,19 +127,31 @@ _sendMark(item){
       </KeyboardAvoidingView>
       );
     }
+
   render() {
     return (
       <Container style={styles.BackgroundColor}>
        <Content>
          <KeyboardAvoidingView keyboardVerticalOffset={0} behavior={"padding"}>
-           <Card>
-               <FlatList
-                 style={styles.flatListStyle}
-                 data = {this.state.students_array}
-                 renderItem = {this._renderItem}
-                 keyExtractor={item => item.user_id}
-               />
-           </Card>
+           {
+             this.state.students_array <= 0 ?
+             <View style={styles.deviceHalf}>
+               <Text
+                 onPress={() => this.props.navigation.navigate("Registery")}
+                 style={{color:"#0f6abc",fontSize:18}}>
+                 no student found!
+               </Text>
+             </View>
+             :
+             <Card>
+                 <FlatList
+                   style={styles.flatListStyle}
+                   data = {this.state.students_array}
+                   renderItem = {this._renderItem}
+                   keyExtractor={item => item.user_id}
+                 />
+             </Card>
+           }
          </KeyboardAvoidingView>
        </Content>
      </Container>
