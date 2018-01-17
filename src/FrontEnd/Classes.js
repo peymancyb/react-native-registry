@@ -124,7 +124,6 @@ export default class ListClasses extends Component {
     this.state = {
       ClassModalView:false,
       Class_array: [],
-      user_uid:'Anonymous',
       loading:false,
       loadingIndicator:false,
       refreshing: false,
@@ -178,6 +177,9 @@ _navigateToStudent(item){
     navigate("HomePage");
     this.setState({
       loadingIndicator:false,
+      ClassModalView:false,
+      loading:false,
+      refreshing: false,
     });
   });
 }
@@ -213,8 +215,12 @@ _renderFooter(){
 };
 
 componentWillUnmount(){
+  console.log("unmounted!");
   this.setState({
+    ClassModalView:false,
+    loading:false,
     loadingIndicator:false,
+    refreshing: false,
   });
 }
 

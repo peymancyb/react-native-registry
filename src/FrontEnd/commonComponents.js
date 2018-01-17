@@ -257,6 +257,7 @@ export class BottomFab extends Component{
     this.state={
       active: false,
       modalView:props.StudentModalView,
+      checkStatus: false,
     };
     this.currentUserUid = FB.auth().currentUser.uid;
     this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
@@ -284,7 +285,7 @@ _handleState(childCall){
 }
 
 //make an array is the solution
-_sendToFirebase(props,state,item){
+_sendToFirebase(item){
       let RegisteryDateRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Date/"+currentDate);
       let RegisteryTotalRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Total/");
 //============================================================================
@@ -338,56 +339,54 @@ _sendToFirebase(props,state,item){
               return RegisteryTotalRef.update({
                     total_late: update
                   });
+
                 }
           });
         }
     Toast.show({
             text: 'Data successfully added!',
             position: 'bottom',
+            type: "success",
       });
   }
 
 
-  _sendData(props){
-    //check if we have already this item in the database
-    if(tempArr.length!=0 && tempArr.length == props.numberOfStudents){
-      for(let i=0 ; i< tempArr.length ; i++){
-        let RegisteryDateRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+tempArr[i].user_id+"/Date/");
+_sendData(props){
+  //FIRST:check if we have already this item in the database
+  if (tempArr.length != 0 && tempArr.length == props.numberOfStudents) {
+    for (let i = 0; i < tempArr.length; i++) {
+        let RegisteryDateRef = FB.database().ref("Registery/" + this.currentUserUid + "/" + fireBaseClassNode + "/" + tempArr[i].user_id + "/Date/");
         RegisteryDateRef.on('value',(snap)=>{
-          let checkStatus = false;
           snap.forEach((child)=>{
-            if(child.key == currentDate){
-              checkStatus =  true;
+            if(child.key === currentDate){
+              return Toast.show({
+                  text: "Submitted!",
+                  position: "bottom",
+              });
             }else{
-              checkStatus = false;
+              return this._sendToFirebase(tempArr[i]);
             }
           });
-          if(checkStatus){
-            return Toast.show({
-              text: 'You already have submitted!',
-              position: "bottom",
-              // duration: 2000,
-            });
-            // return setTimeout(()=>this._resetItems(this.props),1800);
-          }else{
-            return this._sendToFirebase(this.props,checkStatus,tempArr[i]);
-          }
         });
+
       }
-    }else{
-        if(tempArr.length == 0){
-          Toast.show({
-            text:"you did not select yet!",
-            position: "bottom",
-          });
-        }else{
-          Toast.show({
-            text:`${props.numberOfStudents-tempArr.length} students left!`,
-            position: "bottom",
-          });
+    } else {
+        if (tempArr.length == 0) {
+            Toast.show({
+                text: "you did not select yet!",
+                position: "bottom",
+            });
+        } else {
+            Toast.show({
+                text: `${props.numberOfStudents - tempArr.length} students left!`,
+                position: "bottom",
+            });
         }
-      }
+    }
+
+    this._resetItems(props);
   }
+
 
 
 componentWillReceiveProps(nextProps){
@@ -404,7 +403,6 @@ componentWillReceiveProps(nextProps){
         <Fab
           active={this.state.active}
           direction="up"
-          containerStyle={{ }}
           style={{ backgroundColor: '#0f6abc' }}
           position="bottomRight"
           onPress={() => this.setState({ active: !this.state.active })}

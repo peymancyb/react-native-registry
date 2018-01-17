@@ -26,7 +26,6 @@ import {
   Fab,
   CardItem,
   Card,
-  Toast,
 } from 'native-base';
 import {StudentModal , BottomFab, PalButtons, ParentClass,ModalStudent} from './commonComponents';
 
@@ -114,10 +113,11 @@ _resetFlatlist(){
     students_array: [] ,
     numberOfStudents: null,
     loading:true,
+    refreshing:false,
+    StudentModalView:false,
   });
-  setTimeout(()=>this.listenForItems(this.itemsRef),100);
+  setTimeout(()=>this.listenForItems(this.itemsRef),200);
 };
-
 
 _handleRefresh(){
   this.setState({
@@ -126,6 +126,13 @@ _handleRefresh(){
   ()=>{
     this.listenForItems(this.itemsRef);
   });
+}
+
+
+componentWillUnmount(){
+  // this._resetFlatlist();
+  console.log("called unmount!");
+  clearTimeout(this._resetFlatlist);
 }
 
   render() {
