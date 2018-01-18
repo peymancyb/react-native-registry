@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Text, View,TextInput,TouchableHighlight,TouchableOpacity,Button,KeyboardAvoidingView} from 'react-native';
 import styles from './style';
-import FB from '../BackEnd/firebase';
+import fireBase from '../BackEnd/firebase';
 import HomePage from './Main';
 import {
   Container,
@@ -23,7 +23,7 @@ export default class Register extends Component{
   }
 _onSignup(){
   const { goBack } = this.props.navigation;
-  FB.auth().createUserWithEmailAndPassword(this.state.UserEmail,this.state.UserPassword)
+  fireBase.auth().createUserWithEmailAndPassword(this.state.UserEmail,this.state.UserPassword)
   .then(()=>{
     alert("Your account has been created");
     goBack();

@@ -1,7 +1,7 @@
 import React ,{Component} from 'react';
 import {Text,View,TextInput, TouchableHighligh,FlatList ,TouchableOpacity} from 'react-native';
 import styles from './style';
-import FB from '../BackEnd/firebase';
+import fireBase from '../BackEnd/firebase';
 import {StackNavigator , TabNavigator} from 'react-navigation';
 import Register from './Register';
 import {fireBaseClassNode} from './Classes';
@@ -37,8 +37,8 @@ export default class History extends Component {
     this.state = {
       students_array: [],
     };
-    this.currentUserUid = FB.auth().currentUser.uid;
-    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
+    this.currentUserUid = fireBase.auth().currentUser.uid;
+    this.itemsRef = fireBase.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
     this._renderItem = this._renderItem.bind(this);
     this.listenForItems = this.listenForItems.bind(this);
     this._navigateToProfile = this._navigateToProfile.bind(this);

@@ -17,7 +17,7 @@ import {
    Button,
  }from 'native-base';
 import styles from './style';
-import FB from '../BackEnd/firebase';
+import fireBase from '../BackEnd/firebase';
 import {StackNavigator} from 'react-navigation';
 import {Entypo} from '@expo/vector-icons';
 import Register from './Register';
@@ -37,21 +37,11 @@ export default class Login extends Component {
     this._onSignup = this._onSignup.bind(this);
   }
 
-static navigationOptions = {
-  //header on android has problems(solved)
-  headerStyle:{
-    backgroundColor:'white',
-    borderBottomWidth:0,
-    elevation: 0, //remove header shadow form android
-    shadowOpacity: 0, //remove header shadwo from ios
-  },
-};
-
 //Login process
 _onLogin(){
-  var currentUser = FB.auth().currentUser;
+  var currentUser = fireBase.auth().currentUser;
   const { navigate } = this.props.navigation;
-  FB.auth().signInWithEmailAndPassword(this.state.UserEmail,this.state.UserPassword)
+  fireBase.auth().signInWithEmailAndPassword(this.state.UserEmail,this.state.UserPassword)
   .then(()=>{
     this.setState({loading:true},()=>navigate("ListClasses"));
       })
@@ -62,12 +52,12 @@ _onLogin(){
       }
     );
 
-    FB.auth().onAuthStateChanged(function(user) {
+    fireBase.auth().onAuthStateChanged(function(user) {
       let date = new Date();
       let fullDate= date.toDateString();
         if (user) {
           // User is signed in.
-          FB.database().ref('/singed_in_users').child(fullDate).set(
+          fireBase.database().ref('/singed_in_users').child(fullDate).set(
             {
               user_email: user.email,
               user_uid: user.uid,

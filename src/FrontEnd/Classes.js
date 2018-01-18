@@ -1,10 +1,15 @@
 import React ,{Component} from 'react';
-import {Text, View,TextInput,TouchableOpacity, FlatList, Modal,Button,ActivityIndicator} from 'react-native';
+import {
+   Text,
+   View,
+   TextInput,
+   TouchableOpacity,
+   FlatList,
+   Modal,
+   Button,
+   ActivityIndicator} from 'react-native';
 import styles from './style';
-import {StackNavigator , TabNavigator , DrawerNavigator} from 'react-navigation';
-import FB from '../BackEnd/firebase';
-import Register from './Register';
-import HomePage from './Main';
+import fireBase from '../BackEnd/firebase';
 import {
   Container,
   Content,
@@ -19,10 +24,14 @@ import {
   ListItem,
   Footer,
   FooterTab,
+  Root,
 } from 'native-base';
 import {Entypo,MaterialIcons} from '@expo/vector-icons';
 
 export var fireBaseClassNode = '';
+
+
+
 
 export class ClassModal extends Component{
   constructor(props){
@@ -33,8 +42,8 @@ export class ClassModal extends Component{
       modalVisible: props.modalView,
     };
     this._saveClassData = this._saveClassData.bind(this);
-    this.currentUserUid = FB.auth().currentUser.uid;
-    this._ClassitemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
+    this.currentUserUid = fireBase.auth().currentUser.uid;
+    this._ClassitemsRef = fireBase.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
   }
 
   _saveClassData(){
@@ -116,10 +125,8 @@ export class ClassModal extends Component{
 
 
 
-
-
 export default class ListClasses extends Component {
-    constructor(props){
+  constructor(props){
     super(props);
     this.state = {
       ClassModalView:false,
@@ -128,8 +135,8 @@ export default class ListClasses extends Component {
       loadingIndicator:false,
       refreshing: false,
     };
-   this.currentUserUid = FB.auth().currentUser.uid;
-   this._ClassitemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
+   this.currentUserUid = fireBase.auth().currentUser.uid;
+   this._ClassitemsRef = fireBase.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
    this._renderClassItem = this._renderClassItem.bind(this);
    this.listenForClassItems = this.listenForClassItems.bind(this);
    this._navigateToStudent = this._navigateToStudent.bind(this);
@@ -139,10 +146,12 @@ export default class ListClasses extends Component {
 
 componentDidMount() {
   this.setState({
-    loading: true
+    loading: true,
+    refreshing:true,
   },
   ()=>this.listenForClassItems(this._ClassitemsRef));
 }
+
 
 listenForClassItems(_ClassitemsRef) {
   _ClassitemsRef.on('value', (snap) => {
@@ -156,7 +165,7 @@ listenForClassItems(_ClassitemsRef) {
     });
     this.setState({
       Class_array: items,
-      loading:false,
+      loading: false,
       refreshing:false,
      });
   });
@@ -214,16 +223,6 @@ _renderFooter(){
   );
 };
 
-componentWillUnmount(){
-  console.log("unmounted!");
-  this.setState({
-    ClassModalView:false,
-    loading:false,
-    loadingIndicator:false,
-    refreshing: false,
-  });
-}
-
 _handleRefresh(){
   this.setState({
     refreshing:true,
@@ -240,27 +239,28 @@ _handleRefresh(){
             <Body>
               <ClassModal modalView={this.state.ClassModalView} handleState={this._handleModalState}/>
             </Body>
-            {(this.state.Class_array.length <= 0)  ?
-                <View style={styles.deviceHalf}>
-                  <Text
-                    onPress={() => this.setState({ClassModalView: true})}
-                    style={{color:"#0f6abc",fontSize:18}}>
-                    Add Class
-                  </Text>
-                </View>
-                :
-                <Card>
-                  <FlatList
-                    style={styles.flatListStyle}
-                    data = {this.state.Class_array}
-                    renderItem = {this._renderClassItem}
-                    keyExtractor={item => item.class_id}
-                    ListFooterComponent={this._renderFooter}
-                    refreshing={this.state.refreshing}
-                    onRefresh={()=>this._handleRefresh()}
-                  />
-                </Card>
-              }
+
+            {(this.state.Class_array.length <= 0)?
+              <View style={styles.deviceHalf}>
+                <Text
+                  onPress={() => this.setState({ClassModalView: true})}
+                  style={{color:"#0f6abc",fontSize:18}}>
+                  Add Class
+                </Text>
+              </View>
+              :
+              <Card>
+                <FlatList
+                  style={styles.flatListStyle}
+                  data = {this.state.Class_array}
+                  renderItem = {this._renderClassItem}
+                  keyExtractor={item => item.class_id}
+                  ListFooterComponent={this._renderFooter}
+                  refreshing={this.state.refreshing}
+                  onRefresh={()=>this._handleRefresh()}
+                />
+              </Card>
+            }
         </Content>
         <View style={styles.flexOne}>
           <Fab

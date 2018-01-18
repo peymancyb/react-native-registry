@@ -1,7 +1,6 @@
 import React ,{Component} from 'react';
 import { View,TextInput, TouchableHighlight } from 'react-native';
 import styles from './style';
-import FB from '../BackEnd/firebase';
 import {StackNavigator , TabNavigator, TabBarTop} from 'react-navigation';
 import MainPage from './MainPage';
 import History from './History';
@@ -11,41 +10,45 @@ import ProfileHistory from './profileHistory';
 import {fbDatabaseNodeName} from './Classes';
 import {MaterialCommunityIcons,Feather,FontAwesome} from '@expo/vector-icons';
 import {
-  Container,
-  Header,
-  Content,
-  List,
-  ListItem,
-  Text,
-  Body,
-  Card,
-  CardItem,
-  Footer,
-  FooterTab,
-  Button,
-  Tab,
-  Tabs,
-  TabHeading,
+  Root
 } from 'native-base';
+
 
  const MainTabs = TabNavigator({
   Registery:{
     screen:MainPage,
+    paths:"/Registery",
+    navigationOptions:{
+      tabBarIcon: () => (<Feather name="user-check" size={22} color={"white"}/>),
+    }
   },
   Marks:{
     screen: Marks,
+    paths:"/Marks",
+    navigationOptions:{
+      tabBarIcon: ()=>(<MaterialCommunityIcons name="numeric" size={22} color={"white"}/>),
+    }
   },
   Comments:{
     screen: Comments,
+    paths:"/Comments",
+    navigationOptions:{
+      tabBarIcon: ()=>(<FontAwesome name="commenting-o" size={22} color={"white"}/>),
+    }
   },
   History:{
     screen: History,
+    paths:"/History",
+    navigationOptions:{
+      tabBarIcon: ()=>(<FontAwesome name="commenting-o" size={22} color={"white"}/>),
+    }
   },
 },{
+  backBehavior:"none",
   tabBarComponent: TabBarTop,
   initialRouteName: 'Registery',
   tabBarPosition:"bottom",
-  animationEnabled: true,
+  animationEnabled: false,
   swipeEnabled:false,
   tabStyle: {
       borderBottomWidth: 3,
@@ -66,6 +69,7 @@ import {
     },
   },
 });
+
 
 const HomePage = StackNavigator({
   main:{

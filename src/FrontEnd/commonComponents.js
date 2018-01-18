@@ -1,12 +1,17 @@
 import React ,{Component,PureComponent} from 'react';
-import {View,TextInput, TouchableHighlight,TouchableOpacity, FlatList, Modal,Alert,CheckBox } from 'react-native';
+import {
+  View,
+  TextInput,
+  TouchableHighlight,
+  TouchableOpacity,
+  FlatList,
+  Modal,
+  Alert,
+  CheckBox } from 'react-native';
 import styles from './style';
-import FB from '../BackEnd/firebase';
+import fireBase from '../BackEnd/firebase';
 import {Entypo,Feather,MaterialIcons,EvilIcons} from '@expo/vector-icons';
 import {fireBaseClassNode} from './Classes';
-import Register from './Register';
-import History from './History';
-import ListClasses from './Classes';
 import {
   Container,
   Header,
@@ -44,8 +49,8 @@ export class StudentModal extends Component{
         last_name: '',
         modalView: props.modalView,
     };
-    this.currentUserUid = FB.auth().currentUser.uid;
-    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
+    this.currentUserUid = fireBase.auth().currentUser.uid;
+    this.itemsRef = fireBase.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
     this.state = this.defaultState;
     this._saveData = this._saveData.bind(this);
     this._passState = this._passState.bind(this);
@@ -63,7 +68,7 @@ export class StudentModal extends Component{
       let replaceSpecialCharactors = student_name.toString();
       let new_student = replaceSpecialCharactors.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
       //have all application students in one place
-      FB.database().ref('all_students/'+new_student).set({
+      fireBase.database().ref('all_students/'+new_student).set({
         name: new_student
       });
       Toast.show({
@@ -149,8 +154,8 @@ export class PalButtons extends Component{
         student_palStatus:[],
        };
     this.state = this.defaultState;
-    this.currentUserUid = FB.auth().currentUser.uid;
-    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
+    this.currentUserUid = fireBase.auth().currentUser.uid;
+    this.itemsRef = fireBase.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
     this._presentButton = this._presentButton.bind(this);
     this._absentButton = this._absentButton.bind(this);
     this._lateButton = this._lateButton.bind(this);
@@ -175,6 +180,7 @@ _presentButton(props){
     user_name:props.userName,
     user_lastName:props.userSurName,
     user_status:"Present",
+    current_date: currentDate,
   };
   //calling _storeData function
   if(this.state.presentStatus == true){
@@ -196,6 +202,7 @@ _absentButton(props){
     user_name:props.userName,
     user_lastName:props.userSurName,
     user_status:"Absent",
+    current_date: currentDate,
   };
   //calling _storeData function
   if(this.state.absentStatus == true){
@@ -216,6 +223,7 @@ _lateButton(props){
     user_name:props.userName,
     user_lastName:props.userSurName,
     user_status:"Late",
+    current_date: currentDate,
   };
   //calling _storeData function
   if(this.state.lateStatus == true){
@@ -257,10 +265,11 @@ export class BottomFab extends Component{
     this.state={
       active: false,
       modalView:props.StudentModalView,
-      checkStatus: false,
+      checkStatus: true,
+      numberOfStudents: props.numberOfStudents,
     };
-    this.currentUserUid = FB.auth().currentUser.uid;
-    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
+    this.currentUserUid = fireBase.auth().currentUser.uid;
+    this.itemsRef = fireBase.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
     this._sendData = this._sendData.bind(this);
     this._sendToFirebase = this._sendToFirebase.bind(this);
     this._handleState = this._handleState.bind(this);
@@ -286,8 +295,8 @@ _handleState(childCall){
 
 //make an array is the solution
 _sendToFirebase(item){
-      let RegisteryDateRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Date/"+currentDate);
-      let RegisteryTotalRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Total/");
+      let RegisteryDateRef = fireBase.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Date/"+currentDate);
+      let RegisteryTotalRef = fireBase.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Total/");
 //============================================================================
         RegisteryDateRef.set({
           status: item
@@ -352,21 +361,32 @@ _sendToFirebase(item){
 
 
 _sendData(props){
+  console.log("props.numberOfStudents: "+this.state.numberOfStudents );
+  console.log("tempArr.length: "+ tempArr.length);
   //FIRST:check if we have already this item in the database
   if (tempArr.length != 0 && tempArr.length == props.numberOfStudents) {
     for (let i = 0; i < tempArr.length; i++) {
-        let RegisteryDateRef = FB.database().ref("Registery/" + this.currentUserUid + "/" + fireBaseClassNode + "/" + tempArr[i].user_id + "/Date/");
+        let RegisteryDateRef = fireBase.database().ref("Registery/" + this.currentUserUid + "/" + fireBaseClassNode + "/" + tempArr[i].user_id + "/Date/");
         RegisteryDateRef.on('value',(snap)=>{
           snap.forEach((child)=>{
-            if(child.key === currentDate){
-              return Toast.show({
-                  text: "Submitted!",
-                  position: "bottom",
+            if(child.key == currentDate){
+              this.setState({
+                checkStatus:false,
+              },()=>{
+                return Toast.show({
+                    text: "Submitted!",
+                    position: "bottom",
+                });
               });
             }else{
-              return this._sendToFirebase(tempArr[i]);
+              this.setState({
+                checkStatus:true,
+              });
             }
           });
+          if(this.state.checkStatus == true){
+            return this._sendToFirebase(tempArr[i]);
+          }
         });
 
       }
@@ -378,20 +398,17 @@ _sendData(props){
             });
         } else {
             Toast.show({
-                text: `${props.numberOfStudents - tempArr.length} students left!`,
+                text: `${this.state.numberOfStudents - tempArr.length} students left!`,
                 position: "bottom",
             });
         }
     }
-
-    this._resetItems(props);
   }
-
-
 
 componentWillReceiveProps(nextProps){
   this.setState({
-    modalView: nextProps.StudentModalView
+    modalView: nextProps.StudentModalView,
+    numberOfStudents: nextProps.numberOfStudents,
   });
 }
   render(){

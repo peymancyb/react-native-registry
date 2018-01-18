@@ -11,8 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import styles from './style';
-import FB from '../BackEnd/firebase';
-import ListClasses from './Classes';
+import fireBase from '../BackEnd/firebase';
 import {fireBaseClassNode} from './Classes';
 import {Feather} from '@expo/vector-icons';
 import {
@@ -26,15 +25,14 @@ import {
   Fab,
   CardItem,
   Card,
+  Root,
 } from 'native-base';
-import {StudentModal , BottomFab, PalButtons, ParentClass,ModalStudent} from './commonComponents';
+import {StudentModal , BottomFab, PalButtons} from './commonComponents';
 
+
+var numberOfStudents = null;
 //present absent component
 export default class MainPage extends Component {
-  static navigationOptions = {
-    tabBarIcon: () => (
-      <Feather name="user-check" size={22} color={"white"}/>    ),
-  };
     constructor(props){
     super(props);
     this.state = {
@@ -44,8 +42,8 @@ export default class MainPage extends Component {
       refreshing:false,
       StudentModalView:false,
     };
-   this.currentUserUid = FB.auth().currentUser.uid;
-   this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
+   this.currentUserUid = fireBase.auth().currentUser.uid;
+   this.itemsRef = fireBase.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
    this._renderItem = this._renderItem.bind(this);
    this.listenForItems = this.listenForItems.bind(this);
    this._resetFlatlist = this._resetFlatlist.bind(this);
@@ -70,6 +68,7 @@ listenForItems(itemsRef) {
           last_name: child.val().last_name,
         });
       });
+      numberOfStudents = items.length;
       this.setState({
         students_array: items ,
         numberOfStudents: items.length,
@@ -116,7 +115,7 @@ _resetFlatlist(){
     refreshing:false,
     StudentModalView:false,
   });
-  setTimeout(()=>this.listenForItems(this.itemsRef),200);
+  setTimeout(()=>this.listenForItems(this.itemsRef),1);
 };
 
 _handleRefresh(){
@@ -126,13 +125,6 @@ _handleRefresh(){
   ()=>{
     this.listenForItems(this.itemsRef);
   });
-}
-
-
-componentWillUnmount(){
-  // this._resetFlatlist();
-  console.log("called unmount!");
-  clearTimeout(this._resetFlatlist);
 }
 
   render() {
@@ -161,7 +153,7 @@ componentWillUnmount(){
               </Card>
             }
       </Content>
-      <BottomFab StudentModalView={this.state.StudentModalView} numberOfStudents={this.state.numberOfStudents} resetFlatlist={this._resetFlatlist} />
+      <BottomFab StudentModalView={this.state.StudentModalView} numberOfStudents={numberOfStudents} resetFlatlist={this._resetFlatlist} />
     </Container>
     );
   }

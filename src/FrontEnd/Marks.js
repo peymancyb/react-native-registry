@@ -1,9 +1,15 @@
 import React ,{Component} from 'react';
-import {Text,TouchableOpacity,View,TextInput, TouchableHighligh,FlatList,KeyboardAvoidingView} from 'react-native';
+import {
+  Text,
+  Alert,
+  TouchableOpacity,
+  View,
+  TextInput,
+  TouchableHighligh,
+  FlatList,
+  KeyboardAvoidingView} from 'react-native';
 import styles from './style';
-import FB from '../BackEnd/firebase';
-import {StackNavigator , TabNavigator} from 'react-navigation';
-import Register from './Register';
+import fireBase from '../BackEnd/firebase';
 import {fireBaseClassNode} from './Classes';
 import {MaterialCommunityIcons,SimpleLineIcons} from '@expo/vector-icons';
 import {
@@ -23,24 +29,22 @@ import {
   Button,
   SwipeRow,
   Toast,
+  Root,
 } from 'native-base';
+
 let date = new Date();
 let dateString = `${date.getFullYear() +"-"+(date.getMonth() + 1)+"-"+ date.getDate()}`;
 let currentDate = dateString.toString();
+
 export default class Marks extends Component {
-  static navigationOptions = {
-    tabBarIcon: () => (
-      <MaterialCommunityIcons name="numeric" size={22} color={"white"}/>
-    )
-  };
-    constructor(props){
+  constructor(props){
     super(props);
     this.state = {
       students_array: [],
       Mark:null,
     };
-    this.currentUserUid = FB.auth().currentUser.uid;
-    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
+    this.currentUserUid = fireBase.auth().currentUser.uid;
+    this.itemsRef = fireBase.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
     this._renderItem = this._renderItem.bind(this);
     this.listenForItems = this.listenForItems.bind(this);
     this._sendMark = this._sendMark.bind(this);
@@ -67,12 +71,12 @@ _chandeText(mark){
 this.setState({Mark: mark});
 }
 _sendMark(item){
-  let RegisteryMarkRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Date/"+currentDate+"/status/");
+  let RegisteryMarkRef = fireBase.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Date/"+currentDate+"/status/");
   if(this.state.Mark === null || this.state.Mark === ''){
     Toast.show({
-     text:"Please enter mark!",
-     position:"bottom",
-   });
+      text:"Please enter mark!",
+      position:"bottom",
+    });
  }else{
    Toast.show({
      text:"Mark has been set!",

@@ -17,7 +17,7 @@ import {
   CardItem,
 } from 'native-base';
 import styles from './style';
-import FB from '../BackEnd/firebase';
+import fireBase from '../BackEnd/firebase';
 import {userHistoryItem} from './History';
 import {fireBaseClassNode} from './Classes';
 import {EvilIcons} from '@expo/vector-icons';
@@ -79,10 +79,10 @@ export default class ProfileHistory extends Component{
       lateNumber:0,
       historyArray:[],
     };
-    this.currentUserUid = FB.auth().currentUser.uid;
+    this.currentUserUid = fireBase.auth().currentUser.uid;
 
-    this.itemsRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+userHistoryItem.user_id+"/Date/");
-    this.totalItemsRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+userHistoryItem.user_id+"/Total/");
+    this.itemsRef = fireBase.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+userHistoryItem.user_id+"/Date/");
+    this.totalItemsRef = fireBase.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+userHistoryItem.user_id+"/Total/");
     // let RegisteryTotalRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Total/");
 
     // this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');

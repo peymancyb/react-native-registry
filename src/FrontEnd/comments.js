@@ -1,9 +1,8 @@
 import React ,{Component} from 'react';
 import {Text,View,TextInput, TouchableOpacity,FlatList,KeyboardAvoidingView } from 'react-native';
 import styles from './style';
-import FB from '../BackEnd/firebase';
+import fireBase from '../BackEnd/firebase';
 import {StackNavigator , TabNavigator} from 'react-navigation';
-import Register from './Register';
 import {fbDatabaseNodeName} from './Classes';
 import {MaterialCommunityIcons,EvilIcons,FontAwesome} from '@expo/vector-icons';
 import { Hoshi } from 'react-native-textinput-effects';
@@ -24,6 +23,7 @@ import {
   Button,
   SwipeRow,
   Toast,
+  Root,
 } from 'native-base';
 import {fireBaseClassNode} from './Classes';
 
@@ -32,19 +32,14 @@ let dateString = `${date.getFullYear() +"-"+(date.getMonth() + 1)+"-"+ date.getD
 let currentDate = dateString.toString();
 
 export default class Comments extends Component {
-  static navigationOptions = {
-    tabBarIcon: () => (
-      <FontAwesome name="commenting-o" size={22} color={"white"}/>
-    ),
-  };
-    constructor(props){
+  constructor(props){
     super(props);
     this.state = {
       students_array: [],
       Comment:'',
     };
-    this.currentUserUid = FB.auth().currentUser.uid;
-    this.itemsRef = FB.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
+    this.currentUserUid = fireBase.auth().currentUser.uid;
+    this.itemsRef = fireBase.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
 
     this._renderItem = this._renderItem.bind(this);
     this.listenForItems = this.listenForItems.bind(this);
@@ -71,7 +66,7 @@ export default class Comments extends Component {
     });
   }
   _sendComment(item){
-    let RegisteryCommentRef = FB.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Date/"+currentDate+"/status/");
+    let RegisteryCommentRef = fireBase.database().ref("Registery/"+this.currentUserUid+"/"+fireBaseClassNode+"/"+item.user_id+"/Date/"+currentDate+"/status/");
 
     if(this.state.Comment === null || this.state.Comment === ''){
       Toast.show({
