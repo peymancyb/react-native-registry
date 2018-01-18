@@ -357,6 +357,9 @@ _sendToFirebase(item){
             position: 'bottom',
             type: "success",
       });
+
+//should reset the array
+      return this._resetItems(this.props);
   }
 
 
