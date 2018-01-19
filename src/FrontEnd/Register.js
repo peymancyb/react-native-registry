@@ -10,6 +10,8 @@ import {
   Header,
 }from 'native-base';
 import {Entypo} from '@expo/vector-icons';
+import { Hideo } from 'react-native-textinput-effects';
+
 
 export default class Register extends Component{
   constructor(props){
