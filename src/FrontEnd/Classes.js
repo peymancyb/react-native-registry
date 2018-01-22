@@ -125,6 +125,9 @@ export class ClassModal extends Component{
 
 
 
+
+
+
 export default class ListClasses extends Component {
   constructor(props){
     super(props);
@@ -132,8 +135,8 @@ export default class ListClasses extends Component {
       ClassModalView:false,
       Class_array: [],
       loading:false,
-      loadingIndicator:false,
       refreshing: false,
+      loadingIndicator:false,
     };
    this.currentUserUid = fireBase.auth().currentUser.uid;
    this._ClassitemsRef = fireBase.database().ref('user_classes/'+this.currentUserUid+'/class_list/');
@@ -142,14 +145,18 @@ export default class ListClasses extends Component {
    this._navigateToStudent = this._navigateToStudent.bind(this);
    this._handleModalState = this._handleModalState.bind(this);
    this._renderFooter = this._renderFooter.bind(this);
+   this.__functionDone = this.__functionDone.bind(this);
   }
+
+
+
+
 
 componentDidMount() {
   this.setState({
     loading: true,
     refreshing:true,
-  },
-  ()=>this.listenForClassItems(this._ClassitemsRef));
+  },()=>this.listenForClassItems(this._ClassitemsRef));
 }
 
 
@@ -167,7 +174,7 @@ listenForClassItems(_ClassitemsRef) {
       Class_array: items,
       loading: false,
       refreshing:false,
-     });
+    },()=>this.__functionDone());
   });
 }
 
@@ -191,6 +198,38 @@ _navigateToStudent(item){
       refreshing: false,
     });
   });
+}
+
+__functionDone(){
+  if(this.state.loading){
+    return(
+      <ActivityIndicator animating={this.state.loading} color={"#0f6abc"} size={"small"} hidesWhenStopped={!this.state.loading} />
+    );
+  }else if(this.state.Class_array.length <= 0){
+    return(
+      <View style={styles.deviceHalf}>
+        <Text
+          onPress={() => this.setState({ClassModalView: true})}
+          style={{color:"#0f6abc",fontSize:18}}>
+          Add Class
+        </Text>
+      </View>
+    );
+  }else{
+    return(
+      <Card>
+        <FlatList
+          style={styles.flatListStyle}
+          data = {this.state.Class_array}
+          renderItem = {this._renderClassItem}
+          keyExtractor={item => item.class_id}
+          ListFooterComponent={this._renderFooter}
+          refreshing={this.state.refreshing}
+          onRefresh={()=>this._handleRefresh()}
+        />
+      </Card>
+    );
+  }
 }
 
 
@@ -239,28 +278,7 @@ _handleRefresh(){
             <Body>
               <ClassModal modalView={this.state.ClassModalView} handleState={this._handleModalState}/>
             </Body>
-
-            {(this.state.Class_array.length <= 0)?
-              <View style={styles.deviceHalf}>
-                <Text
-                  onPress={() => this.setState({ClassModalView: true})}
-                  style={{color:"#0f6abc",fontSize:18}}>
-                  Add Class
-                </Text>
-              </View>
-              :
-              <Card>
-                <FlatList
-                  style={styles.flatListStyle}
-                  data = {this.state.Class_array}
-                  renderItem = {this._renderClassItem}
-                  keyExtractor={item => item.class_id}
-                  ListFooterComponent={this._renderFooter}
-                  refreshing={this.state.refreshing}
-                  onRefresh={()=>this._handleRefresh()}
-                />
-              </Card>
-            }
+            {this.__functionDone()}
         </Content>
         <View style={styles.flexOne}>
           <Fab
@@ -273,3 +291,25 @@ _handleRefresh(){
     );
   }
 }
+
+// {(this.state.Class_array.length <= 0)?
+//   <View style={styles.deviceHalf}>
+//     <Text
+//       onPress={() => this.setState({ClassModalView: true})}
+//       style={{color:"#0f6abc",fontSize:18}}>
+//       Add Class
+//     </Text>
+//   </View>
+//   :
+//   <Card>
+//     <FlatList
+//       style={styles.flatListStyle}
+//       data = {this.state.Class_array}
+//       renderItem = {this._renderClassItem}
+//       keyExtractor={item => item.class_id}
+//       ListFooterComponent={this._renderFooter}
+//       refreshing={this.state.refreshing}
+//       onRefresh={()=>this._handleRefresh()}
+//     />
+//   </Card>
+// }
