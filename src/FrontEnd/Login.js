@@ -27,15 +27,16 @@ import { Hideo } from 'react-native-textinput-effects';
 
 export default class Login extends Component {
     constructor(props){
-    super(props);
-    this.state = {
-      UserEmail:'',
-      UserPassword:'',
-      loading:false,
-    };
-    this._onLogin = this._onLogin.bind(this);
-    this._onSignup = this._onSignup.bind(this);
+      super(props);
+      this.state = {
+        UserEmail:'',
+        UserPassword:'',
+        loading:false,
+      };
+      this._onLogin = this._onLogin.bind(this);
+      this._onSignup = this._onSignup.bind(this);
   }
+
 
 //Login process
 _onLogin(){
@@ -57,8 +58,7 @@ _onLogin(){
       let fullDate= date.toDateString();
         if (user) {
           // User is signed in.
-          fireBase.database().ref('/singed_in_users').child(fullDate).set(
-            {
+          fireBase.database().ref('/singed_in_users').child(fullDate).set({
               user_email: user.email,
               user_uid: user.uid,
               user_displayName: user.displayName,
@@ -66,8 +66,7 @@ _onLogin(){
               user_photo: user.photoURL,
               user_anonymous: user.isAnonymous,
               user_providerData: user.providerData,
-            }
-          );
+            });
         // ...
       }
     });

@@ -119,15 +119,6 @@ export class ClassModal extends Component{
   }
 }
 
-
-
-
-
-
-
-
-
-
 export default class ListClasses extends Component {
   constructor(props){
     super(props);
@@ -147,9 +138,6 @@ export default class ListClasses extends Component {
    this._renderFooter = this._renderFooter.bind(this);
    this.__functionDone = this.__functionDone.bind(this);
   }
-
-
-
 
 
 componentDidMount() {
@@ -291,25 +279,3 @@ _handleRefresh(){
     );
   }
 }
-
-// {(this.state.Class_array.length <= 0)?
-//   <View style={styles.deviceHalf}>
-//     <Text
-//       onPress={() => this.setState({ClassModalView: true})}
-//       style={{color:"#0f6abc",fontSize:18}}>
-//       Add Class
-//     </Text>
-//   </View>
-//   :
-//   <Card>
-//     <FlatList
-//       style={styles.flatListStyle}
-//       data = {this.state.Class_array}
-//       renderItem = {this._renderClassItem}
-//       keyExtractor={item => item.class_id}
-//       ListFooterComponent={this._renderFooter}
-//       refreshing={this.state.refreshing}
-//       onRefresh={()=>this._handleRefresh()}
-//     />
-//   </Card>
-// }

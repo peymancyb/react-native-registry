@@ -29,6 +29,7 @@ class DetailRow extends Component{
   }
 
   render(){
+    console.log('props are:',this.props);
     return(
       <Body>
         <Body

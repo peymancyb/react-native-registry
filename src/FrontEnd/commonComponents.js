@@ -267,6 +267,7 @@ export class BottomFab extends Component{
       modalView:props.StudentModalView,
       checkStatus: true,
       numberOfStudents: props.numberOfStudents,
+      dateTemp : []
     };
     this.currentUserUid = fireBase.auth().currentUser.uid;
     this.itemsRef = fireBase.database().ref('user_classes/'+this.currentUserUid+'/class_list/'+fireBaseClassNode+'/studet_list');
@@ -274,6 +275,18 @@ export class BottomFab extends Component{
     this._sendToFirebase = this._sendToFirebase.bind(this);
     this._handleState = this._handleState.bind(this);
     this._resetItems = this._resetItems.bind(this);
+  }
+
+  componentDidMount(){
+    //store the registery node here
+    let RegistryNode = fireBase.database().ref("Registery/" + this.currentUserUid + "/" + fireBaseClassNode +"/");
+    RegistryNode.on('value',(snap)=>{
+      snap.forEach((child)=>{
+        let temp = this.state.dateTemp;
+        temp.push(child);
+        this.setState({dateTemp: temp});
+      });
+    });
   }
 
 _resetItems(props){
@@ -364,35 +377,20 @@ _sendToFirebase(item){
 
 
 _sendData(props){
-  console.log("props.numberOfStudents: "+this.state.numberOfStudents );
-  console.log("tempArr.length: "+ tempArr.length);
   //FIRST:check if we have already this item in the database
   if (tempArr.length != 0 && tempArr.length == props.numberOfStudents) {
-    for (let i = 0; i < tempArr.length; i++) {
-        let RegisteryDateRef = fireBase.database().ref("Registery/" + this.currentUserUid + "/" + fireBaseClassNode + "/" + tempArr[i].user_id + "/Date/");
-        RegisteryDateRef.on('value',(snap)=>{
-          snap.forEach((child)=>{
-            if(child.key == currentDate){
-              this.setState({
-                checkStatus:false,
-              },()=>{
-                return Toast.show({
-                    text: "Submitted!",
-                    position: "bottom",
-                });
-              });
-            }else{
-              this.setState({
-                checkStatus:true,
-              });
-            }
-          });
-          if(this.state.checkStatus == true){
-            return this._sendToFirebase(tempArr[i]);
-          }
-        });
-
-      }
+    var firebaseData = this.state.dateTemp;
+    var checkingArray = [];
+    var datas = tempArr;
+    datas.forEach((child)=>{
+      let userId = child.user_id;
+      checkingArray.push(userId);
+    });
+    tempArr.forEach((child)=>{
+      var node = child;
+      let userId = node.user_id;
+      return this._sendToFirebase(node);
+    });
     } else {
         if (tempArr.length == 0) {
             Toast.show({
